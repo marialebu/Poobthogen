@@ -9,7 +9,6 @@ public class Destructor extends Virus{
 
 	@Override
 	public String esDeTipo() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
