@@ -4,7 +4,7 @@ public class VirusNivelUno extends Virus{
 	@Override
 	public void evolucionar() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Soy un niño malo");
 	}
 
 	@Override
