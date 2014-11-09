@@ -2,7 +2,7 @@ import java.io.File;
 
 public class PoobthogenArchivos {
 	public void guardar(File f, Tablero t){
-		
+		//Otras cosas 
 	}
 	
 	public Tablero abrir(File f){
