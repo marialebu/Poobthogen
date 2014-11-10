@@ -1,5 +1,5 @@
 
-public class VirusNivelTres extends Virus{
+public class NivelTres extends Virus{
 
 	@Override
 	public void evolucionar() {

@@ -17,6 +17,17 @@ public class Tablero {
 		jugadores = new ArrayList<Jugador>(2); 
 	}
 	
+	public Tablero(int filas, int columnas, Elemento[][] elementos){
+		finalizado = false; 
+		turno = true; 
+		this.filas = filas;
+		this.columnas = columnas;
+		this.elementos = elementos;
+		jugadores = new ArrayList<Jugador>(2); 
+	}
+	
+	
+	
 	public void finish(){
 		System.exit(0);
 	}

@@ -1,6 +1,7 @@
 
 public class PoobthogenExcepcion extends Exception{
-	//Solo es un comentario :P 
+	
+	public static String ARCHIVO_NO_ENCONTRADO= "El archivo no existe";
 	
 	public PoobthogenExcepcion(String mensaje){
 		super(mensaje); 

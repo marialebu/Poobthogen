@@ -1,5 +1,5 @@
 
-public class VirusNivelDos extends Virus{
+public class NivelDos extends Virus{
 
 	@Override
 	public void evolucionar() {
