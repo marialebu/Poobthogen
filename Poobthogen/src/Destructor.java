@@ -8,8 +8,8 @@ public class Destructor extends Virus{
 	}
 
 	@Override
-	public String esDeTipo() {
-		return null;
+	public String toString() {
+		return "G";
 	}
 
 }

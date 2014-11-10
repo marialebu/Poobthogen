@@ -1,4 +1,8 @@
 
-public interface Elemento {
+public abstract class Elemento {
+	
+	protected Jugador jugador;
+	
+	public abstract String toString(); 
 
 }

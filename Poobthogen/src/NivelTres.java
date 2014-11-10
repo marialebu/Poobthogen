@@ -1,5 +1,9 @@
 
 public class NivelTres extends Virus{
+	
+	public NivelTres(Jugador j){
+		jugador = j; 
+	}
 
 	@Override
 	public void evolucionar() {
@@ -8,9 +12,8 @@ public class NivelTres extends Virus{
 	}
 
 	@Override
-	public String esDeTipo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toString() {
+		return "T";
 	}
 
 }

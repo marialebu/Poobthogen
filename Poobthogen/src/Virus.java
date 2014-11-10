@@ -1,6 +1,6 @@
 
-public abstract class Virus implements Elemento{
+public abstract class Virus extends Elemento{
 	public abstract void evolucionar();
-	public abstract String esDeTipo();
+	public abstract String toString();
 	private Tablero tablero;
 }

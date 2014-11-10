@@ -1,16 +1,20 @@
 
 public class NivelUno extends Virus{
 
+	public NivelUno(Jugador j){
+		jugador = j; 
+	}
+	
 	@Override
 	public void evolucionar() {
 		// TODO Auto-generated method stub
-		System.out.println("Soy un niño malo");
+		System.out.println("Soy un niï¿½o malo");
 	}
 
 	@Override
-	public String esDeTipo() {
+	public String toString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "U";
 	}
 
 }
