@@ -41,6 +41,8 @@ public class PoobthogenArchivos {
 				ArrayList<String> elemento = new ArrayList<String>();
 				int[] filCol = cuenta(elemento);
 				tablero = new Tablero(filCol[1], filCol[0]);
+				tablero.agregaJugador(new Jugador());
+				tablero.agregaJugador(new Jugador());
 				for (int i = 0 ; i < elemento.size(); i++) {
 					buscarYAgregar(elemento.get(i), tiposVirus, tablero, i);
 				}
@@ -104,14 +106,9 @@ public class PoobthogenArchivos {
 					if(t.charAt(j) != '*' && tiposVirus.containsKey(t.charAt(j-1)+"")){
 						if(t.charAt(j) == '1' || t.charAt(j) == '2'){
 							tablero.agregarElemento((int)t.charAt(j)- 49, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
-						}else if (t.charAt(j)== '_'){
-							tablero.agregarElemento(-1, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
-						}else{
-							throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
-						}
-					}else if(t.charAt(j-1) != ' '){
-						throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+t.charAt(j-1)+" "+j);
-					}
+						}else if (t.charAt(j)== '_') tablero.agregarElemento(-1, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
+						else throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
+					}else if(t.charAt(j-1) != ' ')throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+t.charAt(j-1)+" "+j);
 				}else{
 					//ERROR
 				}
