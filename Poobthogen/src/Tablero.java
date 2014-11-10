@@ -26,7 +26,9 @@ public class Tablero {
 		jugadores = new ArrayList<Jugador>(2); 
 	}
 	
-	
+	public void agregarVirus(int jugador, int i, int j, Virus v){
+		elementos[i][j] = v;
+	}
 	
 	public void finish(){
 		System.exit(0);
