@@ -13,6 +13,6 @@ public class NivelDos extends Virus{
 
 	@Override
 	public String toString() {
-		return "D";
+		return "D"+jugador.toString();
 	}
 }

@@ -41,8 +41,8 @@ public class PoobthogenArchivos {
 				ArrayList<String> elemento = new ArrayList<String>();
 				int[] filCol = cuenta(elemento);
 				tablero = new Tablero(filCol[1], filCol[0]);
-				tablero.agregaJugador(new Jugador());
-				tablero.agregaJugador(new Jugador());
+				tablero.agregaJugador(new Jugador("1"));
+				tablero.agregaJugador(new Jugador("2"));
 				for (int i = 0 ; i < elemento.size(); i++) {
 					buscarYAgregar(elemento.get(i), tiposVirus, tablero, i);
 				}
@@ -53,6 +53,7 @@ public class PoobthogenArchivos {
 		}catch (IOException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA); 
 		}
+		tablero.imprimir();
 		return tablero;
 	}
 	
@@ -61,8 +62,25 @@ public class PoobthogenArchivos {
 	 * @param f
 	 * @param t
 	 */
-	
-	public void exportar(File f, Tablero t){
+	public static void exporte(File f, Tablero d) throws PoobthogenExcepcion{
+		if(f == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
+		if(d == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.TABLERO_INVALIDO);
+	    if(!f.getName().endsWith(".txt"))throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.FORMATO_ARCHIVO_INVALIDO+". Se esperaba un archivo .txt");
+	    try{
+		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
+		    Elemento[][] e = d.getElementos();
+		    /*for(int i = 0; i < e)
+		    
+		    for
+		    	
+		    }*/
+		    out.println(e.toString());
+		    out.close();
+	    }catch(IOException e){
+	    	throw new PoobthogenExcepcion("Error creando o abriendo el archivo");
+	    }
+	}
+	public void exportar(File f, Tablero t) throws PoobthogenExcepcion{
 		
 	}
 	

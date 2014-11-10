@@ -9,7 +9,7 @@ public class Destructor extends Virus{
 
 	@Override
 	public String toString() {
-		return "G";
+		return "G"+jugador.toString();
 	}
 
 }

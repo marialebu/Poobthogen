@@ -14,7 +14,7 @@ public class NivelUno extends Virus{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "U";
+		return "U"+jugador.toString();
 	}
 
 }

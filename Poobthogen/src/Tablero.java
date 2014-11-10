@@ -126,7 +126,11 @@ public class Tablero {
 	}
 
 	public boolean tieneJugador(char charAt) {
-		
 		return jugadores.size() >= (int) charAt -49;
+	}
+	
+	public Elemento[][] getElementos(){
+		return elementos;
+		
 	}
 }
