@@ -33,9 +33,7 @@ public class PoobthogenArchivos {
 			if(linea.equals("VIRUS")){
 				while(!(linea = br.readLine()).startsWith("--") && !(linea.equals("TABLERO"))){
 					String[] virus = linea.split(" "); 	
-					if(tiposVirus.containsKey(virus[0])){
-						throw new PoobthogenExcepcion(PoobthogenExcepcion.ELEMENTO_DUPLICADO);
-					}
+					if(tiposVirus.containsKey(virus[0]))throw new PoobthogenExcepcion(PoobthogenExcepcion.ELEMENTO_DUPLICADO);
 					tiposVirus.put(virus[0], virus[1]);
 				}
 				ArrayList<String> elemento = new ArrayList<String>();
@@ -62,26 +60,37 @@ public class PoobthogenArchivos {
 	 * @param f
 	 * @param t
 	 */
-	public static void exporte(File f, Tablero d) throws PoobthogenExcepcion{
+	public static void exportar(File f, Tablero d) throws PoobthogenExcepcion{
 		if(f == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
 		if(d == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.TABLERO_INVALIDO);
 	    if(!f.getName().endsWith(".txt"))throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.FORMATO_ARCHIVO_INVALIDO+". Se esperaba un archivo .txt");
 	    try{
 		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
 		    Elemento[][] e = d.getElementos();
-		    /*for(int i = 0; i < e)
-		    
-		    for
+		    String res = ""; 
+		    String linea = "*";
+		    for (int i = 0; i < e.length; i++) {
+		    	for (int j = 0; j < (e[i].length); j++) {
+		    			res+="*";
+		    		}
+		    }
+		    out.println(res+res);
+		    for (int i = 0; i < e.length; i++) {
+		    	for (int j = 0; j < (e[i].length); j++) {
 		    	
-		    }*/
-		    out.println(e.toString());
+		    		if(e[i][j] != null){
+		    			linea+=e[i][j].toString();
+		    		}else{
+		    			linea+="  ";
+		    		}
+		    		out.println(linea+"*");
+				}
+			}
+		    out.println(res+res);
 		    out.close();
 	    }catch(IOException e){
 	    	throw new PoobthogenExcepcion("Error creando o abriendo el archivo");
 	    }
-	}
-	public void exportar(File f, Tablero t) throws PoobthogenExcepcion{
-		
 	}
 	
 	/**
