@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Bloque extends Elemento{
+
+public class Bloque extends Elemento implements Serializable{
 	
 	public Bloque(Jugador j){
 		jugador = j; 

@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Jugador {
+
+public class Jugador implements Serializable{
 	private String identificador; 
 	
 	/**

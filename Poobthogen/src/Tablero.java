@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class Tablero {
+public class Tablero  implements Serializable{
 	private boolean finalizado; 
 	private boolean turno;
 	private Elemento[][] elementos;

@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Destructor extends Virus{
+
+public class Destructor extends Virus implements Serializable{
 
 	@Override
 	public void evolucionar() {

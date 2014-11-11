@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class NivelDos extends Virus{
+
+public class NivelDos extends Virus implements Serializable{
 	
 	public NivelDos(Jugador j){
 		jugador = j; 

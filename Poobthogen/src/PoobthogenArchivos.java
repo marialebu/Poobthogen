@@ -13,10 +13,39 @@ public class PoobthogenArchivos {
 	 * @param f
 	 * @param t
 	 */
-	public void guardar(File f, Tablero t){
+	public static void guardar(File f, Tablero t) throws PoobthogenExcepcion{
+	    if(f == null)throw new PoobthogenExcepcion("Error al guardar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
+	    if(t == null)throw new PoobthogenExcepcion("Error al guardar: "+PoobthogenExcepcion.TABLERO_INVALIDO);
+		if(!f.getName().endsWith(".dat"))throw new PoobthogenExcepcion("Error al guardar: "+PoobthogenExcepcion.FORMATO_INVALIDO+". Se esperaba un archivo .dat");
+		try{
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
+		out.writeObject(t);
+		out.close();
+		}catch(IOException e){
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA);
+		}
 	}
-	public Tablero abrir(File f){
-		return null;
+	
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
+	public static Tablero abrir(File f)  throws PoobthogenExcepcion{
+	    if(f == null)throw new PoobthogenExcepcion("Error al abrir: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
+	    if(!f.getName().endsWith(".dat"))throw new PoobthogenExcepcion("Error al abrir: "+PoobthogenExcepcion.FORMATO_INVALIDO+". Se esperaba un archivo .dat");
+	    Tablero tablero;
+	    try{
+	    	ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));	
+	    	tablero = (Tablero)in.readObject();
+	    }catch(ClassCastException e){
+	    	throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA);
+	    }catch(IOException e){
+	    	throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA);
+	    }catch(ClassNotFoundException e){
+	    	throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA);
+	    }
+		return tablero;
 	}
 	
 	/**
@@ -161,7 +190,7 @@ public class PoobthogenArchivos {
 							tablero.agregarElemento((int)t.charAt(j)- 49, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
 						}else if (t.charAt(j)== '_') tablero.agregarElemento(-1, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
 						else throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
-					}else if(t.charAt(j-1) != ' ')throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+t.charAt(j-1)+" "+j);
+					}else if(t.charAt(j-1) != ' ')throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA);
 				}else{
 					//ERROR
 				}
