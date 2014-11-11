@@ -8,10 +8,9 @@ public class PoobthogenArchivos {
 	public static BufferedReader br;
 	private static HashMap<String, String> tiposVirus;
 	
-	/**
-	 * 
-	 * @param f
-	 * @param t
+	/**Guarda el estado actual del tablero. 
+	 * @param f Archivo donde se va a guardar. 
+	 * @param t Tablero del juego
 	 */
 	public static void guardar(File f, Tablero t) throws PoobthogenExcepcion{
 	    if(f == null)throw new PoobthogenExcepcion("Error al guardar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
@@ -26,10 +25,10 @@ public class PoobthogenArchivos {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param f
-	 * @return
+	/** Abre un archivo para leer un tablero guardado. 
+	 * @param f Archivo donde se encuentra el tablero. 
+	 * @return El tablero que fue guardado en dicho archivo.
+	 * @throws PoobthogenExcepcion 
 	 */
 	public static Tablero abrir(File f)  throws PoobthogenExcepcion{
 	    if(f == null)throw new PoobthogenExcepcion("Error al abrir: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
@@ -48,10 +47,9 @@ public class PoobthogenArchivos {
 		return tablero;
 	}
 	
-	/**
-	 * 
-	 * @param f
-	 * @return
+	/**Importa un tablero de un archivo dado. 
+	 * @param f Archivo que contiene el tablero. 
+	 * @return Tablero importado. 
 	 * @throws PoobthogenExcepcion
 	 */
 	public static Tablero importar(File f) throws PoobthogenExcepcion{
@@ -86,14 +84,14 @@ public class PoobthogenArchivos {
 		return tablero;
 	}
 	
-	/**
-	 * 
-	 * @param f
-	 * @param t
+	/**Exporta un tablero a un archivo dado. 
+	 * @param f Archivo al cual se exportara el tablero.  
+	 * @param t Tablero que se exportara. 
+	 * @throws PoobthogenExcepcion
 	 */
-	public static void exportar(File f, Tablero d) throws PoobthogenExcepcion{
+	public static void exportar(File f, Tablero t) throws PoobthogenExcepcion{
 		if(f == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
-		if(d == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.TABLERO_INVALIDO);
+		if(t == null)throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.TABLERO_INVALIDO);
 	    if(!f.getName().endsWith(".txt"))throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.FORMATO_ARCHIVO_INVALIDO+". Se esperaba un archivo .txt");
 	    try{
 		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
@@ -102,7 +100,7 @@ public class PoobthogenArchivos {
 		    	out.println(r+" "+tiposVirus.get(r));
 		    }
 		    out.println("TABLERO");
-		    Elemento[][] e = d.getElementos();
+		    Elemento[][] e = t.getElementos();
 		    String res = ""; 
 		    String linea = "*";
 		    for (int i = 0; i < 1; i++) {
@@ -124,12 +122,9 @@ public class PoobthogenArchivos {
 	    	throw new PoobthogenExcepcion("Error creando o abriendo el archivo");
 	    }
 	}
-	/**
-	 * 
-	 * @param e
-	 * @param i
-	 * @param j
-	 * @return
+	/**Crea la cadena que se agregara a la linea del archivo. 
+	 * @param e Elemento a agregar, puede ser nulo. 
+	 * @return Una cadena con la definicion del elemento. 
 	 */
 	private static String generateLine(Elemento e){
 		String linea = "";
@@ -142,11 +137,9 @@ public class PoobthogenArchivos {
 		
 	}
 	
-	/**
-	 * 
-	 * @param elemento
-	 * @param br
-	 * @return
+	/**Cuenta la cantidad de filas y columnas del tablero. 
+	 * @param elemento Arreglo con las lineas del tablero. 
+	 * @return Un arreglo con las filas[1] y las columnas[0]- 
 	 * @throws PoobthogenExcepcion
 	 */
 	private static int[] cuenta (ArrayList<String> elemento) throws PoobthogenExcepcion {
@@ -172,11 +165,10 @@ public class PoobthogenArchivos {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param t
-	 * @param tablero
-	 * @param i
+	/**Busca y agrega los tipos de elementos de una linea al tablero. 
+	 * @param t linea que se leyo. 
+	 * @param tablero Tablero al cual se agregan los elementos. 
+	 * @param i linea asociada. 
 	 * @throws PoobthogenExcepcion
 	 */
 	private static void buscarYAgregar(String t, Tablero tablero, int i) throws PoobthogenExcepcion{
