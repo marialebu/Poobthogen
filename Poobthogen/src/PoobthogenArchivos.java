@@ -1,10 +1,12 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class PoobthogenArchivos {
 	
 	public static BufferedReader br;
+	private static HashMap<String, String> tiposVirus;
 	
 	/**
 	 * 
@@ -24,9 +26,9 @@ public class PoobthogenArchivos {
 	 * @throws PoobthogenExcepcion
 	 */
 	public static Tablero importar(File f) throws PoobthogenExcepcion{
-		HashMap<String, String> tiposVirus = new HashMap<String, String>();
 		Tablero tablero = null;
 		try{
+			tiposVirus =new HashMap<String, String>();
 			br = new BufferedReader(new FileReader(f)); 
 			String linea;
 			while((linea = br.readLine()).startsWith("--"));
@@ -42,7 +44,7 @@ public class PoobthogenArchivos {
 				tablero.agregaJugador(new Jugador("1"));
 				tablero.agregaJugador(new Jugador("2"));
 				for (int i = 0 ; i < elemento.size(); i++) {
-					buscarYAgregar(elemento.get(i), tiposVirus, tablero, i);
+					buscarYAgregar(elemento.get(i), tablero, i);
 				}
 				br.close();
 			}
@@ -66,13 +68,18 @@ public class PoobthogenArchivos {
 	    if(!f.getName().endsWith(".txt"))throw new PoobthogenExcepcion("Error al exportar: "+PoobthogenExcepcion.FORMATO_ARCHIVO_INVALIDO+". Se esperaba un archivo .txt");
 	    try{
 		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
+		    out.println("VIRUS");
+		    for(String r : tiposVirus.keySet()){
+		    	out.println(r+" "+tiposVirus.get(r));
+		    }
+		    out.println("TABLERO");
 		    Elemento[][] e = d.getElementos();
 		    String res = ""; 
 		    String linea = "*";
 		    for (int i = 0; i < 1; i++) {
-		    	for (int j = 0; j < (e[i].length)+2; j++) {
+		    	for (int j = 0; j < (e[i].length)+1; j++) {
 		    			res+="*";
-		    		}
+		    	}
 		    }
 		    out.println(res+res);
 		    for (int i = 0; i < e.length; i++) {
@@ -85,6 +92,7 @@ public class PoobthogenArchivos {
 		    		}
 				}
 		    	out.println(linea+"*");
+		    	linea = "";
 			}
 		    out.println(res+res);
 		    out.close();
@@ -124,7 +132,14 @@ public class PoobthogenArchivos {
 		}
 	}
 	
-	private static void buscarYAgregar(String t, HashMap<String, String> tiposVirus, Tablero tablero, int i) throws PoobthogenExcepcion{
+	/**
+	 * 
+	 * @param t
+	 * @param tablero
+	 * @param i
+	 * @throws PoobthogenExcepcion
+	 */
+	private static void buscarYAgregar(String t, Tablero tablero, int i) throws PoobthogenExcepcion{
 		int j = 0; 
 		while(j < t.length()) {
 			if(t.charAt(j) != '*' && t.charAt(j) != ' ' ){
