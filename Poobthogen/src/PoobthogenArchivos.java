@@ -83,22 +83,34 @@ public class PoobthogenArchivos {
 		    }
 		    out.println(res+res);
 		    for (int i = 0; i < e.length; i++) {
-		    	for (int j = 0; j < (e[i].length); j++) {
-		    	
-		    		if(e[i][j] != null){
-		    			linea+=e[i][j].toString();
-		    		}else{
-		    			linea+="  ";
-		    		}
+		    	for (int j = 0; j < (e[i].length); j++) {	
+		    		linea+=generateLine(e[i][j]);
 				}
 		    	out.println(linea+"*");
-		    	linea = "";
+		    	linea = "*";
 			}
 		    out.println(res+res);
 		    out.close();
 	    }catch(IOException e){
 	    	throw new PoobthogenExcepcion("Error creando o abriendo el archivo");
 	    }
+	}
+	/**
+	 * 
+	 * @param e
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	private static String generateLine(Elemento e){
+		String linea = "";
+		if(e != null){
+			linea+=e.toString();
+		}else{
+			linea+="  ";
+		}
+		return linea;
+		
 	}
 	
 	/**
@@ -108,7 +120,6 @@ public class PoobthogenArchivos {
 	 * @return
 	 * @throws PoobthogenExcepcion
 	 */
-	
 	private static int[] cuenta (ArrayList<String> elemento) throws PoobthogenExcepcion {
 		try{
 			int contar[] = new int[2]; 
