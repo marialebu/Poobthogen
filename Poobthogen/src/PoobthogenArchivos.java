@@ -69,8 +69,8 @@ public class PoobthogenArchivos {
 		    Elemento[][] e = d.getElementos();
 		    String res = ""; 
 		    String linea = "*";
-		    for (int i = 0; i < e.length; i++) {
-		    	for (int j = 0; j < (e[i].length); j++) {
+		    for (int i = 0; i < 1; i++) {
+		    	for (int j = 0; j < (e[i].length)+2; j++) {
 		    			res+="*";
 		    		}
 		    }
@@ -83,8 +83,8 @@ public class PoobthogenArchivos {
 		    		}else{
 		    			linea+="  ";
 		    		}
-		    		out.println(linea+"*");
 				}
+		    	out.println(linea+"*");
 			}
 		    out.println(res+res);
 		    out.close();
@@ -109,7 +109,7 @@ public class PoobthogenArchivos {
 			String linea;
 			while(!(linea = br.readLine()).startsWith("--") && br.ready()){
 				 if(contar[0] == -1){
-					 contar[0] = (linea.length()-2)/2; // Sin contar las columnas con *
+					 contar[0] = (linea.length()-2)/2; 
 					 System.out.println();
 				 }
 				 if(!linea.isEmpty()){
@@ -117,7 +117,7 @@ public class PoobthogenArchivos {
 					 elemento.add(linea);
 				 }
 			}
-			contar[1]-=2; // Sin contar las esquinas de *
+			contar[1]-=2;
 			return contar;
 		}catch (IOException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA); 
