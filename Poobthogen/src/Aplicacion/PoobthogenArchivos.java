@@ -55,6 +55,8 @@ public class PoobthogenArchivos {
 	 * @throws PoobthogenExcepcion
 	 */
 	public static Tablero importar(File f) throws PoobthogenExcepcion{
+		if(f == null)throw new PoobthogenExcepcion("Error al guardar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
+	    if(!f.getName().endsWith(".dat"))throw new PoobthogenExcepcion("Error al abrir: "+PoobthogenExcepcion.FORMATO_INVALIDO+". Se esperaba un archivo .dat");
 		Tablero tablero = null;
 		try{
 			tiposVirus =new HashMap<String, String>();
@@ -121,7 +123,7 @@ public class PoobthogenArchivos {
 		    out.println(res+res);
 		    out.close();
 	    }catch(IOException e){
-	    	throw new PoobthogenExcepcion("Error creando o abriendo el archivo");
+	    	throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA);
 	    }
 	}
 	/**Crea la cadena que se agregara a la linea del archivo. 

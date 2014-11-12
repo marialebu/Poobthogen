@@ -12,11 +12,11 @@ public class Tablero  implements Serializable{
 	private int filas;
 	private int columnas;
 	
-	/**
+	/**Crea un tablero, con x filas y y columnas y una cantidad de fichas neutrales. 
 	 * 
-	 * @param filas
-	 * @param columnas
-	 * @param neutrales
+	 * @param filas Cantidad de filas del tablero
+	 * @param columnas Cantidad de columnas
+	 * @param neutrales Cantidad de fichas neutrales
 	 */
 	public Tablero(int filas, int columnas, int neutrales){
 		finalizado = false; 
@@ -28,10 +28,10 @@ public class Tablero  implements Serializable{
 		
 	}
 	
-	/**
+	/**Crea un tablero, con x filas y y columnas
 	 * 
-	 * @param filas
-	 * @param columnas
+	 * @param filas Cantidad de filas del tablero
+	 * @param neutrales Cantidad de fichas neutrales
 	 */
 	public Tablero(int filas, int columnas){
 		finalizado = false; 
@@ -41,12 +41,12 @@ public class Tablero  implements Serializable{
 		elementos = new  Elemento[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
 	}
-	/**
+	/**Agrega un elemento al tablero
 	 * 
-	 * @param jugador
-	 * @param i
-	 * @param j
-	 * @param elemento
+	 * @param jugador Jugador al que pertenece el elemento, puede  ser nulo para las fichas neutrales. 
+	 * @param i Posicion en i en el tablero
+	 * @param j Posicion en j en el tablero. 
+	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
 	 */
 	public void agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
@@ -58,7 +58,7 @@ public class Tablero  implements Serializable{
 		}catch (InstantiationException | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA); 
 		}catch (IllegalAccessException | IllegalArgumentException e){
-			//Algo	
+			//Algo	No sabemos bien como se genara para así dar una excepcion.
 		}catch (InvocationTargetException e){
 			//Algo
 		}catch (NoSuchMethodException e){
@@ -67,15 +67,13 @@ public class Tablero  implements Serializable{
 			//Algo
 		}	
 	}
-	/**
-	 * 
+	/**Termina el juego. 
 	 */
 	public void finish(){
 		System.exit(0);
 	}
-	/**
-	 * 
-	 * @param neutrales
+	/**Genera una cantidad de fichas neutrales en el tablero. 
+	 * @param neutrales cantidad de fichas neutrales
 	 */
 	public void GenerarFichasNeutrales(int neutrales){
 		Random r = new Random();
@@ -91,9 +89,8 @@ public class Tablero  implements Serializable{
 		}
 	}
 	
-	/**
-	 * 
-	 * @return
+	/**Verifica si el tablero se ha llenado
+	 * @return Verdadero si esta lleno, y falso en caso contrario.
 	 */
 	public boolean verificar(){
 		boolean estaLleno = true;
@@ -105,14 +102,14 @@ public class Tablero  implements Serializable{
 		finalizado = estaLleno;
 		return finalizado;
 	}
-	/**
-	 * 
+	/**Cambia de turno de cada jugador. 
 	 */
 	public void cambiarTurno(){
 		turno = !turno;
 		// Other fucking things.
 	}
-
+	/**Muestra el tablero por consola. 
+	 */
 	public void imprimir() {
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
@@ -122,16 +119,25 @@ public class Tablero  implements Serializable{
 		}
 		System.out.println();
 	}
-	
+	/**Agrega un jugador si es posible
+	 * @param j Jugador que se quiere agregar. 
+	 * @throws PoobthogenExcepcion
+	 */
 	public void agregaJugador(Jugador j) throws PoobthogenExcepcion{
 		if(jugadores.size() > 2) throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO) ;
 		jugadores.add(j);
 	}
-
+	/** Comprueba si ya no se pueden agregar los jugadores
+	 * @param charAt Identificador, debe ser 1 o 2. 
+	 * @return Verdadero si  se puede agregar, falso en caso contrario. 
+	 */
 	public boolean tieneJugador(char charAt) {
 		return jugadores.size() >= (int) charAt -49;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Elemento[][] getElementos(){
 		return elementos;
 		
