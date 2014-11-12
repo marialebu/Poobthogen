@@ -1,3 +1,5 @@
+package Aplicacion; 
+
 
 public class PoobthogenExcepcion extends Exception{
 	

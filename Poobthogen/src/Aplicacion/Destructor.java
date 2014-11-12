@@ -1,11 +1,9 @@
+package Aplicacion; 
+
 import java.io.Serializable;
 
 
-public class NivelTres extends Virus implements Serializable{
-	
-	public NivelTres(Jugador j){
-		jugador = j; 
-	}
+public class Destructor extends Virus implements Serializable{
 
 	@Override
 	public void evolucionar() {
@@ -15,7 +13,7 @@ public class NivelTres extends Virus implements Serializable{
 
 	@Override
 	public String toString() {
-		return "T"+jugador.toString();
+		return "G"+jugador.toString();
 	}
 
 }
