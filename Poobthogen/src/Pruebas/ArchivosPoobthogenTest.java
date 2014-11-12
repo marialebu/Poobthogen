@@ -28,10 +28,10 @@ public class ArchivosPoobthogenTest{
     public void deberiaGuardarElTablero(){
     	String[][] texample = {{"B1"}};
         Tablero t = new Tablero(1, 1);
-        t.agregaJugador(new Jugador("1"));
-        t.agregarElemento(1, 1, 1, "Bloque", false);
         File archivo = new File("archivo.dat");
         try{
+            t.agregaJugador(new Jugador("1"));
+            t.agregarElemento(1, 1, 1, "Bloque", false);
             PoobthogenArchivos.guardar(archivo, t); 
         }catch(Exception e){
                 fail(NOEXCEPCION);
@@ -108,10 +108,10 @@ public class ArchivosPoobthogenTest{
         Tablero d = new Tablero(1, 1);
         String[][] texample = {{"B1"}};
         Tablero t = new Tablero(1, 1);
-        t.agregaJugador(new Jugador("1"));
-        t.agregarElemento(1, 1, 1, "Bloque", false);
         File archivo = new File("archivo.dat");
         try{
+            t.agregaJugador(new Jugador("1"));
+            t.agregarElemento(1, 1, 1, "Bloque", false);
             PoobthogenArchivos.guardar(archivo, d); 
             Tablero n = PoobthogenArchivos.abrir(archivo); 
         }catch(Exception e){
