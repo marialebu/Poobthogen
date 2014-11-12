@@ -31,10 +31,10 @@ public class ArchivosPoobthogenTest{
         File archivo = new File("archivo.dat");
         try{
             t.agregaJugador(new Jugador("1"));
-            t.agregarElemento(1, 1, 1, "Bloque", false);
+            t.agregarElemento(1, 1, 1, "NivelDos", false);
             PoobthogenArchivos.guardar(archivo, t); 
         }catch(Exception e){
-                fail(NOEXCEPCION);
+                fail(NOEXCEPCION+e.getMessage());
         }
     } 
 
@@ -111,7 +111,7 @@ public class ArchivosPoobthogenTest{
         File archivo = new File("archivo.dat");
         try{
             t.agregaJugador(new Jugador("1"));
-            t.agregarElemento(1, 1, 1, "Bloque", false);
+            t.agregarElemento(1, 1, 1, "NivelDos", false);
             PoobthogenArchivos.guardar(archivo, d); 
             Tablero n = PoobthogenArchivos.abrir(archivo); 
         }catch(Exception e){
