@@ -65,7 +65,7 @@ public class PoobthogenArchivos {
 			while((linea = br.readLine()).startsWith("--"));
 			if(linea.equals("VIRUS")){
 				while(!(linea = br.readLine()).startsWith("--") && !(linea.equals("TABLERO"))){
-					if(linea.length() < 2) throw new PoobthogenExcepcion(PoobthogenExcepcion.DEFINICION_DE_VIRUS_INVALIDA);
+					if(linea.isEmpty()) throw new PoobthogenExcepcion(PoobthogenExcepcion.DEFINICION_DE_VIRUS_INVALIDA);
 					String[] virus = linea.split(" "); 	
 					if(tiposVirus.containsKey(virus[0]))throw new PoobthogenExcepcion(PoobthogenExcepcion.ELEMENTO_DUPLICADO);
 					tiposVirus.put(virus[0], virus[1]);
@@ -85,7 +85,6 @@ public class PoobthogenArchivos {
 		}catch (IOException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA); 
 		}
-		tablero.imprimir();
 		return tablero;
 	}
 	
@@ -121,7 +120,7 @@ public class PoobthogenArchivos {
 		    	out.println(linea+"*");
 		    	linea = "*";
 			}
-		    out.println(res+res);
+		    out.println(res+res+"\n");
 		    out.close();
 	    }catch(IOException e){
 	    	throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA);
@@ -156,7 +155,6 @@ public class PoobthogenArchivos {
 			while(!(linea = br.readLine()).startsWith("--") && br.ready()){				
 				 if(contar[0] == -1){
 					 contar[0] = (linea.length()-2)/2; 
-					 System.out.println();
 				 }
 				 if(!linea.isEmpty()){
 					 contar[1]++;	 

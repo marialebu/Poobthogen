@@ -1,0 +1,16 @@
+VIRUS
+B Bloque
+D NivelDos
+T NivelTres
+U NivelUno
+G Destructor
+TABLERO
+**************
+*B_        B2*
+*  B_U2      *
+*    B_      *
+*      B_    *
+*        B_  *
+*B1    U1  B_*
+**************
+

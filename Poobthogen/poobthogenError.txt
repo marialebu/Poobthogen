@@ -1,0 +1,23 @@
+--Las l�neas que inician con -- son comentarios 
+--En las primeras l�neas se encuentra el significado de los simbolos
+--En la zona VIRUS se definen las letras y nombres de los virus
+--En la zona TABLERO se especifica la configuraci�n del tablero 
+--La letra * sirve para definir los limites del tablero
+--Cada celda est� representada por dos caracteres el tipo de virus y su jugador
+--Para que un tablero sea v�lido se requiere
+--1. Igual cantidad de tipos de virus de los dos bandos
+VIRUS
+U NivelUno
+D NivelDos
+T NivelTres
+D Destructor
+B Bloque
+TABLERO
+**************
+*B_        B2* 
+*  B_U2      * 
+*    B_      *
+*      B_    *   
+*        B_  *   
+*B1     U1 B_* 
+**************

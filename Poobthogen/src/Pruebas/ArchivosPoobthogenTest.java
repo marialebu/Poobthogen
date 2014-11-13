@@ -138,13 +138,12 @@ public class ArchivosPoobthogenTest{
     public void deberiaExportarElTablero() throws PoobthogenExcepcion{
         Tablero d;
         File archivo = new File("poobthogen.txt");
-        //try{
+        try{
         	d = PoobthogenArchivos.importar(archivo);
-        	d.imprimir();
             PoobthogenArchivos.exportar(archivo, d);
-        //}catch(Exception e){
-        	//fail(NOEXCEPCION+e.getMessage());
+        }catch(Exception e){
+        	fail(NOEXCEPCION+e.getMessage());
         	
-        //}
+        }
     }
 }

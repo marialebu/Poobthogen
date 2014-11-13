@@ -33,7 +33,6 @@ public class Tablero  implements Serializable{
 	 * @param neutrales Cantidad de fichas neutrales
 	 */
 	public Tablero(int filas, int columnas){
-		System.out.println(filas+" "+columnas);
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
