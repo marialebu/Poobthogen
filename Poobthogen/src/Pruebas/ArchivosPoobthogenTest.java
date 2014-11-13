@@ -93,7 +93,7 @@ public class ArchivosPoobthogenTest{
     }
 
     @Test
-    public void deberiaDarErrorSiElArchivoNoExiste(){ 
+    public void deberiaDarErrorSiElArchivoNoExisteAlAbrir(){ 
         try{
             Tablero d = PoobthogenArchivos.abrir(null); 
             fail(EXCEPCION);
@@ -146,4 +146,83 @@ public class ArchivosPoobthogenTest{
         	
         }
     }
+    
+    @Test
+    public void deberiaDarErrorSiNoHayArchivoValido(){
+        Tablero d = new Tablero(1, 1);
+        try{
+            PoobthogenArchivos.exportar(null, d); 
+            fail(EXCEPCION);
+        }catch(Exception e){
+            if(!e.getMessage().equals("Error al exportar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO)){
+                fail(EXCEPCION_INESPERADA);
+            }
+        }
+    }
+
+    @Test
+    public void deberiaDarErrorSiNoHayTableroAlExportar(){
+        File archivo = new File("archivo.txt");
+        try{
+            PoobthogenArchivos.exportar(archivo, null); 
+            fail(EXCEPCION);
+        }catch(Exception e){
+            if(!e.getMessage().equals("Error al exportar: "+PoobthogenExcepcion.TABLERO_INVALIDO)){
+                fail(EXCEPCION_INESPERADA);
+            }
+        }
+    }
+
+    @Test
+    public void deberiaDarErrorSiElFormatoDelArchivoNoEsCorrectoAlExportar(){
+        File archivo = new File("archivo.doc");
+        Tablero d = new Tablero(1, 1);
+        try{
+            PoobthogenArchivos.exportar(archivo, d); 
+            fail(EXCEPCION);
+        }catch(Exception e){
+            if(!e.getMessage().equals("Error al exportar: "+PoobthogenExcepcion.FORMATO_ARCHIVO_INVALIDO+". Se esperaba un archivo .txt")){
+                fail(EXCEPCION_INESPERADA);
+            }
+        }
+    }
+
+    @Test
+    public void deberiaDarErrorSiElFormatoDelArchivoNoEsCorrectoAlImportar(){
+        File archivo = new File("archivo.pdf");
+        try{
+            Tablero d = PoobthogenArchivos.importar(archivo); 
+            fail(EXCEPCION);
+        }catch(Exception e){
+            if(!e.toString().contains(PoobthogenExcepcion.FORMATO_INVALIDO)){
+                fail(EXCEPCION_INESPERADA);
+            }
+        }
+    }
+
+    @Test
+    public void deberiaDarErrorSiElArchivoNoExisteAlImportar(){ 
+        try{
+            Tablero d = PoobthogenArchivos.importar(null); 
+            fail(EXCEPCION);
+        }catch(Exception e){
+            if(!e.toString().contains(PoobthogenExcepcion.ARCHIVO_INVALIDO)){
+                fail(EXCEPCION_INESPERADA);
+            }
+        }
+    }
+
+    @Test
+    public void deberiaImportarElTeatro(){
+        Tablero d = new Tablero(1,1);
+        File archivo = new File("archivo.txt");
+        try{
+            PoobthogenArchivos.exportar(archivo, d); 
+            Tablero n = PoobthogenArchivos.importar(archivo); 
+        }catch(Exception e){
+            fail(NOEXCEPCION);
+        }
+    }
+    
+    
 }
