@@ -10,13 +10,17 @@ public class NivelDos extends Virus implements Serializable{
 		jugador = j; 
 	}
 
-	@Override
+	/**
+	 * Evoluciona al virus. 
+	 */
 	public void evolucionar() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	/**
+	 * Evoluciona al virus. 
+	 */
 	public String toString() {
 		return "D"+jugador.toString();
 	}

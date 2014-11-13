@@ -131,19 +131,17 @@ public class Tablero  implements Serializable{
 	public boolean tieneJugador(char charAt) {
 		return jugadores.size() >= (int) charAt -49;
 	}
-	/**
-	 * 
-	 * @return
+	/**Consulta los elementos de un tablero. 
+	 * @return Un arreglo con los elementos del tablero. 
 	 */
 	public Elemento[][] getElementos(){
 		return elementos;
 		
 	}
-	/**
-	 * 
-	 * @param i
-	 * @param j
-	 * @return
+	/**Obtiene el elemento ubicado en una posicion específica. 
+	 * @param i Fila. 
+	 * @param j Columna
+	 * @return El elemento que se necesita. 
 	 * @throws PoobthogenExcepcion
 	 */
 	public Elemento getElemento(int i, int j) throws PoobthogenExcepcion{
