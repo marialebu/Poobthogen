@@ -54,15 +54,9 @@ public class Tablero  implements Serializable{
 			elementos[i][j] = (Elemento)ex.getConstructor(Jugador.class).newInstance(jugador == -1 ? null : jugadores.get(jugador));
 		}catch (InstantiationException | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
-		}catch (IllegalAccessException | IllegalArgumentException e){
-			//Algo	No sabemos bien como se genera para dar una excepcion.
-		}catch (InvocationTargetException e){
-			//Algo
-		}catch (NoSuchMethodException e){
-			//Algo
-		}catch (SecurityException e){
-			//Algo
-		}	
+		}catch (Exception e){
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO); 
+		}
 	}
 	/**Termina el juego. 
 	 */
@@ -73,13 +67,14 @@ public class Tablero  implements Serializable{
 	 * @param neutrales cantidad de fichas neutrales
 	 */
 	public void GenerarFichasNeutrales(int neutrales){
+		
 		Random r = new Random();
 		int cantidad = neutrales;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				int pos = r.nextInt(1);
 				if(pos == 0 && cantidad != 0){
-					// Se inserta un virus neutral
+					
 					cantidad--;
 				}
 			}
@@ -103,7 +98,6 @@ public class Tablero  implements Serializable{
 	 */
 	public void cambiarTurno(){
 		turno = !turno;
-		// Other fucking things.
 	}
 	/**Muestra el tablero por consola. 
 	 */
@@ -149,4 +143,20 @@ public class Tablero  implements Serializable{
 		if(i >= elementos.length || j >= elementos[0].length || i<0 || j <0) throw new PoobthogenExcepcion(PoobthogenExcepcion.CASILLA_INVALIDA);
 		return e;
 	}
+	
+	public Elemento[] getVecinos(int x, int y) throws PoobthogenExcepcion{
+		if(getElemento(x,y) == null)throw new PoobthogenExcepcion(PoobthogenExcepcion.CASILLA_INVALIDA);
+		Elemento[] res = new Elemento[4];
+		if(x-1 > 0 && getElemento(x-1, y) != null){
+			res[0] =  getElemento(x-1, y);
+		}else if (y+1<elementos[0].length && getElemento(x, y+1) != null){
+			res[1] = getElemento(x, y+1);
+		}else if (y-1>0 && getElemento(x, y-1) != null){
+			res[2] =  getElemento(x-1, y);
+		}else if (x+1<elementos.length && getElemento(x+1, y-1) != null){
+			res[3] =  getElemento(x-1, y);
+		}
+		return null;
+	}
+	
 }

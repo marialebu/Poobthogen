@@ -15,6 +15,9 @@ public class PoobthogenExcepcion extends Exception{
 	public static final String DEFINICION_DE_VIRUS_INVALIDA = "La linea no puede estar vacia";
 	public static final String CASILLA_INVALIDA= "La casilla ingresada es invalida";
 	public static final String EVOLUCION_CANCELADA= "Los virus solo pueden evolucionar a virus de igual o menor nivel";
+	public static final String  ERROR_INESPERADO = "Se ha generado un error inesperado.";
+	public static final String  ACCION_NO_PERMITIDA = "No se puede realizar esa accion";
+	
 	
 	public PoobthogenExcepcion(String mensaje){
 		super(mensaje); 

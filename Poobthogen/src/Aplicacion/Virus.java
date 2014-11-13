@@ -5,9 +5,12 @@ import java.io.Serializable;
 
 public abstract class Virus extends Elemento implements Serializable{
 	
-	protected int nivel; 
 	protected Tablero tablero;
-	protected Virus[] vecinos;
+	protected Elemento[] vecinos;
+	
+	public Virus(Jugador j, int x ,int y) throws PoobthogenExcepcion{
+
+	}
 	
 	public abstract void evolucionar();
 	public abstract String toString();
@@ -21,7 +24,7 @@ public abstract class Virus extends Elemento implements Serializable{
 	 * <br>3. Izquierda<br>
 	 * @param v Virus del cual va a ser vecino. 
 	 */
-	public void agregarVecino(int pos, Virus v){
+	public void agregarVecino(int pos, Elemento v){
 		vecinos[pos] = v;
 	}
 	

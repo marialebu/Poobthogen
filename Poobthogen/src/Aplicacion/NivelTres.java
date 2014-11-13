@@ -5,8 +5,10 @@ import java.io.Serializable;
 
 public class NivelTres extends Virus implements Serializable{
 	
-	public NivelTres(Jugador j){
-		nivel = 3; 
+	public static final int nivel = 3;  
+	
+	public NivelTres(Jugador j, int x, int y) throws PoobthogenExcepcion{
+		super(j, x, y);
 		jugador = j; 
 	}
 
