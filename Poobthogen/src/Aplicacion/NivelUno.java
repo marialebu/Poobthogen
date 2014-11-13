@@ -5,19 +5,31 @@ import java.io.Serializable;
 
 public class NivelUno extends Virus implements Serializable{
 
-	public NivelUno(Jugador j){
-		jugador = j; 
+	/**
+	 * 
+	 * @param j
+	 * @param x
+	 * @param y
+	 * @throws PoobthogenExcepcion 
+	 */
+	public NivelUno(Jugador j, int x, int y) throws PoobthogenExcepcion{
+		nivel = 1; 
+		jugador = j;
+		Elemento e = tablero.getElemento(x, y);
+		if( e != null){
+			if(e.compareTo(this) <= 0){
+				evolucionar();
+			}else throw new PoobthogenExcepcion(PoobthogenExcepcion.EVOLUCION_CANCELADA);
+		}
 	}
 	
-	@Override
-	public void evolucionar() {
-		// TODO Auto-generated method stub
-		System.out.println("Soy un ni�o malo");
+	public void evolucionar(){
 	}
-
-	@Override
+	
+	/**
+	 * 
+	 */
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "U"+jugador.toString();
 	}
 

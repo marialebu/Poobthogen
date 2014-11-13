@@ -139,4 +139,16 @@ public class Tablero  implements Serializable{
 		return elementos;
 		
 	}
+	/**
+	 * 
+	 * @param i
+	 * @param j
+	 * @return
+	 * @throws PoobthogenExcepcion
+	 */
+	public Elemento getElemento(int i, int j) throws PoobthogenExcepcion{
+		Elemento e = elementos[i][j]; 
+		if(i >= elementos.length || j >= elementos[0].length || i<0 || j <0) throw new PoobthogenExcepcion(PoobthogenExcepcion.CASILLA_INVALIDA);
+		return e;
+	}
 }

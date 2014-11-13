@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class NivelDos extends Virus implements Serializable{
 	
 	public NivelDos(Jugador j){
+		nivel = 2;
 		jugador = j; 
 	}
 

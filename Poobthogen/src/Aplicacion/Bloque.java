@@ -19,4 +19,10 @@ public class Bloque extends Elemento implements Serializable{
 		return respuesta;
 	}
 
+	@Override
+	public int compareTo(Virus v) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
