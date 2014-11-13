@@ -25,16 +25,17 @@ public class ArchivosPoobthogenTest{
     }
     
     @Test
-    public void deberiaGuardarElTablero(){
-    	String[][] texample = {{"B1"}};
+    public void deberiaGuardarElTablero()throws PoobthogenExcepcion{
+    	//String[][] texample = {{"B1"}};
         Tablero t = new Tablero(1, 1);
         File archivo = new File("archivo.dat");
         try{
             t.agregaJugador(new Jugador("1"));
-            t.agregarElemento(1, 1, 1, "NivelDos", false);
+            t.agregaJugador(new Jugador("2"));
+            t.agregarElemento(1, 0, 0, "NivelDos", false);
             PoobthogenArchivos.guardar(archivo, t); 
         }catch(Exception e){
-                fail(NOEXCEPCION+e.getMessage());
+                fail(NOEXCEPCION);
         }
     } 
 
@@ -111,11 +112,39 @@ public class ArchivosPoobthogenTest{
         File archivo = new File("archivo.dat");
         try{
             t.agregaJugador(new Jugador("1"));
-            t.agregarElemento(1, 1, 1, "NivelDos", false);
+            t.agregaJugador(new Jugador("2"));
+            t.agregarElemento(1, 0, 0, "NivelDos", false);
             PoobthogenArchivos.guardar(archivo, d); 
             Tablero n = PoobthogenArchivos.abrir(archivo); 
         }catch(Exception e){
-            fail(NOEXCEPCION);
+            fail(NOEXCEPCION+e.getMessage());
         }
     } 
+    
+    @Test
+    public void deberiaDarErrorCuandoElElementoEstaRepetido(){
+        Tablero d;
+        File archivo = new File("poobthogenError.txt");
+        try{
+        	d = PoobthogenArchivos.importar(archivo);
+            PoobthogenArchivos.exportar(archivo, d);
+            fail(EXCEPCION);
+        }catch(Exception e){
+        	
+        }
+    }
+    
+    @Test
+    public void deberiaExportarElTablero() throws PoobthogenExcepcion{
+        Tablero d;
+        File archivo = new File("poobthogen.txt");
+        //try{
+        	d = PoobthogenArchivos.importar(archivo);
+        	d.imprimir();
+            PoobthogenArchivos.exportar(archivo, d);
+        //}catch(Exception e){
+        	//fail(NOEXCEPCION+e.getMessage());
+        	
+        //}
+    }
 }

@@ -24,8 +24,7 @@ public class Tablero  implements Serializable{
 		this.filas = filas;
 		this.columnas = columnas;
 		elementos = new  Elemento[filas][columnas]; 
-		jugadores = new ArrayList<Jugador>(2); 
-		
+		jugadores = new ArrayList<Jugador>(2); 		
 	}
 	
 	/**Crea un tablero, con x filas y y columnas
@@ -34,6 +33,7 @@ public class Tablero  implements Serializable{
 	 * @param neutrales Cantidad de fichas neutrales
 	 */
 	public Tablero(int filas, int columnas){
+		System.out.println(filas+" "+columnas);
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
@@ -51,11 +51,10 @@ public class Tablero  implements Serializable{
 	 */
 	public void agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
-			Class ex = Class.forName(elemento);
+			Class ex = Class.forName("Aplicacion."+elemento);
 			elementos[i][j] = (Elemento)ex.getConstructor(Jugador.class).newInstance(jugador == -1 ? null : jugadores.get(jugador));
-			
 		}catch (InstantiationException | ClassNotFoundException e){
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA); 
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
 		}catch (IllegalAccessException | IllegalArgumentException e){
 			//Algo	No sabemos bien como se genera para dar una excepcion.
 		}catch (InvocationTargetException e){

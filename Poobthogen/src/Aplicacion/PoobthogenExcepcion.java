@@ -12,6 +12,7 @@ public class PoobthogenExcepcion extends Exception{
 	public static final String ARCHIVO_INVALIDO = "El archivo no puede ser nulo";
 	public static final String TABLERO_INVALIDO = "El archivo no puede ser nulo";
 	public static final String FORMATO_ARCHIVO_INVALIDO = "El formato del archivo no es valido";
+	public static final String DEFINICION_DE_VIRUS_INVALIDA = "La linea no puede estar vacia";
 	
 	public PoobthogenExcepcion(String mensaje){
 		super(mensaje); 

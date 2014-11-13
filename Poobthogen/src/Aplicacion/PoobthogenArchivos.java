@@ -56,7 +56,7 @@ public class PoobthogenArchivos {
 	 */
 	public static Tablero importar(File f) throws PoobthogenExcepcion{
 		if(f == null)throw new PoobthogenExcepcion("Error al guardar: "+PoobthogenExcepcion.ARCHIVO_INVALIDO);
-	    if(!f.getName().endsWith(".dat"))throw new PoobthogenExcepcion("Error al importar: "+PoobthogenExcepcion.FORMATO_INVALIDO+". Se esperaba un archivo .txt");
+	    if(!f.getName().endsWith(".txt"))throw new PoobthogenExcepcion("Error al importar: "+PoobthogenExcepcion.FORMATO_INVALIDO+". Se esperaba un archivo .txt");
 		Tablero tablero = null;
 		try{
 			tiposVirus =new HashMap<String, String>();
@@ -65,6 +65,7 @@ public class PoobthogenArchivos {
 			while((linea = br.readLine()).startsWith("--"));
 			if(linea.equals("VIRUS")){
 				while(!(linea = br.readLine()).startsWith("--") && !(linea.equals("TABLERO"))){
+					if(linea.length() < 2) throw new PoobthogenExcepcion(PoobthogenExcepcion.DEFINICION_DE_VIRUS_INVALIDA);
 					String[] virus = linea.split(" "); 	
 					if(tiposVirus.containsKey(virus[0]))throw new PoobthogenExcepcion(PoobthogenExcepcion.ELEMENTO_DUPLICADO);
 					tiposVirus.put(virus[0], virus[1]);
@@ -152,7 +153,7 @@ public class PoobthogenArchivos {
 			contar[0] = -1;
 			contar[1] = 0;
 			String linea;
-			while(!(linea = br.readLine()).startsWith("--") && br.ready()){
+			while(!(linea = br.readLine()).startsWith("--") && br.ready()){				
 				 if(contar[0] == -1){
 					 contar[0] = (linea.length()-2)/2; 
 					 System.out.println();
@@ -184,7 +185,9 @@ public class PoobthogenArchivos {
 					if(t.charAt(j) != '*' && tiposVirus.containsKey(t.charAt(j-1)+"")){
 						if(t.charAt(j) == '1' || t.charAt(j) == '2'){
 							tablero.agregarElemento((int)t.charAt(j)- 49, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
-						}else if (t.charAt(j)== '_') tablero.agregarElemento(-1, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
+						}else if (t.charAt(j)== '_') {
+							tablero.agregarElemento(-1, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
+						}
 						else throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
 					}else if(t.charAt(j-1) != ' ')throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA);
 				}else{
