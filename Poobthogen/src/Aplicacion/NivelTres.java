@@ -4,20 +4,10 @@ import java.io.Serializable;
 
 
 public class NivelTres extends Virus implements Serializable{
-	
-	public static final int nivel = 3;  
-	
-	public NivelTres(Jugador j, int x, int y) throws PoobthogenExcepcion{
-		super(j, x, y);
-		jugador = j; 
-	}
 
-	/**
-	 * Evoluciona al virus. 
-	 */
-	public void evolucionar() {
-		// TODO Auto-generated method stub
-		
+	public NivelTres(Jugador j, int x, int y, Tablero t){
+		super(j, x, y, t);
+		nivel = 3;
 	}
 
 	/**Consulta la informacion asociada a un virus
@@ -27,5 +17,13 @@ public class NivelTres extends Virus implements Serializable{
 	public String toString() {
 		return "T"+jugador.toString();
 	}
+
+	@Override
+	public void evolucionar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

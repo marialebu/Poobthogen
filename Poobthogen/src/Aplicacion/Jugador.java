@@ -4,12 +4,19 @@ import java.io.Serializable;
 
 
 public class Jugador implements Serializable{
-	private String identificador; 
+	private char identificador; 
 	
 	/**Constructor de la clase jugador
 	 * @param id Identificador del jugador. 
+	 * a. El identificador debe ser "1" o "2"<br>
+	 * @throws PoobthogenExcepcion 
 	 */
-	public Jugador(String id){
+	public Jugador(char id) throws PoobthogenExcepcion{
+		if(id != '1'){
+			if(id != '2'){
+				throw  new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
+			}
+		}
 		identificador = id;
 	}
 	
@@ -18,7 +25,7 @@ public class Jugador implements Serializable{
 	 * @return Una cadena con el identificador del jugador
 	 */
 	public String toString(){
-		return identificador; 
+		return identificador+""; 
 	}
 	
 

@@ -7,28 +7,31 @@ import java.util.*;
 public class Tablero  implements Serializable{
 	private boolean finalizado; 
 	private boolean turno;
-	private Elemento[][] elementos;
+	private Virus[][] elementos;
 	private ArrayList<Jugador> jugadores; 
 	private int filas;
 	private int columnas;
 	
 	/**Crea un tablero, con x filas y y columnas y una cantidad de fichas neutrales. 
-	 * 
 	 * @param filas Cantidad de filas del tablero
 	 * @param columnas Cantidad de columnas
-	 * @param neutrales Cantidad de fichas neutrales
+	 * @param neutral Agregar o no fichas neutrales. 
+	 * @throws PoobthogenExcepcion 
+	 * @throws Exception 
 	 */
-	public Tablero(int filas, int columnas, int neutrales){
+	public Tablero(int filas, int columnas, boolean neutral) throws PoobthogenExcepcion{
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
 		this.columnas = columnas;
-		elementos = new  Elemento[filas][columnas]; 
-		jugadores = new ArrayList<Jugador>(2); 		
+		elementos = new  Virus[filas][columnas]; 
+		jugadores = new ArrayList<Jugador>(2); 	
+		if(neutral){
+			GenerarFichasNeutrales();
+		}
 	}
 	
 	/**Crea un tablero, con x filas y y columnas
-	 * 
 	 * @param filas Cantidad de filas del tablero
 	 * @param neutrales Cantidad de fichas neutrales
 	 */
@@ -37,7 +40,7 @@ public class Tablero  implements Serializable{
 		turno = true; 
 		this.filas = filas;
 		this.columnas = columnas;
-		elementos = new  Elemento[filas][columnas]; 
+		elementos = new  Virus[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
 	}
 	/**Agrega un elemento al tablero
@@ -48,15 +51,17 @@ public class Tablero  implements Serializable{
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
 	 */
-	public void agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
+	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
-			elementos[i][j] = (Elemento)ex.getConstructor(Jugador.class).newInstance(jugador == -1 ? null : jugadores.get(jugador));
+			System.out.println(elemento);
+			elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class).newInstance(jugador == -1 ? null : jugadores.get(jugador), i, j, this);
 		}catch (InstantiationException | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
 		}catch (Exception e){
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO); 
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+ e.getMessage()); 
 		}
+		return verificar(); 
 	}
 	/**Termina el juego. 
 	 */
@@ -65,26 +70,30 @@ public class Tablero  implements Serializable{
 	}
 	/**Genera una cantidad de fichas neutrales en el tablero. 
 	 * @param neutrales cantidad de fichas neutrales
+	 * @throws PoobthogenExcepcion 
+	 * @throws Exception 
 	 */
-	public void GenerarFichasNeutrales(int neutrales){
-		
+	public void GenerarFichasNeutrales() throws PoobthogenExcepcion{
 		Random r = new Random();
-		int cantidad = neutrales;
-		for (int i = 0; i < filas; i++) {
-			for (int j = 0; j < columnas; j++) {
-				int pos = r.nextInt(1);
-				if(pos == 0 && cantidad != 0){
-					
-					cantidad--;
-				}
+		int cantidad = r.nextInt(filas*columnas);
+		String[] tipos = {"Bloque", "NivelUno", "NivelDos", "NivelTres"}; 
+		for(int i = 0; i <= cantidad; i++){
+			int posx = r.nextInt(filas);
+			int posy = r.nextInt(columnas);
+			while(elementos[posx][posy] != null){
+				posx = r.nextInt(filas);
+				posy = r.nextInt(columnas);
 			}
+			String tipo = tipos[r.nextInt(tipos.length)];
+			System.out.println(tipo);
+			agregarElemento(-1, posx, posy, tipo, false);
+			
 		}
 	}
-	
 	/**Verifica si el tablero se ha llenado
 	 * @return Verdadero si esta lleno, y falso en caso contrario.
 	 */
-	public boolean verificar(){
+	private boolean verificar(){
 		boolean estaLleno = true;
 		for (int i = 0; i < filas && estaLleno; i++) {
 			for (int j = 0; j < columnas && estaLleno; j++) {
@@ -94,7 +103,17 @@ public class Tablero  implements Serializable{
 		finalizado = estaLleno;
 		return finalizado;
 	}
-	/**Cambia de turno de cada jugador. 
+	/**
+	 * Permite a un jugador rendirse, su oponente gana sin importar nada. 
+	 * @return Verdadero si el jugador 2 gana y falso si el jugador 1 gana. 
+	 */
+	public boolean rendirse(){
+		return !turno; 
+	}
+	
+	
+	/**
+	 * Cambia de turno de cada jugador. 
 	 */
 	public void cambiarTurno(){
 		turno = !turno;
@@ -128,7 +147,7 @@ public class Tablero  implements Serializable{
 	/**Consulta los elementos de un tablero. 
 	 * @return Un arreglo con los elementos del tablero. 
 	 */
-	public Elemento[][] getElementos(){
+	public Virus[][] getElementos(){
 		return elementos;
 		
 	}
@@ -136,27 +155,14 @@ public class Tablero  implements Serializable{
 	 * @param i Fila. 
 	 * @param j Columna
 	 * @return El elemento que se necesita. 
-	 * @throws PoobthogenExcepcion
 	 */
-	public Elemento getElemento(int i, int j) throws PoobthogenExcepcion{
-		Elemento e = elementos[i][j]; 
-		if(i >= elementos.length || j >= elementos[0].length || i<0 || j <0) throw new PoobthogenExcepcion(PoobthogenExcepcion.CASILLA_INVALIDA);
+	public Virus getElemento(int i, int j){ 
+		Virus e = null; 
+		if(i >= elementos.length && j >= elementos[0].length && i<0 && j <0) {
+			e = elementos[i][j];
+		}
 		return e;
 	}
 	
-	public Elemento[] getVecinos(int x, int y) throws PoobthogenExcepcion{
-		if(getElemento(x,y) == null)throw new PoobthogenExcepcion(PoobthogenExcepcion.CASILLA_INVALIDA);
-		Elemento[] res = new Elemento[4];
-		if(x-1 > 0 && getElemento(x-1, y) != null){
-			res[0] =  getElemento(x-1, y);
-		}else if (y+1<elementos[0].length && getElemento(x, y+1) != null){
-			res[1] = getElemento(x, y+1);
-		}else if (y-1>0 && getElemento(x, y-1) != null){
-			res[2] =  getElemento(x-1, y);
-		}else if (x+1<elementos.length && getElemento(x+1, y-1) != null){
-			res[3] =  getElemento(x-1, y);
-		}
-		return null;
-	}
 	
 }

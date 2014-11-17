@@ -1,17 +1,17 @@
 package Presentacion; 
 
 import java.io.File;
+import java.util.ArrayList;
+
 import Aplicacion.*; 
 public class Nnnnn {
 
-	public static void main(String[] args) throws PoobthogenExcepcion {
-		//Tablero t = PoobthogenArchivos.importar(new File("poobthogen.txt"));
-		//PoobthogenArchivos.exportar(new File("exporta.txt"), t);
-		NivelDos v = new NivelDos((new Jugador("1")), 0, 0);
-		NivelTres v1 = new NivelTres((new Jugador("1")), 1, 1);
-		System.out.println(v.compareTo(v1));
-		
-
+	public static void main(String[] args) throws PoobthogenExcepcion{
+		Tablero t = new Tablero(5, 5, true);
+		Jugador j = new Jugador('1');
+		t.imprimir();
+		//NivelUno n = new NivelUno(j, 1, 1);
+		//NivelDos n2 = new NivelDos(j, 1, 1);
 	}
 
 }

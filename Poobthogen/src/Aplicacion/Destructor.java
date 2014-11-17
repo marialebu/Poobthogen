@@ -4,19 +4,9 @@ import java.io.Serializable;
 
 
 public class Destructor extends Virus implements Serializable{
-	
-	public static final int nivel = -1;  
-	
-	public Destructor(Jugador j, int x, int y) throws PoobthogenExcepcion {
-		super(j, x, y);
-	}
 
-	/**
-	 * Evoluciona al destructor
-	 */
-	public void evolucionar() {
-		// TODO Auto-generated method stub
-		
+	public Destructor(Jugador j, int x, int y, Tablero t) {
+		super(j, x, y, t);
 	}
 
 	/**Consulta la informacion asociada a un virus
@@ -24,6 +14,12 @@ public class Destructor extends Virus implements Serializable{
 	 */
 	public String toString() {
 		return "G"+jugador.toString();
+	}
+
+	@Override
+	public void evolucionar() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

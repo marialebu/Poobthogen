@@ -3,10 +3,12 @@ package Aplicacion;
 import java.io.Serializable;
 
 
-public class Bloque extends Elemento implements Serializable{
+public class Bloque extends Virus implements Serializable{
 	
-	public Bloque(Jugador j){
-		jugador = j; 
+	public Bloque(Jugador j, int x, int y, Tablero t){
+		super(j, x, y, t);
+		jugador = j;
+		nivel = 4;
 	}
 	
 	public String toString(){
@@ -20,9 +22,8 @@ public class Bloque extends Elemento implements Serializable{
 	}
 
 	@Override
-	public int compareTo(Virus v) {
+	public void evolucionar() {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
-
 }

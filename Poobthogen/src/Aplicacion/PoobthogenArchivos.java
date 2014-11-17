@@ -73,8 +73,8 @@ public class PoobthogenArchivos {
 				ArrayList<String> elemento = new ArrayList<String>();
 				int[] filCol = cuenta(elemento);
 				tablero = new Tablero(filCol[1], filCol[0]);
-				tablero.agregaJugador(new Jugador("1"));
-				tablero.agregaJugador(new Jugador("2"));
+				tablero.agregaJugador(new Jugador('1'));
+				tablero.agregaJugador(new Jugador('2'));
 				for (int i = 0 ; i < elemento.size(); i++) {
 					buscarYAgregar(elemento.get(i), tablero, i);
 				}
@@ -104,7 +104,7 @@ public class PoobthogenArchivos {
 		    	out.println(r+" "+tiposVirus.get(r));
 		    }
 		    out.println("TABLERO");
-		    Elemento[][] e = t.getElementos();
+		    Virus[][] e = t.getElementos();
 		    String res = ""; 
 		    String linea = "*";
 		    for (int i = 0; i < 1; i++) {
@@ -130,7 +130,7 @@ public class PoobthogenArchivos {
 	 * @param e Elemento a agregar, puede ser nulo. 
 	 * @return Una cadena con la definicion del elemento. 
 	 */
-	private static String generateLine(Elemento e){
+	private static String generateLine(Virus e){
 		String linea = "";
 		if(e != null){
 			linea+=e.toString();
