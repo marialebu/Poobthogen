@@ -135,7 +135,7 @@ public class ArchivosPoobthogenTest{
     }
     
     @Test
-    public void deberiaExportarElTablero(){
+    public void deberiaExportarElTablero() throws PoobthogenExcepcion{
         Tablero d;
         File archivo = new File("poobthogen.txt");
         try{

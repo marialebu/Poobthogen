@@ -5,8 +5,8 @@ import java.io.Serializable;
 
 public class NivelDos extends Virus implements Serializable{
 	
-	public NivelDos(Jugador j, int x, int y, Tablero t) {
-		super(j, x, y, t); 
+	public NivelDos(Jugador j, int x, int y, Tablero t, boolean evoluciona) {
+		super(j, x, y, t, evoluciona); 
 		 nivel = 2;
 	}
 

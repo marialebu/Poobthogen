@@ -7,12 +7,25 @@ public abstract class Virus implements Serializable{
 	protected Jugador jugador;
 	protected int nivel;
 	protected Tablero tablero;
+	protected String nextLevel;
+	protected int x;
+	protected int y;
 	
 	protected Virus[] vecinos;
 	
-	public Virus(Jugador j, int x ,int y, Tablero t) {
+	public Virus(Jugador j, int x ,int y, Tablero t, boolean evoluciona) {
 		jugador = j;
 		tablero = t;
+		vecinos = new Virus[4];
+		if(x-1 >= 0 && tablero.getElemento(x-1, y) != null){
+			vecinos[0] = tablero.getElemento(x-1, y); 
+		}else if (x+1 < tablero.filas() && tablero.getElemento(x+1, y) != null){
+			vecinos[1] = tablero.getElemento(x+1, y);
+		}else if (y-1>=0 &&  tablero.getElemento(x, y-1) != null){
+			vecinos[2] = tablero.getElemento(x+1, y);
+		}else if (y+1>=tablero.columnas() &&  tablero.getElemento(x, y+1) != null){
+			vecinos[3] = tablero.getElemento(x, y-1);
+		}
 	}
 	
 	/**
@@ -37,8 +50,13 @@ public abstract class Virus implements Serializable{
 	public int getNivel() {
 		return nivel;
 	}
-	
-	public abstract void evolucionar();
+	/**
+	 * Evoluciona al virus a su siguiente nivel. 
+	 * @throws PoobthogenExcepcion
+	 */
+	public void evolucionar() throws PoobthogenExcepcion {
+		tablero.evolucionar(nextLevel, x, y, jugador);	
+	}
 	public abstract String toString();
 	
 	

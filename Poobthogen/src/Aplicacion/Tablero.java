@@ -55,7 +55,7 @@ public class Tablero  implements Serializable{
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
 			System.out.println(elemento);
-			elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class).newInstance(jugador == -1 ? null : jugadores.get(jugador), i, j, this);
+			elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador), i, j, this, seExpande);
 		}catch (InstantiationException | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
 		}catch (Exception e){
@@ -162,6 +162,30 @@ public class Tablero  implements Serializable{
 			e = elementos[i][j];
 		}
 		return e;
+	}
+	
+	public int filas(){
+		return filas;
+	}
+	
+	public int columnas(){
+		return columnas;
+	}
+	/**
+	 * Evoluciona al virus ubicado en esa casilla. 
+	 * @param v Siguiente nivel 
+	 * @param x Posicion en x
+	 * @param y Posicion en y
+	 * @param j Jugador al que pertenece
+	 * @throws PoobthogenExcepcion
+	 */
+	public void evolucionar(String v, int x, int y, Jugador j) throws PoobthogenExcepcion{
+		try {
+			agregarElemento(Integer.parseInt(j.toString()), x, y, v, true);
+		}catch (NumberFormatException e){
+			throw new PoobthogenExcepcion("Identificador invalido");
+		}
+		
 	}
 	
 	

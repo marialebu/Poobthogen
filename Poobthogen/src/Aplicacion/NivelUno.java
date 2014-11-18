@@ -3,13 +3,22 @@ import java.io.Serializable;
 
 public class NivelUno extends Virus implements Serializable{ 
 	
-	public NivelUno(Jugador j, int x ,int y, Tablero t){
-		super(j, x, y, t);
+	public NivelUno(Jugador j, int x ,int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
+		super(j, x, y, t, evoluciona);
+		nextLevel = "NivelDos";
 		nivel = 1;
 		if(tablero.getElemento(x, y) != null){
-			if(compareTo(nivel, tablero.getElemento(x, y)) > 0){
+			if(compareTo(nivel, tablero.getElemento(x, y)) <= 0 && evoluciona){
 				evolucionar();
 			}
+		}
+		for(int i= 0; i < vecinos.length; i++){
+			if(vecinos[i]!= null){
+				if(compareTo(nivel, vecinos[i]) != 0){
+					vecinos[i] = null;
+				}
+			}
+			
 		}
 	}
 	/**Consulta la informacion asociada a un virus
@@ -17,12 +26,6 @@ public class NivelUno extends Virus implements Serializable{
 	 */
 	public String toString() {
 		return "U"+jugador.toString();
-	}
-
-	@Override
-	public void evolucionar() {
-		// TODO Auto-generated method stub
-		
 	}
 
 
