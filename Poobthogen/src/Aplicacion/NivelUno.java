@@ -1,9 +1,10 @@
 package Aplicacion; 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
 public class NivelUno extends Virus implements Serializable{ 
 	
-	public NivelUno(Jugador j, int x ,int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
+	public NivelUno(Jugador j, int x ,int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		super(j, x, y, t, evoluciona);
 		nextLevel = "NivelDos";
 		nivel = 1;
@@ -25,7 +26,13 @@ public class NivelUno extends Virus implements Serializable{
 	 * @return Una cadena con el tipo de virus y su jugador. 
 	 */
 	public String toString() {
-		return "U"+jugador.toString();
+		String res = "U";
+		if(jugador != null){
+			res+=jugador.toString(); 
+		}else{
+			res+="_";
+		}
+		return res;
 	}
 
 

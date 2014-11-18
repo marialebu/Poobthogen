@@ -1,6 +1,7 @@
 package Aplicacion; 
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
 
 public abstract class Virus implements Serializable{
@@ -16,6 +17,8 @@ public abstract class Virus implements Serializable{
 	public Virus(Jugador j, int x ,int y, Tablero t, boolean evoluciona) {
 		jugador = j;
 		tablero = t;
+		this.x = x;
+		this.y = y;
 		vecinos = new Virus[4];
 		if(x-1 >= 0 && tablero.getElemento(x-1, y) != null){
 			vecinos[0] = tablero.getElemento(x-1, y); 
@@ -34,11 +37,13 @@ public abstract class Virus implements Serializable{
 	 * @return 0 si son del mismo nivel, 1 si el primer elemento es mayor y -1 en caso contrario. 
 	 */
 	public int compareTo(int nivel, Virus v2) {
-		int res = 0;
-		if(nivel > v2.getNivel()){
-			res = 1;
-		}else if(nivel < v2.getNivel()){
-			res = -1;
+		int res = 1;
+		if(v2 != null){
+			if(nivel < v2.getNivel()){
+				res = -1;
+			}else if(nivel == v2.getNivel()){
+				res = -0;
+			}
 		}
 		return res;
 	}
@@ -47,14 +52,19 @@ public abstract class Virus implements Serializable{
 	 * Consulta el nivel de un elemento. 
 	 * @return Retorna el nivel de un elemento
 	 */
-	public int getNivel() {
+	public int getNivel(){
 		return nivel;
 	}
 	/**
 	 * Evoluciona al virus a su siguiente nivel. 
 	 * @throws PoobthogenExcepcion
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public void evolucionar() throws PoobthogenExcepcion {
+	public void evolucionar() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		tablero.evolucionar(nextLevel, x, y, jugador);	
 	}
 	public abstract String toString();

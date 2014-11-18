@@ -13,9 +13,14 @@ public class Destructor extends Virus implements Serializable{
 	 * @return Una cadena con el tipo de virus y su jugador. 
 	 */
 	public String toString() {
-		return "G"+jugador.toString();
+		String res = "G";
+		if(jugador != null){
+			res+=jugador.toString(); 
+		}else{
+			res+="_";
+		}
+		return res;
 	}
-
 	@Override
 	public void evolucionar() {
 		// TODO Auto-generated method stub

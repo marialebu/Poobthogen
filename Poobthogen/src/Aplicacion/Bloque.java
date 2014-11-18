@@ -23,7 +23,6 @@ public class Bloque extends Virus implements Serializable{
 
 	@Override
 	public void evolucionar() {
-		// TODO Auto-generated method stub
 		
 	}
 }

@@ -17,9 +17,14 @@ public class Tablero  implements Serializable{
 	 * @param columnas Cantidad de columnas
 	 * @param neutral Agregar o no fichas neutrales. 
 	 * @throws PoobthogenExcepcion 
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 * @throws Exception 
 	 */
-	public Tablero(int filas, int columnas, boolean neutral) throws PoobthogenExcepcion{
+	public Tablero(int filas, int columnas, boolean neutral) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
@@ -50,12 +55,17 @@ public class Tablero  implements Serializable{
 	 * @param j Posicion en j en el tablero. 
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
+	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		try{
+			System.out.println(jugador + " "+i+" "+j+" "+elemento+" ");
 			Class ex = Class.forName("Aplicacion."+elemento);
-			System.out.println(elemento);
-			elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador), i, j, this, seExpande);
+			elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
 		}catch (InstantiationException | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
 		}catch (Exception e){
@@ -71,21 +81,25 @@ public class Tablero  implements Serializable{
 	/**Genera una cantidad de fichas neutrales en el tablero. 
 	 * @param neutrales cantidad de fichas neutrales
 	 * @throws PoobthogenExcepcion 
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 * @throws Exception 
 	 */
-	public void GenerarFichasNeutrales() throws PoobthogenExcepcion{
+	public void GenerarFichasNeutrales() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Random r = new Random();
-		int cantidad = r.nextInt(filas*columnas);
-		String[] tipos = {"Bloque", "NivelUno", "NivelDos", "NivelTres"}; 
+		int cantidad = r.nextInt((int)((filas*columnas)*0.05));
+		String[] tipos = {"Bloque", "NivelUno", "NivelDos"}; 
 		for(int i = 0; i <= cantidad; i++){
-			int posx = r.nextInt(filas);
-			int posy = r.nextInt(columnas);
+			int posx = r.nextInt(filas-1);
+			int posy = r.nextInt(columnas-1);
 			while(elementos[posx][posy] != null){
-				posx = r.nextInt(filas);
-				posy = r.nextInt(columnas);
+				posx = r.nextInt(filas-1);
+				posy = r.nextInt(columnas-1);
 			}
 			String tipo = tipos[r.nextInt(tipos.length)];
-			System.out.println(tipo);
 			agregarElemento(-1, posx, posy, tipo, false);
 			
 		}
@@ -110,8 +124,6 @@ public class Tablero  implements Serializable{
 	public boolean rendirse(){
 		return !turno; 
 	}
-	
-	
 	/**
 	 * Cambia de turno de cada jugador. 
 	 */
@@ -151,6 +163,8 @@ public class Tablero  implements Serializable{
 		return elementos;
 		
 	}
+	
+	
 	/**Obtiene el elemento ubicado en una posicion específica. 
 	 * @param i Fila. 
 	 * @param j Columna
@@ -158,16 +172,23 @@ public class Tablero  implements Serializable{
 	 */
 	public Virus getElemento(int i, int j){ 
 		Virus e = null; 
-		if(i >= elementos.length && j >= elementos[0].length && i<0 && j <0) {
+		if(i < elementos.length && j < elementos[0].length && i>=0 && j>=0) {
 			e = elementos[i][j];
 		}
 		return e;
 	}
 	
+	/**
+	 * Consulta la cantidad de filas del tablero. 
+	 * @return Cantidad de filas. 
+	 */
 	public int filas(){
 		return filas;
 	}
-	
+	/**
+	 * Consulta la cantidad de columnas del tablero.
+	 * @return Cantidad de columnas
+	 */
 	public int columnas(){
 		return columnas;
 	}
@@ -178,8 +199,13 @@ public class Tablero  implements Serializable{
 	 * @param y Posicion en y
 	 * @param j Jugador al que pertenece
 	 * @throws PoobthogenExcepcion
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public void evolucionar(String v, int x, int y, Jugador j) throws PoobthogenExcepcion{
+	public void evolucionar(String v, int x, int y, Jugador j) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		try {
 			agregarElemento(Integer.parseInt(j.toString()), x, y, v, true);
 		}catch (NumberFormatException e){
