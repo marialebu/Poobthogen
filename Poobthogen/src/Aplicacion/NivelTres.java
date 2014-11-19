@@ -11,10 +11,10 @@ public class NivelTres extends Virus implements Serializable{
 		nextLevel = "Bloque";
 		nivel = 3;
 		if(tablero.getElemento(x, y) != null){
-			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
-				evolucionar();
+			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0 &&!tablero.getElementoTemporal(x, y)){
+				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
 			}
-		}
+		} 
 		agregarNivelDos();
 		for(int i= 0; i < vecinos.length; i++){
 			if(vecinos[i]!= null){
@@ -46,9 +46,9 @@ public class NivelTres extends Virus implements Serializable{
 	}
 	
 	private void trateDeAgregarNivelDos(int i, int j) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion{
-		if(compareTo(2, tablero.getElemento(i, j)) ==0){
-			tablero.getElemento(i, j).evolucionar();
-		}else if(compareTo(2, tablero.getElemento(i, j)) >0 && tablero.getElementoTemporal(i, j)==null){
+		if(compareTo(2, tablero.getElemento(i, j)) ==0 && !tablero.getElementoTemporal(i, j)){
+			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelTres", true);
+		}else if(compareTo(2, tablero.getElemento(i, j)) >0 && !tablero.getElementoTemporal(i, j)){
 			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelDos", true);
 		}
 	}

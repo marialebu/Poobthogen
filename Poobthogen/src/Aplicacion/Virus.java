@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class Virus implements Serializable{
 	protected Jugador jugador;
-	protected int nivel;
+	protected int nivel ;
 	protected Tablero tablero;
 	protected String nextLevel;
 	protected int x;
@@ -55,18 +55,7 @@ public abstract class Virus implements Serializable{
 	public int getNivel(){
 		return nivel;
 	}
-	/**
-	 * Evoluciona al virus a su siguiente nivel. 
-	 * @throws PoobthogenExcepcion
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
-	 */
-	public void evolucionar() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		tablero.evolucionar(nextLevel, x, y, jugador);	
-	}
+
 	public abstract String toString();
 	
 	

@@ -11,8 +11,8 @@ public class NivelDos extends Virus implements Serializable{
 		nextLevel = "NivelTres";
 		nivel = 2;
 		if(tablero.getElemento(x, y) != null){
-			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
-				evolucionar();
+			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0 && !tablero.getElementoTemporal(x, y)){
+				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
 			}
 		}
 		agregarNivelUno();
@@ -45,9 +45,9 @@ public class NivelDos extends Virus implements Serializable{
 	}
 
 	private void trateDeAgregarNivelUno(int i, int j) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion {
-		if(compareTo(1, tablero.getElemento(i, j)) ==0){
-			tablero.getElemento(i, j).evolucionar();
-		}else if(compareTo(1, tablero.getElemento(i, j)) >0 && tablero.getElementoTemporal(i, j)==null){
+		if(compareTo(1, tablero.getElemento(i, j)) ==0 && !tablero.getElementoTemporal(i, j)){
+			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelDos", true);
+		}else if(compareTo(1, tablero.getElemento(i, j)) >0 && !tablero.getElementoTemporal(i, j)){
 			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelUno", true);
 		}
 		

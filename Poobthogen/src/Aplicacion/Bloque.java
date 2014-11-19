@@ -20,9 +20,4 @@ public class Bloque extends Virus implements Serializable{
 		}
 		return respuesta;
 	}
-
-	@Override
-	public void evolucionar() {
-		
-	}
 }

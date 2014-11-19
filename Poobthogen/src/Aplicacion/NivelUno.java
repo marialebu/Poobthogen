@@ -9,8 +9,8 @@ public class NivelUno extends Virus implements Serializable{
 		nextLevel = "NivelDos";
 		nivel = 1;
 		if(tablero.getElemento(x, y) != null){
-			if(compareTo(nivel, tablero.getElemento(x, y)) <= 0 && evoluciona){
-				evolucionar();
+			if(compareTo(nivel, tablero.getElemento(x, y)) <= 0  && !tablero.getElementoTemporal(x, y)&& evoluciona){
+				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
 			}
 		}
 		for(int i= 0; i < vecinos.length; i++){

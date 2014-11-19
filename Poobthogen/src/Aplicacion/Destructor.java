@@ -21,10 +21,4 @@ public class Destructor extends Virus implements Serializable{
 		}
 		return res;
 	}
-	@Override
-	public void evolucionar() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

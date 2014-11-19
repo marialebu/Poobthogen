@@ -11,7 +11,8 @@ public class Tablero  implements Serializable{
 	private ArrayList<Jugador> jugadores; 
 	private int filas;
 	private int columnas;
-	private Virus[][] TurnoTemporal;
+	private boolean[][] TurnoTemporal;
+	private HashMap<String, Integer> niveles; 
 	
 	
 	/**Crea un tablero, con x filas y y columnas y una cantidad de fichas neutrales. 
@@ -26,12 +27,23 @@ public class Tablero  implements Serializable{
 		this.filas = filas;
 		this.columnas = columnas;
 		elementos = new  Virus[filas][columnas];
-		TurnoTemporal = new Virus[filas][columnas];
-		jugadores = new ArrayList<Jugador>(2); 	
+		TurnoTemporal = new boolean[filas][columnas];
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				TurnoTemporal[i][j] = false; 
+			}
+		}
+		jugadores = new ArrayList<Jugador>(2); 
+		niveles = new HashMap<String, Integer>(); 
+		niveles.put("NivelUno", 1);
+		niveles.put("NivelDos", 2);
+		niveles.put("NivelTres", 3);
+		niveles.put("Bloque", 4);
 		if(neutral){
 			//GenerarFichasNeutrales();
 		}
 	}
+	
 	
 	/**Crea un tablero, con x filas y y columnas
 	 * @param filas Cantidad de filas del tablero
@@ -44,7 +56,8 @@ public class Tablero  implements Serializable{
 		this.columnas = columnas;
 		elementos = new  Virus[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
-		TurnoTemporal = new Virus[filas][columnas];
+		TurnoTemporal = new boolean[filas][columnas];
+		niveles = new HashMap<String, Integer>();
 	}
 	/**Agrega un elemento al tablero
 	 * 
@@ -55,16 +68,17 @@ public class Tablero  implements Serializable{
 	 * @throws PoobthogenExcepcion
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		System.out.println(jugador + " "+i+" "+j+" "+elemento);
+		System.out.println(jugador + " "+i+" "+j+" "+elemento+"voy a poner");
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
-			Virus tmp = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
-			if(elementos[i][j] == null || (elementos[i][j] != null && tmp.compareTo(elementos[i][j].getNivel(),tmp)<=0)){
-				elementos[i][j] = tmp;
-				TurnoTemporal[i][j] = elementos[i][j];
+			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel())){
+				TurnoTemporal[i][j] = true;
+				elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
 				imprimir();
+				System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" pongo");
+			}else{
+				TurnoTemporal[i][j] = false;
 			}
-			System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" ");
 		}catch (InstantiationException  | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
 		}catch (Exception e){
@@ -130,7 +144,11 @@ public class Tablero  implements Serializable{
 	 */
 	public void cambiarTurno(){
 		turno = !turno;
-		TurnoTemporal = new Virus[filas][columnas];
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				TurnoTemporal[i][j] = false; 
+			}
+		}
 	}
 	/**Muestra el tablero por consola. 
 	 */
@@ -149,7 +167,7 @@ public class Tablero  implements Serializable{
 	public void imprimirTemporal() {
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-				System.out.print((TurnoTemporal[i][j] != null ? TurnoTemporal[i][j].toString() : "-")+" ");
+				System.out.print((TurnoTemporal[i][j] ? elementos[i][j].toString() : "-")+" ");
 			}
 			System.out.println();
 		}
@@ -197,10 +215,12 @@ public class Tablero  implements Serializable{
 	 * @param j Columna
 	 * @return El elemento que se necesita. 
 	 */
-	public Virus getElementoTemporal(int i, int j){ 
-		Virus e = null; 
+	public boolean getElementoTemporal(int i, int j) throws PoobthogenExcepcion{ 
+		boolean e = false; 
 		if(i < elementos.length && j < elementos[0].length && i>=0 && j>=0) {
 			e = TurnoTemporal[i][j];
+		}else{
+			throw new PoobthogenExcepcion("");
 		}
 		return e;
 	}
@@ -218,28 +238,6 @@ public class Tablero  implements Serializable{
 	 */
 	public int columnas(){
 		return columnas;
-	}
-	/**
-	 * Evoluciona al virus ubicado en esa casilla. 
-	 * @param v Siguiente nivel 
-	 * @param x Posicion en x
-	 * @param y Posicion en y
-	 * @param j Jugador al que pertenece
-	 * @throws PoobthogenExcepcion
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
-	 */
-	public void evolucionar(String v, int x, int y, Jugador j) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		try {
-			agregarElemento(Integer.parseInt(j.toString()), x, y, v, true);
-		}catch (NumberFormatException e){
-			throw new PoobthogenExcepcion("Identificador invalido");
-		}
-		
-	}
-	
+	}	
 	
 }
