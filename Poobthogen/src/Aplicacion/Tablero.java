@@ -11,28 +11,25 @@ public class Tablero  implements Serializable{
 	private ArrayList<Jugador> jugadores; 
 	private int filas;
 	private int columnas;
+	private Virus[][] TurnoTemporal;
+	
 	
 	/**Crea un tablero, con x filas y y columnas y una cantidad de fichas neutrales. 
 	 * @param filas Cantidad de filas del tablero
 	 * @param columnas Cantidad de columnas
 	 * @param neutral Agregar o no fichas neutrales. 
 	 * @throws PoobthogenExcepcion 
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
-	 * @throws Exception 
 	 */
 	public Tablero(int filas, int columnas, boolean neutral) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
 		this.columnas = columnas;
-		elementos = new  Virus[filas][columnas]; 
+		elementos = new  Virus[filas][columnas];
+		TurnoTemporal = new Virus[filas][columnas];
 		jugadores = new ArrayList<Jugador>(2); 	
 		if(neutral){
-			GenerarFichasNeutrales();
+			//GenerarFichasNeutrales();
 		}
 	}
 	
@@ -47,6 +44,7 @@ public class Tablero  implements Serializable{
 		this.columnas = columnas;
 		elementos = new  Virus[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
+		TurnoTemporal = new Virus[filas][columnas];
 	}
 	/**Agrega un elemento al tablero
 	 * 
@@ -55,21 +53,24 @@ public class Tablero  implements Serializable{
 	 * @param j Posicion en j en el tablero. 
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		System.out.println(jugador + " "+i+" "+j+" "+elemento);
 		try{
-			System.out.println(jugador + " "+i+" "+j+" "+elemento+" ");
 			Class ex = Class.forName("Aplicacion."+elemento);
-			elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
-		}catch (InstantiationException | ClassNotFoundException e){
+			Virus tmp = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
+			if(elementos[i][j] == null || (elementos[i][j] != null && tmp.compareTo(elementos[i][j].getNivel(),tmp)<=0)){
+				elementos[i][j] = tmp;
+				TurnoTemporal[i][j] = elementos[i][j];
+				imprimir();
+			}
+			System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" ");
+		}catch (InstantiationException  | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
 		}catch (Exception e){
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+ e.getMessage()); 
+			e.getMessage();
+			System.out.println(e.getCause());
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+ e.getMessage());
 		}
 		return verificar(); 
 	}
@@ -129,6 +130,7 @@ public class Tablero  implements Serializable{
 	 */
 	public void cambiarTurno(){
 		turno = !turno;
+		TurnoTemporal = new Virus[filas][columnas];
 	}
 	/**Muestra el tablero por consola. 
 	 */
@@ -136,6 +138,18 @@ public class Tablero  implements Serializable{
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				System.out.print((elementos[i][j] != null ? elementos[i][j].toString() : "-")+" ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	/**Muestra el tablero por consola. 
+	 */
+	public void imprimirTemporal() {
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				System.out.print((TurnoTemporal[i][j] != null ? TurnoTemporal[i][j].toString() : "-")+" ");
 			}
 			System.out.println();
 		}
@@ -174,6 +188,19 @@ public class Tablero  implements Serializable{
 		Virus e = null; 
 		if(i < elementos.length && j < elementos[0].length && i>=0 && j>=0) {
 			e = elementos[i][j];
+		}
+		return e;
+	}
+	
+	/**Obtiene el elemento ubicado en una posicion específica en un turno especifico. 
+	 * @param i Fila. 
+	 * @param j Columna
+	 * @return El elemento que se necesita. 
+	 */
+	public Virus getElementoTemporal(int i, int j){ 
+		Virus e = null; 
+		if(i < elementos.length && j < elementos[0].length && i>=0 && j>=0) {
+			e = TurnoTemporal[i][j];
 		}
 		return e;
 	}

@@ -13,8 +13,6 @@ public class NivelDos extends Virus implements Serializable{
 		if(tablero.getElemento(x, y) != null){
 			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
 				evolucionar();
-			}else if (evoluciona && compareTo(nivel, tablero.getElemento(x, y)) < 0 ){
-				tablero.getElemento(x, y).evolucionar();
 			}
 		}
 		agregarNivelUno();
@@ -29,21 +27,30 @@ public class NivelDos extends Virus implements Serializable{
 	
 	public void agregarNivelUno() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		try{
-			if(x-1 >= 0  && compareTo(1, tablero.getElemento(x-1, y)) >=0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x-1, y, "NivelUno", true);
+			if(x-1 >= 0){
+				trateDeAgregarNivelUno(x-1, y);
 			}
-			if (x+1 < tablero.filas() && compareTo(1, tablero.getElemento(x+1, y)) >= 0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x+1, y, "NivelUno", true);
+			if (x+1 < tablero.filas()){
+				trateDeAgregarNivelUno(x+1, y);
 			}
-			if (y-1>=0 && compareTo(1, tablero.getElemento(x, y-1)) >= 0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x, y-1, "NivelUno", true);
+			if (y-1>=0){
+				trateDeAgregarNivelUno(x, y-1);
 			}
-			if (y+1<tablero.columnas() && compareTo(1, tablero.getElemento(x, y+1)) >= 0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x, y+1, "NivelUno", true);
+			if (y+1<tablero.columnas()){
+				trateDeAgregarNivelUno(x, y+1);
 			}
 		}catch(NumberFormatException e){
 			throw new PoobthogenExcepcion("Error de formato.");
 		}
+	}
+
+	private void trateDeAgregarNivelUno(int i, int j) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion {
+		if(compareTo(1, tablero.getElemento(i, j)) ==0){
+			tablero.getElemento(i, j).evolucionar();
+		}else if(compareTo(1, tablero.getElemento(i, j)) >0 && tablero.getElementoTemporal(i, j)==null){
+			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelUno", true);
+		}
+		
 	}
 
 	public String toString() {

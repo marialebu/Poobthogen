@@ -13,8 +13,6 @@ public class NivelTres extends Virus implements Serializable{
 		if(tablero.getElemento(x, y) != null){
 			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
 				evolucionar();
-			}else if (evoluciona && compareTo(nivel, tablero.getElemento(x, y)) < 0 ){
-				tablero.getElemento(x, y).evolucionar();
 			}
 		}
 		agregarNivelDos();
@@ -30,20 +28,28 @@ public class NivelTres extends Virus implements Serializable{
 	
 	public void agregarNivelDos() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		try{
-			if(x-1 >= 0  && compareTo(2, tablero.getElemento(x-1, y)) >=0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x-1, y, "NivelDos", true);
+			if(x-1 >= 0){
+				trateDeAgregarNivelDos(x-1, y);
 			}
-			if (x+1 < tablero.filas() && compareTo(2, tablero.getElemento(x+1, y)) >= 0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x+1, y, "NivelDos", true);
+			if (x+1 < tablero.filas()){
+				trateDeAgregarNivelDos(x+1, y);
 			}
-			if (y-1>=0 && compareTo(2, tablero.getElemento(x, y-1)) >= 0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x, y-1, "NivelDos", true);
+			if (y-1>=0){
+				trateDeAgregarNivelDos(x, y-1);
 			}
-			if (y+1<tablero.columnas() && compareTo(2, tablero.getElemento(x, y+1)) >= 0){
-				tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), x, y+1, "NivelDos", true);
+			if (y+1<tablero.columnas()){
+				trateDeAgregarNivelDos(x, y+1);
 			}
 		}catch(NumberFormatException e){
 			throw new PoobthogenExcepcion("Error de formato.");
+		}
+	}
+	
+	private void trateDeAgregarNivelDos(int i, int j) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion{
+		if(compareTo(2, tablero.getElemento(i, j)) ==0){
+			tablero.getElemento(i, j).evolucionar();
+		}else if(compareTo(2, tablero.getElemento(i, j)) >0 && tablero.getElementoTemporal(i, j)==null){
+			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelDos", true);
 		}
 	}
 
@@ -61,13 +67,5 @@ public class NivelTres extends Virus implements Serializable{
 		}
 		return res;
 	}
-
-	@Override
-	public void evolucionar() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 }
