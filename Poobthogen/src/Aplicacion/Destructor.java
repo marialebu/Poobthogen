@@ -1,6 +1,7 @@
 package Aplicacion; 
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class Destructor extends Virus implements Serializable{
@@ -20,5 +21,10 @@ public class Destructor extends Virus implements Serializable{
 			res+="_";
 		}
 		return res;
+	}
+	public void evolucionar(boolean evoluciona){}
+
+	public boolean sePuedeEvolucionar() {
+		return false;
 	}
 }

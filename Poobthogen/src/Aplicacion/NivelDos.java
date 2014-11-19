@@ -63,4 +63,10 @@ public class NivelDos extends Virus implements Serializable{
 		return res;
 	}
 	
+	public void evolucionar(boolean evoluciona) {}
+
+	public boolean sePuedeEvolucionar() {
+		return true;
+	}
+	
 }

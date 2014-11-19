@@ -22,6 +22,9 @@ public class Nnnnn {
 		t.agregarElemento(1, 4, 5, "NivelDos", true);
 		t.cambiarTurno();
 		t.imprimir();
+		t.agregarElemento(2, 5, 5, "NivelTres", true);
+		t.imprimir();
+		t.cambiarTurno();
 		t.agregarElemento(1, 5, 5, "NivelTres", true);
 		t.imprimir();
 	}

@@ -68,14 +68,14 @@ public class Tablero  implements Serializable{
 	 * @throws PoobthogenExcepcion
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		System.out.println(jugador + " "+i+" "+j+" "+elemento+"voy a poner");
+		//System.out.println(jugador + " "+i+" "+j+" "+elemento+"voy a poner");
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
 			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel())){
 				TurnoTemporal[i][j] = true;
 				elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
-				imprimir();
-				System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" pongo");
+			//	imprimir();
+				//System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" pongo");
 			}else{
 				TurnoTemporal[i][j] = false;
 			}
@@ -96,12 +96,6 @@ public class Tablero  implements Serializable{
 	/**Genera una cantidad de fichas neutrales en el tablero. 
 	 * @param neutrales cantidad de fichas neutrales
 	 * @throws PoobthogenExcepcion 
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
-	 * @throws Exception 
 	 */
 	public void GenerarFichasNeutrales() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Random r = new Random();

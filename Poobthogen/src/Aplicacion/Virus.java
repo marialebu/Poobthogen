@@ -55,8 +55,12 @@ public abstract class Virus implements Serializable{
 	public int getNivel(){
 		return nivel;
 	}
+	
+	public abstract void evolucionar(boolean evoluciona) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion;
 
 	public abstract String toString();
+
+	public abstract boolean sePuedeEvolucionar();
 	
 	
 
