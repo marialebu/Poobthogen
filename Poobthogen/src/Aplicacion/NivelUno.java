@@ -8,6 +8,7 @@ public class NivelUno extends Virus implements Serializable{
 		super(j, x, y, t, evoluciona);
 		nextLevel = "NivelDos";
 		nivel = 1;
+		destruido = false; 
 		if(tablero.getElemento(x, y) != null){
 			if(compareTo(nivel, tablero.getElemento(x, y)) <= 0  && !tablero.getElementoTemporal(x, y)&& evoluciona){
 				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
@@ -34,7 +35,7 @@ public class NivelUno extends Virus implements Serializable{
 		}
 		return res;
 	}
-	public void evolucionar(boolean evoluciona){}
+	public void evolucionar(boolean evoluciona, Jugador j){}
 	
 	/**
 	 * 
@@ -42,6 +43,8 @@ public class NivelUno extends Virus implements Serializable{
 	public boolean sePuedeEvolucionar() {
 		return true;
 	}
+	
+	
 
 
 }

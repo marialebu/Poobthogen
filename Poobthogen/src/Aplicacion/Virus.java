@@ -6,11 +6,13 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class Virus implements Serializable{
 	protected Jugador jugador;
-	protected int nivel ;
+	protected int nivel;
 	protected Tablero tablero;
 	protected String nextLevel;
 	protected int x;
 	protected int y;
+	protected boolean destruido; 
+	
 	
 	protected Virus[] vecinos;
 	
@@ -36,7 +38,7 @@ public abstract class Virus implements Serializable{
 	 * @param v Elemento con el que se quiere comparar
 	 * @return 0 si son del mismo nivel, 1 si el primer elemento es mayor y -1 en caso contrario. 
 	 */
-	public int compareTo(int nivel, Virus v2) {
+	public static int compareTo(int nivel, Virus v2) {
 		int res = 1;
 		if(v2 != null){
 			if(nivel < v2.getNivel()){
@@ -56,11 +58,26 @@ public abstract class Virus implements Serializable{
 		return nivel;
 	}
 	
-	public abstract void evolucionar(boolean evoluciona) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion;
+	public abstract void evolucionar(boolean evoluciona, Jugador j) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion;
 
 	public abstract String toString();
 
 	public abstract boolean sePuedeEvolucionar();
+	
+	public boolean sePuedeDestruir() {
+		return !destruido;
+	}
+
+	public void destruir(Jugador j) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion {
+		destruido = true;
+		tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", true);
+		for(Virus v : vecinos){
+			if(v != null && v.sePuedeDestruir()){
+				v.destruir(j);
+			}
+		}
+		
+	}
 	
 	
 

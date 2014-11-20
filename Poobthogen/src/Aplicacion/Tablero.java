@@ -38,7 +38,8 @@ public class Tablero  implements Serializable{
 		niveles.put("NivelUno", 1);
 		niveles.put("NivelDos", 2);
 		niveles.put("NivelTres", 3);
-		niveles.put("Bloque", 4);
+		niveles.put("Bloque", Integer.MAX_VALUE);
+		niveles.put("Destructor", Integer.MAX_VALUE);
 		if(neutral){
 			//GenerarFichasNeutrales();
 		}
@@ -73,8 +74,9 @@ public class Tablero  implements Serializable{
 			Class ex = Class.forName("Aplicacion."+elemento);
 			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel())){
 				TurnoTemporal[i][j] = true;
-				elementos[i][j] = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
-				imprimir();
+				Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
+				elementos[i][j] = elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
+				//imprimir();
 				System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" pongo");
 			}else{
 				TurnoTemporal[i][j] = false;

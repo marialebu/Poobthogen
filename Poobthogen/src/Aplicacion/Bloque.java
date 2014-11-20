@@ -9,7 +9,8 @@ public class Bloque extends Virus implements Serializable{
 	public Bloque(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
 		jugador = j;
-		nivel = 4; 
+		nivel = Integer.MAX_VALUE; 
+		destruido = true;
 	}
 	
 	public String toString(){
@@ -22,10 +23,10 @@ public class Bloque extends Virus implements Serializable{
 		return respuesta;
 	}
 
-	public void evolucionar(boolean evoluciona) {}
+	public void evolucionar(boolean evoluciona, Jugador j) {}
 
-	@Override
 	public boolean sePuedeEvolucionar(){
 		return false;
 	}
+		
 }

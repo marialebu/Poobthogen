@@ -12,6 +12,7 @@ public class NivelTres extends Virus implements Serializable{
 		maxEvolucion = true;
 		nextLevel = "Bloque";
 		nivel = 3;
+		destruido = false; 
 		for(int i= 0; i < vecinos.length; i++){
 			if(vecinos[i]!= null){
 				if(compareTo(nivel, vecinos[i]) != 0){
@@ -19,27 +20,26 @@ public class NivelTres extends Virus implements Serializable{
 				}
 			}	
 		}
-		//agregarNivelDos();
 		if(tablero.getElemento(x, y) != null && evoluciona){
-			System.out.println("aaaaaaaaaa");
-			evolucionar(evoluciona);
+			evolucionar(evoluciona, j);
 			for(Virus v : vecinos){
 				if(v != null && v.sePuedeEvolucionar()){
-					v.evolucionar(evoluciona);
+					v.evolucionar(evoluciona, j);
 				}
 			}
 		}else if(!jugador.toString().equals(this.jugador.toString())){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA); 
-			
+		}
+		
+		if(!(Virus.compareTo(nivel, tablero.getElemento(x, y))< 0)){
+			agregarNivelDos();
 		}
 	}
 	
-	public void evolucionar(boolean evoluciona) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion{
-		System.out.println(evoluciona+" "+compareTo(nivel, tablero.getElemento(x, y))+" "+tablero.getElementoTemporal(x, y));
+	public void evolucionar(boolean evoluciona, Jugador j) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion{
 		if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
-			System.out.println("khdlkewjhflkwehf");
 			maxEvolucion = false;
-			tablero.agregarElemento(Integer.parseInt(jugador.toString()), x, y, nextLevel, true);
+			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
 		}
 	}
 	
@@ -92,5 +92,4 @@ public class NivelTres extends Virus implements Serializable{
 	public boolean sePuedeEvolucionar(){
 		return maxEvolucion; 
 	}
-
 }

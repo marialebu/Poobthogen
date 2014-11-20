@@ -12,7 +12,7 @@ public class Nnnnn {
 		System.out.println();
 		t.agregaJugador(new Jugador('1'));
 		t.agregaJugador(new Jugador('2'));
-		/*t.agregarElemento(1, 5, 5, "NivelUno", true);
+		t.agregarElemento(1, 5, 5, "NivelUno", true);
 		t.cambiarTurno();
 		t.imprimir();
 		t.agregarElemento(2, 5, 5, "NivelDos", true);
@@ -21,11 +21,14 @@ public class Nnnnn {
 		System.out.println();
 		t.agregarElemento(1, 4, 5, "NivelDos", true);
 		t.cambiarTurno();
-		t.imprimir();*/
+		t.imprimir();
 		t.agregarElemento(2, 5, 5, "NivelTres", true);
 		t.imprimir();
 		t.cambiarTurno();
 		t.agregarElemento(1, 5, 5, "NivelTres", true);
+		t.imprimir();
+		t.cambiarTurno();
+		t.agregarElemento(1, 5, 5, "Destructor", true);
 		t.imprimir();
 	}
 }
