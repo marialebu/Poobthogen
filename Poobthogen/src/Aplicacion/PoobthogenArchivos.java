@@ -64,7 +64,7 @@ public class PoobthogenArchivos {
 			String linea;
 			while((linea = br.readLine()).startsWith("--"));
 			if(linea.equals("VIRUS")){
-				while(!(linea = br.readLine()).startsWith("--") && !(linea.equals("TABLERO"))){
+				while(!((linea = br.readLine()).startsWith("--")) && !(linea.equals("TABLERO"))){
 					if(linea.isEmpty()) throw new PoobthogenExcepcion(PoobthogenExcepcion.DEFINICION_DE_VIRUS_INVALIDA);
 					String[] virus = linea.split(" "); 	
 					if(tiposVirus.containsKey(virus[0]))throw new PoobthogenExcepcion(PoobthogenExcepcion.ELEMENTO_DUPLICADO);
@@ -72,7 +72,8 @@ public class PoobthogenArchivos {
 				}
 				ArrayList<String> elemento = new ArrayList<String>();
 				int[] filCol = cuenta(elemento);
-				tablero = new Tablero(filCol[1], filCol[0]);
+				tablero = new Tablero(filCol[1], filCol[0], -1);
+				System.out.println(filCol[1]+" "+ filCol[0]);
 				tablero.agregaJugador(new Jugador('1'));
 				tablero.agregaJugador(new Jugador('2'));
 				for (int i = 0 ; i < elemento.size(); i++) {
@@ -156,12 +157,11 @@ public class PoobthogenArchivos {
 				 if(contar[0] == -1){
 					 contar[0] = (linea.length()-2)/2; 
 				 }
-				 if(!linea.isEmpty()){
+				 if(!linea.isEmpty() && !linea.startsWith("**")){
 					 contar[1]++;	 
 					 elemento.add(linea);
 				 }
 			}
-			contar[1]-=2;
 			return contar;
 		}catch (IOException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA); 
@@ -178,18 +178,19 @@ public class PoobthogenArchivos {
 		int j = 0; 
 		while(j < t.length()) {
 			if(t.charAt(j) != '*' && t.charAt(j) != ' ' ){
+				if(j%2==0)throw new PoobthogenExcepcion(PoobthogenExcepcion.ARCHIVO_INFO_INVALIDA);
 				j++;
 				if(j < t.length()){
 					if(t.charAt(j) != '*' && tiposVirus.containsKey(t.charAt(j-1)+"")){
 						if(t.charAt(j) == '1' || t.charAt(j) == '2'){
-							tablero.agregarElemento((int)t.charAt(j)- 49, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
+							tablero.agregarElemento((int)t.charAt(j)- 48, i, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
 						}else if (t.charAt(j)== '_') {
-							tablero.agregarElemento(-1, i-1, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
+							tablero.agregarElemento(-1, i, (j-1)/2, tiposVirus.get(t.charAt(j-1)+""), false);
 						}
 						else throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
 					}else if(t.charAt(j-1) != ' ')throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA);
 				}else{
-					//ERROR
+					throw new PoobthogenExcepcion(PoobthogenExcepcion.ARCHIVO_INFO_INVALIDA);
 				}
 			}
 			j++;

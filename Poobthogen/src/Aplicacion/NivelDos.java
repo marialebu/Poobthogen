@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class NivelDos extends Virus implements Serializable{
 	
-	public NivelDos(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public NivelDos(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona); 
 		nextLevel = "NivelTres";
 		nivel = 2;
@@ -26,7 +26,7 @@ public class NivelDos extends Virus implements Serializable{
 		}
 	}
 	
-	public void agregarNivelUno() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public void agregarNivelUno() throws PoobthogenExcepcion{
 		try{
 			if(x-1 >= 0){
 				trateDeAgregarNivelUno(x-1, y);
@@ -45,7 +45,7 @@ public class NivelDos extends Virus implements Serializable{
 		}
 	}
 
-	private void trateDeAgregarNivelUno(int i, int j) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion {
+	private void trateDeAgregarNivelUno(int i, int j) throws PoobthogenExcepcion{
 		if(compareTo(1, tablero.getElemento(i, j)) ==0 && !tablero.getElementoTemporal(i, j)){
 			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelDos", true);
 		}else if(compareTo(1, tablero.getElemento(i, j)) >0 && !tablero.getElementoTemporal(i, j)){

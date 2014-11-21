@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class NivelUno extends Virus implements Serializable{ 
 	
-	public NivelUno(Jugador j, int x ,int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public NivelUno(Jugador j, int x ,int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
 		nextLevel = "NivelDos";
 		nivel = 1;

@@ -58,27 +58,22 @@ public abstract class Virus implements Serializable{
 		return nivel;
 	}
 	
-	public abstract void evolucionar(boolean evoluciona, Jugador j) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion;
+	public abstract void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion;
 
 	public abstract String toString();
 
 	public abstract boolean sePuedeEvolucionar();
 	
-	public boolean sePuedeDestruir() {
+	public boolean sePuedeDestruir() throws PoobthogenExcepcion {
 		return !destruido;
 	}
 
-	public void destruir(Jugador j) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion {
-		destruido = true;
-		tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", true);
-		for(Virus v : vecinos){
-			if(v != null && v.sePuedeDestruir()){
-				v.destruir(j);
-			}
+	public void destruir(Jugador j) throws PoobthogenExcepcion{
+		if(sePuedeDestruir() && compareTo(nivel, tablero.getElemento(x, y)) == 0){
+			destruido = true;
+			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", true);
 		}
-		
 	}
-	
 	
 
 	

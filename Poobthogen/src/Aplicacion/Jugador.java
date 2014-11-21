@@ -12,11 +12,6 @@ public class Jugador implements Serializable{
 	 * @throws PoobthogenExcepcion 
 	 */
 	public Jugador(char id) throws PoobthogenExcepcion{
-		if(id != '1'){
-			if(id != '2'){
-				throw  new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
-			}
-		}
 		identificador = id;
 	}
 	

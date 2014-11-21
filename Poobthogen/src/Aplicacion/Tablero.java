@@ -13,6 +13,7 @@ public class Tablero  implements Serializable{
 	private int columnas;
 	private boolean[][] TurnoTemporal;
 	private HashMap<String, Integer> niveles; 
+	private int turnos;
 	
 	
 	/**Crea un tablero, con x filas y y columnas y una cantidad de fichas neutrales. 
@@ -21,7 +22,7 @@ public class Tablero  implements Serializable{
 	 * @param neutral Agregar o no fichas neutrales. 
 	 * @throws PoobthogenExcepcion 
 	 */
-	public Tablero(int filas, int columnas, boolean neutral) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public Tablero(int filas, int columnas, boolean neutral) throws PoobthogenExcepcion{
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
@@ -40,8 +41,9 @@ public class Tablero  implements Serializable{
 		niveles.put("NivelTres", 3);
 		niveles.put("Bloque", Integer.MAX_VALUE);
 		niveles.put("Destructor", Integer.MAX_VALUE);
+		turnos = -1;
 		if(neutral){
-			//GenerarFichasNeutrales();
+			GenerarFichasNeutrales();
 		}
 	}
 	
@@ -50,15 +52,21 @@ public class Tablero  implements Serializable{
 	 * @param filas Cantidad de filas del tablero
 	 * @param neutrales Cantidad de fichas neutrales
 	 */
-	public Tablero(int filas, int columnas){
+	public Tablero(int filas, int columnas, int turnos){
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
 		this.columnas = columnas;
+		this.turnos = turnos;
 		elementos = new  Virus[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
 		TurnoTemporal = new boolean[filas][columnas];
 		niveles = new HashMap<String, Integer>();
+		niveles.put("NivelUno", 1);
+		niveles.put("NivelDos", 2);
+		niveles.put("NivelTres", 3);
+		niveles.put("Bloque", Integer.MAX_VALUE);
+		niveles.put("Destructor", Integer.MAX_VALUE);
 	}
 	/**Agrega un elemento al tablero
 	 * 
@@ -68,27 +76,24 @@ public class Tablero  implements Serializable{
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
 	 */
-	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		System.out.println(jugador + " "+i+" "+j+" "+elemento+"voy a poner");
+	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
+			System.out.println(jugador+" "+i+" "+j+" "+elemento+" "+seExpande);
 			Class ex = Class.forName("Aplicacion."+elemento);
 			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel())){
 				TurnoTemporal[i][j] = true;
 				Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
 				elementos[i][j] = elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
-				//imprimir();
-				System.out.println(jugador + " "+i+" "+j+" "+elementos[i][j].toString()+" pongo");
 			}else{
 				TurnoTemporal[i][j] = false;
 			}
 		}catch (InstantiationException  | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
-		}/*catch (Exception e){
-			e.getMessage();
-			System.out.println(e.getCause());
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+ e.getMessage());
-		*/
-		return verificar(); 
+		}catch (Exception e){
+			e.printStackTrace();
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+" "+e.getMessage());
+		}
+		return verificar();
 	}
 	/**Termina el juego. 
 	 */
@@ -99,7 +104,7 @@ public class Tablero  implements Serializable{
 	 * @param neutrales cantidad de fichas neutrales
 	 * @throws PoobthogenExcepcion 
 	 */
-	public void GenerarFichasNeutrales() throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public void GenerarFichasNeutrales() throws PoobthogenExcepcion{
 		Random r = new Random();
 		int cantidad = r.nextInt((int)((filas*columnas)*0.05));
 		String[] tipos = {"Bloque", "NivelUno", "NivelDos"}; 
@@ -137,14 +142,17 @@ public class Tablero  implements Serializable{
 	}
 	/**
 	 * Cambia de turno de cada jugador. 
+	 * @throws PoobthogenExcepcion 
 	 */
-	public void cambiarTurno(){
+	public void cambiarTurno() throws PoobthogenExcepcion{
 		turno = !turno;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				TurnoTemporal[i][j] = false; 
 			}
 		}
+		turnos--;
+		if(turnos==0)throw new PoobthogenExcepcion(PoobthogenExcepcion.JUEGO_TERMINADO);
 	}
 	/**Muestra el tablero por consola. 
 	 */

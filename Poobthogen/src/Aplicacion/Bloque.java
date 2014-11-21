@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Bloque extends Virus implements Serializable{
 	
-	public Bloque(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
+	public Bloque(Jugador j, int x, int y, Tablero t, boolean evoluciona){
 		super(j, x, y, t, evoluciona);
 		jugador = j;
 		nivel = Integer.MAX_VALUE; 
@@ -25,8 +25,16 @@ public class Bloque extends Virus implements Serializable{
 
 	public void evolucionar(boolean evoluciona, Jugador j) {}
 
-	public boolean sePuedeEvolucionar(){
+	public boolean sePuedeDestruir() throws PoobthogenExcepcion{
+		throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+	}
+	
+	public void destruir(Jugador j) throws PoobthogenExcepcion{
+		throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+	}
+	
+	public boolean sePuedeEvolucionar() {
 		return false;
 	}
-		
+	
 }

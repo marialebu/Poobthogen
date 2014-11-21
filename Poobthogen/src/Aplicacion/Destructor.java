@@ -6,13 +6,22 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Destructor extends Virus implements Serializable{
 
-	public Destructor(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion, NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public Destructor(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
-		nivel = Integer.MAX_VALUE; 
+		//nivel = Integer.MAX_VALUE; 
 		Virus v2= tablero.getElemento(x, y); 
+		if(v2== null) throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+		nivel = v2.getNivel();
 		destruido = false; 
-		if(v2== null || !v2.sePuedeDestruir()) throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA); 
 		nivel = Integer.MIN_VALUE; 
+		if(v2.sePuedeDestruir()){
+			destruir(j);
+			for(Virus v : vecinos){
+				if(v != null && v.sePuedeDestruir()){
+					v.destruir(j);
+				}
+			}
+		}
 	}
 
 	/**Consulta la informacion asociada a un virus
