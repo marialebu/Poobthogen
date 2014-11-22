@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import Aplicacion.*; 
 public class Nnnnn {
-	public static void main(String[] args) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	/*public static void main(String[] args) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Tablero t = PoobthogenArchivos.importar(new File("poobthogen.txt"));
 		t.imprimir();
 		File f = new File("poobthogen1.txt");
@@ -32,5 +32,5 @@ public class Nnnnn {
 		t.cambiarTurno();
 		t.agregarElemento(1, 7,7, "Destructor", true);
 		t.imprimir();*/
-	}
+	
 }
