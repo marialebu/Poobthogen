@@ -16,6 +16,7 @@ public class Tablero  implements Serializable{
 	private int turnos;
 	
 	
+	
 	/**Crea un tablero, con x filas y y columnas y una cantidad de fichas neutrales. 
 	 * @param filas Cantidad de filas del tablero
 	 * @param columnas Cantidad de columnas
@@ -68,6 +69,7 @@ public class Tablero  implements Serializable{
 		niveles.put("Bloque", Integer.MAX_VALUE);
 		niveles.put("Destructor", Integer.MAX_VALUE);
 	}
+	
 	/**Agrega un elemento al tablero
 	 * 
 	 * @param jugador Jugador al que pertenece el elemento, puede  ser nulo para las fichas neutrales. 
@@ -78,7 +80,6 @@ public class Tablero  implements Serializable{
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
-			System.out.println(jugador+" "+i+" "+j+" "+elemento+" "+seExpande);
 			Class ex = Class.forName("Aplicacion."+elemento);
 			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel())){
 				TurnoTemporal[i][j] = true;
@@ -192,16 +193,8 @@ public class Tablero  implements Serializable{
 	public boolean tieneJugador(char charAt) {
 		return jugadores.size() >= (int) charAt -49;
 	}
-	/**Consulta los elementos de un tablero. 
-	 * @return Un arreglo con los elementos del tablero. 
-	 */
-	public Virus[][] getElementos(){
-		return elementos;
-		
-	}
 	
-	
-	/**Obtiene el elemento ubicado en una posicion específica. 
+	/**Obtiene el elemento ubicado en una posicion especï¿½fica. 
 	 * @param i Fila. 
 	 * @param j Columna
 	 * @return El elemento que se necesita. 
@@ -214,7 +207,7 @@ public class Tablero  implements Serializable{
 		return e;
 	}
 	
-	/**Obtiene el elemento ubicado en una posicion específica en un turno especifico. 
+	/**Obtiene el elemento ubicado en una posicion especï¿½fica en un turno especifico. 
 	 * @param i Fila. 
 	 * @param j Columna
 	 * @return El elemento que se necesita. 

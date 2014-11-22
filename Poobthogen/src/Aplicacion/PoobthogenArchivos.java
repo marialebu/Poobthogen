@@ -73,7 +73,6 @@ public class PoobthogenArchivos {
 				ArrayList<String> elemento = new ArrayList<String>();
 				int[] filCol = cuenta(elemento);
 				tablero = new Tablero(filCol[1], filCol[0], -1);
-				System.out.println(filCol[1]+" "+ filCol[0]);
 				tablero.agregaJugador(new Jugador('1'));
 				tablero.agregaJugador(new Jugador('2'));
 				for (int i = 0 ; i < elemento.size(); i++) {
@@ -105,18 +104,12 @@ public class PoobthogenArchivos {
 		    	out.println(r+" "+tiposVirus.get(r));
 		    }
 		    out.println("TABLERO");
-		    Virus[][] e = t.getElementos();
-		    String res = ""; 
+		    String res = generateBorder(t);
 		    String linea = "*";
-		    for (int i = 0; i < 1; i++) {
-		    	for (int j = 0; j < (e[i].length)+1; j++) {
-		    			res+="*";
-		    	}
-		    }
 		    out.println(res+res);
-		    for (int i = 0; i < e.length; i++) {
-		    	for (int j = 0; j < (e[i].length); j++) {	
-		    		linea+=generateLine(e[i][j]);
+		    for (int i = 0; i < t.filas(); i++) {
+		    	for (int j = 0; j < (t.columnas()); j++) {	
+		    		linea+=generateLine(t.getElemento(i, j));
 				}
 		    	out.println(linea+"*");
 		    	linea = "*";
@@ -139,8 +132,24 @@ public class PoobthogenArchivos {
 			linea+="  ";
 		}
 		return linea;
-		
 	}
+	
+	/**
+	 * Crea la linea de delimitacion del tablero. 
+	 * @param t Tablero que se va a exportar. 
+	 * @return 
+	 */
+	private static String generateBorder(Tablero t){
+		String res = "";
+		for (int i = 0; i < 1; i++) {
+	    	for (int j = 0; j < (t.columnas())+1; j++) {
+	    			res+="*";
+	    	}
+	    }
+		return res;
+	}
+	
+	
 	
 	/**Cuenta la cantidad de filas y columnas del tablero. 
 	 * @param elemento Arreglo con las lineas del tablero. 

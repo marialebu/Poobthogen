@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 import Aplicacion.*; 
 public class Nnnnn {
-	/*public static void main(String[] args) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		Tablero t = PoobthogenArchivos.importar(new File("poobthogen_err.txt"));
+	public static void main(String[] args) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		Tablero t = PoobthogenArchivos.importar(new File("poobthogen.txt"));
 		t.imprimir();
+		File f = new File("poobthogen1.txt");
+		PoobthogenArchivos.exportar(f, t);
 		/*System.out.println();
 		t.agregaJugador(new Jugador('1'));
 		t.agregaJugador(new Jugador('2'));
@@ -29,6 +31,6 @@ public class Nnnnn {
 		t.imprimir();
 		t.cambiarTurno();
 		t.agregarElemento(1, 7,7, "Destructor", true);
-		t.imprimir();
-	}*/
+		t.imprimir();*/
+	}
 }
