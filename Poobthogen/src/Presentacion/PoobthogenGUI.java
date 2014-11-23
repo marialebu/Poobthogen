@@ -39,14 +39,17 @@ public class PoobthogenGUI extends JFrame{
 	JPanel jugadorDosFichas;
 	JTabbedPane tableros;
 	JPanel turnosTiempo;
-	
 	JPanel areaPequeno;
 	JPanel areaMediano;
 	JPanel areaGrande;
+	JButton aceptar;
+	JButton cancelar;
+	
 	
 	public PoobthogenGUI(){
 		setTitle("Poobthogen");
 		preparePantalla();
+		f = new Font("Century Gothic", Font.PLAIN, 20);
 		prepareElementosInicio();		
 	}
 	/**
@@ -79,7 +82,8 @@ public class PoobthogenGUI extends JFrame{
 	private void prepareElementosPreJuego(){
 		principal.removeAll();
 		principal.updateUI();
-		principal.setLayout(new GridLayout(3,1));
+		principal.setLayout(new GridLayout(4,1));
+		Dimension tam = this.getContentPane().getSize();
 		jugadorUnoFichas = new JPanel();
 		jugadorDosFichas = new JPanel();
 		Border panel = new EmptyBorder(1, 1, 1, 1);
@@ -90,6 +94,14 @@ public class PoobthogenGUI extends JFrame{
 		principal.add(jugadorUnoFichas);
 		principal.add(jugadorDosFichas);
 		prepareMenuTableros();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(1, 3));
+		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(aceptar);
+		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(cancelar);
+		principal.add(contenedorBotones);
 	}
 	
 	private void prepareContenedor(JPanel j, Color c, String mensaje){
@@ -98,11 +110,12 @@ public class PoobthogenGUI extends JFrame{
 		j.setOpaque(false);
 		j.setLayout(new GridLayout(1, 4));
 		j.setForeground(Color.WHITE);
+		j.setFont(f);
 	}
 	
 	private void prepareMenuTableros(){
-		tableros = new JTabbedPane(); 
-		tableros.setBackground(new Color(5, 7, 46));
+		tableros = new JTabbedPane();
+		tableros.setFont(f);
 		tableros.add("Pequeño", prepareAreaPequeno("/Presentacion/verde/NivelUno.png", "/Presentacion/imagenes/interrogante.jpg"));
 		tableros.add("Mediano", prepareAreaMediano("/Presentacion/verde/NivelUno.png", "/Presentacion/imagenes/interrogante.jpg"));
 		tableros.add("Grande", prepareAreaGrande("/Presentacion/verde/NivelUno.png", "/Presentacion/imagenes/interrogante.jpg"));
@@ -111,57 +124,61 @@ public class PoobthogenGUI extends JFrame{
 	
 	private JPanel prepareAreaPequeno(String ruta1, String ruta2){
 		areaPequeno = new JPanel();
-		prepareContenedor(areaPequeno, Color.BLACK, "Tableros");
-		areaPequeno.setOpaque(true);
-		JButton vacio = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
-		vacio.setBackground(new Color(5, 7, 46));
+		prepareContenedor(areaPequeno,  new Color(0f, 0f, 0f, 0.1f), "");
+		areaPequeno.setOpaque(false);
+		JButton vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacio.setBackground(Color.BLACK);
+		vacio.setOpaque(false);
 		areaPequeno.add(vacio); 
-		JButton j = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		j.setBackground(new Color(5, 7, 46));
+		JButton j = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		j.setBackground(Color.BLACK);
+		j.setOpaque(false);
 		areaPequeno.add(j);
 		return areaPequeno;
 	}
 	
 	private JPanel prepareAreaMediano(String ruta1, String ruta2){
 		areaMediano = new JPanel();
-		prepareContenedor(areaMediano, Color.BLACK, "");
-		areaMediano.setOpaque(true);
-		JButton vacio = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
-		vacio.setBackground(new Color(5, 7, 46));
+		prepareContenedor(areaMediano, new Color(0f, 0f, 0f, 0.1f), "");
+		areaMediano.setOpaque(false);
+		JButton vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacio.setBackground(Color.BLACK);
+		vacio.setOpaque(false);
 		areaMediano.add(vacio); 
-		JButton j = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		j.setBackground(new Color(5, 7, 46));
+		JButton j = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		j.setBackground(Color.BLACK);
+		j.setOpaque(false);
 		areaMediano.add(j);
 		return areaMediano;
 	}
 	
 	private JPanel prepareAreaGrande(String ruta1, String ruta2){
 		areaGrande = new JPanel();
-		prepareContenedor(areaGrande, Color.BLACK, "");
-		areaGrande.setOpaque(true);
-		JButton vacio = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
-		vacio.setBackground(new Color(5, 7, 46));
+		prepareContenedor(areaGrande, new Color(0f, 0f, 0f, 0.1f), "");
+		areaGrande.setOpaque(false);
+		JButton vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacio.setBackground(Color.BLACK);
+		vacio.setOpaque(false);
 		areaGrande.add(vacio); 
-		JButton j = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		j.setBackground(new Color(5, 7, 46));
+		JButton j = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		j.setBackground(Color.BLACK);
+		j.setOpaque(false);
 		areaGrande.add(j);
 		return areaGrande;
 	}
 	
-	
-	
 	private void prepareBotonesFichasUno(){
 		panelJugUno = new JButton[4];
-		panelJugUno[0] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
+		panelJugUno[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
 		panelJugUno[0].setBackground(Color.BLACK);
 		panelJugUno[0].setOpaque(false);
-		panelJugUno[1] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
+		panelJugUno[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
 		panelJugUno[1].setBackground(Color.BLACK);
 		panelJugUno[1].setOpaque(false);
-		panelJugUno[2] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
+		panelJugUno[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
 		panelJugUno[2].setBackground(Color.BLACK);
 		panelJugUno[2].setOpaque(false);
-		panelJugUno[3] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
+		panelJugUno[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
 		panelJugUno[3].setBackground(Color.BLACK);
 		panelJugUno[3].setOpaque(false);
 		for (JButton b : panelJugUno){
@@ -171,16 +188,16 @@ public class PoobthogenGUI extends JFrame{
 	
 	private void prepareBotonesFichasDos(){
 		panelJugDos = new JButton[4];
-		panelJugDos[0] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
+		panelJugDos[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
 		panelJugDos[0].setBackground(Color.BLACK);
 		panelJugDos[0].setOpaque(false);
-		panelJugDos[1] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
+		panelJugDos[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
 		panelJugDos[1].setBackground(Color.BLACK);
 		panelJugDos[1].setOpaque(false);
-		panelJugDos[2] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
+		panelJugDos[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
 		panelJugDos[2].setBackground(Color.BLACK);
 		panelJugDos[2].setOpaque(false);
-		panelJugDos[3] = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
+		panelJugDos[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
 		panelJugDos[3].setBackground(Color.BLACK);
 		panelJugDos[3].setOpaque(false);
 		for (JButton b : panelJugDos){

@@ -48,7 +48,6 @@ public class Tablero  implements Serializable{
 		}
 	}
 	
-	
 	/**Crea un tablero, con x filas y y columnas
 	 * @param filas Cantidad de filas del tablero
 	 * @param neutrales Cantidad de fichas neutrales
@@ -71,7 +70,6 @@ public class Tablero  implements Serializable{
 	}
 	
 	/**Agrega un elemento al tablero
-	 * 
 	 * @param jugador Jugador al que pertenece el elemento, puede  ser nulo para las fichas neutrales. 
 	 * @param i Posicion en i en el tablero
 	 * @param j Posicion en j en el tablero. 

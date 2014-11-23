@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 public class NivelTres extends Virus implements Serializable{
-	private boolean maxEvolucion;
+	
 
 	public NivelTres(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
@@ -13,13 +13,7 @@ public class NivelTres extends Virus implements Serializable{
 		nextLevel = "Bloque";
 		nivel = 3;
 		destruido = false; 
-		for(int i= 0; i < vecinos.length; i++){
-			if(vecinos[i]!= null){
-				if(compareTo(nivel, vecinos[i]) != 0){
-					vecinos[i] = null;
-				}
-			}	
-		}
+		establecerVecinos();
 		if(tablero.getElemento(x, y) != null && evoluciona){
 			evolucionar(evoluciona, j);
 			for(Virus v : vecinos){

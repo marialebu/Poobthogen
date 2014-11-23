@@ -12,7 +12,7 @@ public abstract class Virus implements Serializable{
 	protected int x;
 	protected int y;
 	protected boolean destruido; 
-	
+	protected boolean maxEvolucion;
 	
 	protected Virus[] vecinos;
 	
@@ -33,6 +33,18 @@ public abstract class Virus implements Serializable{
 		}
 	}
 	
+	/**
+	 * Establece los vecinos de un Virus, pues tienen que ser del mismo nivel.  
+	 */
+	protected void establecerVecinos() {
+		for(int i= 0; i < vecinos.length; i++){
+			if(vecinos[i]!= null){
+				if(compareTo(nivel, vecinos[i]) != 0){
+					vecinos[i] = null;
+				}
+			}	
+		}
+	}
 	/**
 	 * Compara el nivel de dos elementos 
 	 * @param v Elemento con el que se quiere comparar
@@ -57,8 +69,6 @@ public abstract class Virus implements Serializable{
 	public int getNivel(){
 		return nivel;
 	}
-	
-	public abstract void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion;
 
 	public abstract String toString();
 
@@ -75,7 +85,13 @@ public abstract class Virus implements Serializable{
 		}
 	}
 	
-
+	//El evolucionar deberia estar acá creo yo. 
+	public void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion{
+		if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
+			maxEvolucion = false;
+			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
+		}
+	}
 	
 	
 }

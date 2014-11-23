@@ -10,20 +10,14 @@ public class NivelDos extends Virus implements Serializable{
 		super(j, x, y, t, evoluciona); 
 		nextLevel = "NivelTres";
 		nivel = 2;
-		destruido = false; 
+		destruido = false;
+		establecerVecinos();
 		if(tablero.getElemento(x, y) != null){
 			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0 && !tablero.getElementoTemporal(x, y)){
 				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
 			}
 		}
 		agregarNivelUno();
-		for(int i= 0; i < vecinos.length; i++){
-			if(vecinos[i]!= null){
-				if(compareTo(nivel, vecinos[i]) != 0){
-					vecinos[i] = null;
-				}
-			}	
-		}
 	}
 	
 	public void agregarNivelUno() throws PoobthogenExcepcion{

@@ -22,6 +22,17 @@ public class RoundButton extends JButton {
     f1 = 30;
     this.setForeground(Color.WHITE);
   }
+  
+  public RoundButton(Icon image) {
+	    super(image);
+	    Dimension size = getPreferredSize();
+	    size.width = size.height = Math.max(size.width, 
+	      size.height);
+	    setPreferredSize(size);
+	    setContentAreaFilled(false);
+	    f = 30;
+	    f1 = 30;
+	  }
 
   protected void paintComponent(Graphics g) {
     if (getModel().isArmed()) {
