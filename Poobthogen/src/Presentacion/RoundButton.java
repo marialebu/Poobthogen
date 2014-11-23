@@ -51,7 +51,7 @@ public class RoundButton extends JButton {
   
   public boolean contains(int x, int y) {
     if (shape == null || !shape.getBounds().equals(getBounds())) {
-      shape = new RoundRectangle2D.Double(0, 30,getWidth(),getHeight(), f, f1); ;
+      shape = new RoundRectangle2D.Double(0, 30,this.getWidth(),this.getHeight(), f, f1); ;
     }
     return shape.contains(x, y);
   }
