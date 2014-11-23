@@ -9,8 +9,8 @@ public class Destructor extends Virus implements Serializable{
 	public Destructor(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
 		//nivel = Integer.MAX_VALUE; 
-		Virus v2= tablero.getElemento(x, y); 
-		if(v2== null) throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+		Virus v2= tablero.getElemento(x, y);
+		//if(v2== null) throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
 		nivel = v2.getNivel();
 		destruido = false; 
 		nivel = Integer.MIN_VALUE; 

@@ -169,6 +169,18 @@ public class Tablero  implements Serializable{
 	
 	/**Muestra el tablero por consola. 
 	 */
+	public String[][] obtener() {
+		String[][] res = new String[filas][columnas];
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				res[i][j] = (elementos[i][j] != null ? elementos[i][j].toString() : "-");
+			}
+		}
+		return res;
+	}
+	
+	/**Muestra el tablero por consola. 
+	 */
 	public void imprimirTemporal() {
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
