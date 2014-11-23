@@ -1,6 +1,5 @@
 package Presentacion;
 
-
 import java.awt.*;
 
 import javax.swing.*;
@@ -18,7 +17,6 @@ import java.io.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 public class PoobthogenGUI extends JFrame{
 	
-	
 	Tablero juego;
 	
 	JPanel principal;
@@ -28,11 +26,14 @@ public class PoobthogenGUI extends JFrame{
 	JButton creditos;
 	Font f;
 	
+	JButton unJugador;
+	JButton dosJugadores;
+	JButton volver; 
+	
 	public PoobthogenGUI(){
 		setTitle("Poobthogen");
-		prepareElementos();
-		prepareAcciones();
-		
+		preparePantalla();
+		prepareElementosInicio();		
 	}
 	/**
 	 * @param args
@@ -42,9 +43,14 @@ public class PoobthogenGUI extends JFrame{
 		juego.setVisible(true);
 	}
 	
-	private void prepareElementos(){
-		preparePantalla();
+	private void prepareElementosInicio(){
 		preparePantallaInicio();
+		prepareAccionesInicio();
+	}
+	
+	private void prepareElementosNuevo(){
+		preparePantallaNuevoJuego();
+		prepareAccionesNuevo();
 	}
 	
 	private void preparePantalla(){
@@ -57,9 +63,11 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void preparePantallaInicio(){
-		Dimension tam = this.getContentPane().getSize();
+		principal.removeAll();
+		principal.updateUI();
 		principal.setLayout(new BorderLayout());
-		JPanel contenedorBotones = new JPanel();
+		Dimension tam = this.getContentPane().getSize();
+		contenedorBotones = new JPanel();
 		contenedorBotones.setLayout(new GridLayout(1, 3));
 		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
 		f = new Font("Century Gothic", Font.PLAIN, 20);
@@ -70,7 +78,25 @@ public class PoobthogenGUI extends JFrame{
 		creditos= creaBoton(0, 0,"Creditos",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(creditos);
 		principal.add(contenedorBotones, BorderLayout.PAGE_END);
-		 
+	}
+	
+	private void preparePantallaNuevoJuego(){
+		principal.removeAll();
+		principal.updateUI();
+		principal.setLayout(new BorderLayout());
+		Dimension tam = this.getContentPane().getSize();
+		principal.removeAll();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(1, 3));
+		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		f = new Font("Century Gothic", Font.PLAIN, 20);
+		unJugador = creaBoton(0, 0,"Un jugador",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(unJugador);
+		dosJugadores = creaBoton(0, 0,"Dos jugadores",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(dosJugadores);
+		volver = creaBoton(0, 0,"Volver",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(volver);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
 	}
 	
 	private JButton creaBoton(int x, int y, String mensaje, int w, int h, Font f){
@@ -81,7 +107,7 @@ public class PoobthogenGUI extends JFrame{
 		
 	}
 	
-	private void prepareAcciones(){
+	private void prepareAccionesInicio(){
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     	addWindowListener(new WindowAdapter(){
     		public void windowClosing (WindowEvent e){
@@ -100,6 +126,21 @@ public class PoobthogenGUI extends JFrame{
 				muestreCreditos();
 			}
 		});
+    	
+    	juegoNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prepareElementosNuevo();
+			}
+		});
+	}
+	
+	private void prepareAccionesNuevo(){
+		
+		volver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prepareElementosInicio();
+			}
+		});
 	}
 	
 	private void muestreCreditos(){
@@ -108,7 +149,7 @@ public class PoobthogenGUI extends JFrame{
 	}
 	private void cargueJuego(){
 		Object [] opciones ={"Abrir","Importar","Cancelar", };
-		int eleccion = JOptionPane.showOptionDialog(this,"En realidad desea cerrar la aplicacion","Mensaje de Confirmacion",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,opciones,"Aceptar");
+		int eleccion = JOptionPane.showOptionDialog(this,"Desea abrir o importar un juego","Mensaje de Confirmacion",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,opciones,"Aceptar");
 		if (eleccion == JOptionPane.YES_OPTION){
 			try{
 				escogerArchivo();
@@ -171,7 +212,4 @@ public class PoobthogenGUI extends JFrame{
     		System.exit(0);
 		}
     }
-	
-	
-
 }
