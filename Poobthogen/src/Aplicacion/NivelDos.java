@@ -25,17 +25,12 @@ public class NivelDos extends Virus implements Serializable{
 	
 	public void agregarNivelUno() throws PoobthogenExcepcion{
 		try{
-			if(x-1 >= 0){
-				trateDeAgregarNivelUno(x-1, y);
-			}
-			if (x+1 < tablero.filas()){
-				trateDeAgregarNivelUno(x+1, y);
-			}
-			if (y-1>=0){
-				trateDeAgregarNivelUno(x, y-1);
-			}
-			if (y+1<tablero.columnas()){
-				trateDeAgregarNivelUno(x, y+1);
+			for (int i = 0; i < dx.length; i++) {
+				int temp_dx = x+dx[i];
+				int temp_dy = y+dy[i];
+				if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas()){
+					trateDeAgregarNivelUno(temp_dx, temp_dy);
+				}
 			}
 		}catch(NumberFormatException e){
 			throw new PoobthogenExcepcion("Error de formato.");
