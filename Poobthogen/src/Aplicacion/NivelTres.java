@@ -46,7 +46,7 @@ public class NivelTres extends Virus implements Serializable{
 				}
 			}
 		}catch(NumberFormatException e){
-			throw new PoobthogenExcepcion("Error de formato.");
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
 		}
 	}
 	
