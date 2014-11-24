@@ -33,7 +33,7 @@ public class NivelDos extends Virus implements Serializable{
 				}
 			}
 		}catch(NumberFormatException e){
-			throw new PoobthogenExcepcion("Error de formato.");
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.JUGADOR_INVALIDO);
 		}
 	}
 
@@ -43,7 +43,6 @@ public class NivelDos extends Virus implements Serializable{
 		}else if(compareTo(1, tablero.getElemento(i, j)) >0 && !tablero.getElementoTemporal(i, j)){
 			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelUno", true);
 		}
-		
 	}
 
 	public String toString() {
