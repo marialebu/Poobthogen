@@ -41,6 +41,22 @@ public abstract class Virus implements Serializable{
 		return res;
 	}
 	
+	/*
+	 * Evolucionar vecinos
+	 */
+	protected void evolucionarVecinos(boolean evoluciona, Jugador j) throws PoobthogenExcepcion{
+		for (int i = 0; i < dx.length; i++) {
+			int temp_dx = x+dx[i];
+			int temp_dy = y+dy[i];
+			if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas()  && !tablero.getElementoTemporal(temp_dx, temp_dy)){
+				Virus vecino = tablero.getElemento(temp_dx, temp_dy);
+				if(vecino != null && vecino.sePuedeEvolucionar()){
+					vecino.evolucionar(evoluciona, j);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Consulta el nivel de un elemento. 
 	 * @return Retorna el nivel de un elemento
