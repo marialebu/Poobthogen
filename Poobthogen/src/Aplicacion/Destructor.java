@@ -17,17 +17,7 @@ public class Destructor extends Virus implements Serializable{
 		if(v2.sePuedeDestruir()){
 			destruir(j);
 			destruido = true;
-			for (int i = 0; i < dx.length; i++) {
-				int temp_dx = x+dx[i];
-				int temp_dy = y+dy[i];
-				if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas()){
-					Virus vecino = tablero.getElemento(temp_dx, temp_dy);
-					//System.out.println(vecino==null?"nulo":vecino.toString()+" "+vecino.getNivel()+" "+nivel);
-					if(vecino != null && vecino.sePuedeDestruir() && compareTo(nivel,vecino)==0){
-						vecino.destruir(j);
-					}
-				}
-			}
+			destruirVecinos(j);
 		}
 		nivel = Integer.MIN_VALUE;
 		

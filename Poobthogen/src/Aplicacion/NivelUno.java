@@ -15,7 +15,6 @@ public class NivelUno extends Virus implements Serializable{
 		if(compareTo(nivel,tablero.getElemento(x, y))==0){
 			evolucionarVecinos(evoluciona,j);
 		}
-		
 	}
 	
 	
