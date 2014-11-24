@@ -12,6 +12,7 @@ public class Tablero  implements Serializable{
 	private int filas;
 	private int columnas;
 	private boolean[][] TurnoTemporal;
+	private boolean[][] TurnoEvolucionados;
 	private HashMap<String, Integer> niveles; 
 	private int turnos;
 	
@@ -30,9 +31,11 @@ public class Tablero  implements Serializable{
 		this.columnas = columnas;
 		elementos = new  Virus[filas][columnas];
 		TurnoTemporal = new boolean[filas][columnas];
+		TurnoEvolucionados = new boolean[filas][columnas];
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				TurnoTemporal[i][j] = false; 
+				TurnoEvolucionados[i][j] = false;
 			}
 		}
 		jugadores = new ArrayList<Jugador>(2); 
@@ -61,6 +64,7 @@ public class Tablero  implements Serializable{
 		elementos = new  Virus[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
 		TurnoTemporal = new boolean[filas][columnas];
+		TurnoEvolucionados = new boolean[filas][columnas];
 		niveles = new HashMap<String, Integer>();
 		niveles.put("NivelUno", 1);
 		niveles.put("NivelDos", 2);
@@ -78,13 +82,17 @@ public class Tablero  implements Serializable{
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
+			
 			Class ex = Class.forName("Aplicacion."+elemento);
-			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel())){
+			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel()) ||  (elementos[i][j] != null && niveles.get(elemento)==elementos[i][j].getNivel() && (jugador == -1 ? null : jugadores.get(jugador-1)) == elementos[i][j].getJugador())){
 				TurnoTemporal[i][j] = true;
 				Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
+				
 				elementos[i][j] = elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
+				
 			}else{
 				TurnoTemporal[i][j] = false;
+				throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
 			}
 		}catch (InstantiationException  | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
@@ -148,6 +156,7 @@ public class Tablero  implements Serializable{
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				TurnoTemporal[i][j] = false; 
+				TurnoEvolucionados[i][j] = false;
 			}
 		}
 		turnos--;
@@ -232,6 +241,21 @@ public class Tablero  implements Serializable{
 		return e;
 	}
 	
+	/**Obtiene si ya hubo una evolucion en una posicion dada y en un turno dado
+	 * @param i Fila. 
+	 * @param j Columna
+	 * @return El elemento que se necesita. 
+	 */
+	public boolean getEvolucionTemporal(int i, int j) throws PoobthogenExcepcion{ 
+		boolean e = false; 
+		if(i < elementos.length && j < elementos[0].length && i>=0 && j>=0) {
+			e = TurnoEvolucionados[i][j];
+		}else{
+			throw new PoobthogenExcepcion("");
+		}
+		return e;
+	}
+	
 	/**
 	 * Consulta la cantidad de filas del tablero. 
 	 * @return Cantidad de filas. 
@@ -245,6 +269,11 @@ public class Tablero  implements Serializable{
 	 */
 	public int columnas(){
 		return columnas;
+	}
+
+	public void setEvolucionTemporal(int x, int y) {
+		TurnoEvolucionados[x][y] = true;
+		
 	}	
 	
 }

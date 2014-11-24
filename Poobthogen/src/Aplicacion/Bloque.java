@@ -23,13 +23,17 @@ public class Bloque extends Virus implements Serializable{
 		return respuesta;
 	}
 
-	public void evolucionar(boolean evoluciona, Jugador j) {}
+	public void evolucionar(boolean evoluciona, Jugador j) throws PoobthogenExcepcion {
+		throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+	}
 
 	public boolean sePuedeDestruir() throws PoobthogenExcepcion{
-		return false;
+		return true;
 	}
 	
-	public void destruir(Jugador j) throws PoobthogenExcepcion{}
+	public void destruir(Jugador j) throws PoobthogenExcepcion{
+		throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+	}
 	
 	public boolean sePuedeEvolucionar() {
 		return false;

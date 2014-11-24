@@ -13,30 +13,25 @@ public class NivelTres extends Virus implements Serializable{
 		nextLevel = "Bloque";
 		nivel = 3;
 		destruido = false; 
-		establecerVecinos();
-		if(tablero.getElemento(x, y) != null && evoluciona){
-			evolucionar(evoluciona, j);
-			for(Virus v : vecinos){
-				if(v != null && v.sePuedeEvolucionar()){
-					v.evolucionar(evoluciona, j);
+		if(tablero.getElemento(x, y)!=null && evoluciona){
+			evolucionar(evoluciona,j);
+		}
+		if((Virus.compareTo(nivel, tablero.getElemento(x, y))> 0)){
+			agregarNivelDos();
+		}else{
+			for (int i = 0; i < dx.length; i++) {
+				int temp_dx = x+dx[i];
+				int temp_dy = y+dy[i];
+				if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas() && !tablero.getElementoTemporal(temp_dx, temp_dy)){
+					Virus vecino = tablero.getElemento(temp_dx, temp_dy);
+					if(vecino != null && vecino.sePuedeEvolucionar() && compareTo(nivel,vecino)==0){
+						vecino.evolucionar(evoluciona, j);
+					}
 				}
 			}
-		}else if(!jugador.toString().equals(this.jugador.toString())){
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA); 
-		}
-		
-		if(!(Virus.compareTo(nivel, tablero.getElemento(x, y))< 0)){
-			agregarNivelDos();
 		}
 	}
-	
-	public void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion{
-		if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
-			maxEvolucion = false;
-			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
-		}
-	}
-	
+
 	public void agregarNivelDos() throws PoobthogenExcepcion{
 		try{
 			if(x-1 >= 0){

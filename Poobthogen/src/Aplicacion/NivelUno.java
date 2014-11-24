@@ -9,12 +9,22 @@ public class NivelUno extends Virus implements Serializable{
 		nextLevel = "NivelDos";
 		nivel = 1;
 		destruido = false; 
-		establecerVecinos();
-		if(tablero.getElemento(x, y) != null){
-			if(compareTo(nivel, tablero.getElemento(x, y)) <= 0  && !tablero.getElementoTemporal(x, y)&& evoluciona){
-				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
+		if(tablero.getElemento(x, y)!=null && evoluciona){
+			evolucionar(evoluciona,j);
+		}
+		if(compareTo(nivel,tablero.getElemento(x, y))==0){
+			for (int i = 0; i < dx.length; i++) {
+				int temp_dx = x+dx[i];
+				int temp_dy = y+dy[i];
+				if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas()  && !tablero.getElementoTemporal(temp_dx, temp_dy)){
+					Virus vecino = tablero.getElemento(temp_dx, temp_dy);
+					if(vecino != null && vecino.sePuedeEvolucionar()){
+						vecino.evolucionar(evoluciona, j);
+					}
+				}
 			}
-		}	
+		}
+		
 	}
 	/**Consulta la informacion asociada a un virus
 	 * @return Una cadena con el tipo de virus y su jugador. 

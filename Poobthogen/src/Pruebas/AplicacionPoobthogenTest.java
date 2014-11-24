@@ -100,11 +100,11 @@ public class AplicacionPoobthogenTest{
     public void deberiaEvolucionarFichasDeNivelUnoConTres(){
     	try{
     		String[][] prueba = 
-    			{{"-", "U1", "U1", "U1", "-"},
-    			{"U1", "D1", "D1", "D1", "U1"},
-    			{"D1", "T1", "T1", "T1", "D1"}, 
-    			{"U1", "D1", "D1", "D1", "U1"},
-    			{"-", "U1", "U1", "U1", "-"}};
+    		{{"-", "-","U1","-","-"}, 
+    		{"-","U1","D1","U1","-"}, 
+    		{"U1","D1","T1","D1","U1"}, 
+    		{"-","U1","D1","U1","-"},
+    		{"-", "-","U1","-","-"}};
 	    	Tablero t = new Tablero(5, 5, false);
 	    	t.agregaJugador(new Jugador('1'));
 			t.agregaJugador(new Jugador('2'));
@@ -149,6 +149,7 @@ public class AplicacionPoobthogenTest{
     	}
     }
     
+    @Test
     public void deberiaLanzarExcepcionAlTratarDConquistarUnoConUno(){
     	try{
     		String[][] prueba = 
@@ -193,7 +194,7 @@ public class AplicacionPoobthogenTest{
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 3, "NivelUno", true);
 			t.cambiarTurno();
-			t.agregarElemento(1, 2, 2, "NivelDos", true);
+			t.agregarElemento(2, 2, 2, "NivelDos", true);
 			t.cambiarTurno();
 			assertEquals("Deberian ser iguales", prueba, t.obtener());	
     	}catch (PoobthogenExcepcion e){
@@ -298,7 +299,7 @@ public class AplicacionPoobthogenTest{
     		fail(NOEXCEPCION);
     	}
     }
-    
+    @Test
     public void deberiaLanzarExcepcionAlTratarDConquistarDosConDos(){
     	try{
     		String[][] prueba = 
@@ -319,12 +320,13 @@ public class AplicacionPoobthogenTest{
 	    		t.agregarElemento(2, 2, 2, "NivelDos", true);
 	    		t.cambiarTurno();
 	    		assertEquals("Deberian ser iguales", prueba, t.obtener());
-	    		fail(EXCEPCION); 
+	    		fail(NOEXCEPCION); 
     	}catch (PoobthogenExcepcion e){
     		
     	}
     }
     
+    @Test
     public void deberiaLanzarExcepcionAlTratarDConquistarDosConUno(){
     	try{
     		String[][] prueba = 

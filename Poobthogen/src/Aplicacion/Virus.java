@@ -14,37 +14,16 @@ public abstract class Virus implements Serializable{
 	protected boolean destruido; 
 	protected boolean maxEvolucion;
 	
-	protected Virus[] vecinos;
+	protected int[] dx = {1,-1,0,0};
+	protected int[] dy = {0,0,1,-1};
 	
 	public Virus(Jugador j, int x ,int y, Tablero t, boolean evoluciona) {
 		jugador = j;
 		tablero = t;
 		this.x = x;
 		this.y = y;
-		vecinos = new Virus[4];
-		if(x-1 >= 0 && tablero.getElemento(x-1, y) != null){
-			vecinos[0] = tablero.getElemento(x-1, y); 
-		}else if (x+1 < tablero.filas() && tablero.getElemento(x+1, y) != null){
-			vecinos[1] = tablero.getElemento(x+1, y);
-		}else if (y-1>=0 &&  tablero.getElemento(x, y-1) != null){
-			vecinos[2] = tablero.getElemento(x+1, y);
-		}else if (y+1>=tablero.columnas() &&  tablero.getElemento(x, y+1) != null){
-			vecinos[3] = tablero.getElemento(x, y-1);
-		}
 	}
 	
-	/**
-	 * Establece los vecinos de un Virus, pues tienen que ser del mismo nivel.  
-	 */
-	protected void establecerVecinos() {
-		for(int i= 0; i < vecinos.length; i++){
-			if(vecinos[i]!= null){
-				if(compareTo(nivel, vecinos[i]) != 0){
-					vecinos[i] = null;
-				}
-			}	
-		}
-	}
 	/**
 	 * Compara el nivel de dos elementos 
 	 * @param v Elemento con el que se quiere comparar
@@ -81,7 +60,8 @@ public abstract class Virus implements Serializable{
 	public void destruir(Jugador j) throws PoobthogenExcepcion{
 		if(sePuedeDestruir() && compareTo(nivel, tablero.getElemento(x, y)) == 0){
 			destruido = true;
-			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", true);
+			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", false);
+
 		}
 	}
 	
@@ -89,9 +69,12 @@ public abstract class Virus implements Serializable{
 	public void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion{
 		if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
 			maxEvolucion = false;
+			tablero.setEvolucionTemporal(x,y);
 			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
 		}
 	}
-	
-	
+
+	public Jugador getJugador() {
+		return jugador;
+	}
 }

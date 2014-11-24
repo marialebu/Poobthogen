@@ -11,13 +11,26 @@ public class NivelDos extends Virus implements Serializable{
 		nextLevel = "NivelTres";
 		nivel = 2;
 		destruido = false;
-		establecerVecinos();
-		if(tablero.getElemento(x, y) != null){
-			if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0 && !tablero.getElementoTemporal(x, y)){
-				tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
+		if(tablero.getElemento(x, y)!=null && evoluciona){
+			evolucionar(evoluciona,j);
+		}
+		if(Virus.compareTo(nivel, tablero.getElemento(x, y))>=0){
+			agregarNivelUno();
+		}else{
+			//Evolucionar
+			for (int i = 0; i < dx.length; i++) {
+				int temp_dx = x+dx[i];
+				int temp_dy = y+dy[i];
+				if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas() && !tablero.getElementoTemporal(temp_dx, temp_dy)){
+					Virus vecino = tablero.getElemento(temp_dx, temp_dy);
+					if(vecino != null && vecino.sePuedeEvolucionar()){
+						vecino.evolucionar(evoluciona, j);
+					}
+				}
 			}
 		}
-		agregarNivelUno();
+		
+		
 	}
 	
 	public void agregarNivelUno() throws PoobthogenExcepcion{
@@ -58,8 +71,6 @@ public class NivelDos extends Virus implements Serializable{
 		return res;
 	}
 	
-	public void evolucionar(boolean evoluciona, Jugador j) {}
-
 	public boolean sePuedeEvolucionar() {
 		return true;
 	}
