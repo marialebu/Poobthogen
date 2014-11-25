@@ -38,6 +38,10 @@ public class NivelUno extends Virus implements Serializable{
 		return true;
 	}
 	
+	public String esDeTipo(){
+		return "NivelUno "+(jugador != null ? jugador.toString() : 0);
+	}
+	
 	
 
 

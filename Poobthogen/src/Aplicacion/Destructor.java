@@ -40,4 +40,8 @@ public class Destructor extends Virus implements Serializable{
 	public boolean sePuedeEvolucionar() {
 		return false;
 	}
+	
+	public String esDeTipo(){
+		return "Destructor "+(jugador != null ? jugador.toString() : 0);
+	}
 }

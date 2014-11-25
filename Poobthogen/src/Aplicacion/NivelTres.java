@@ -16,7 +16,7 @@ public class NivelTres extends Virus implements Serializable{
 		if(tablero.getElemento(x, y)!=null && evoluciona){
 			evolucionar(evoluciona,j);
 		}
-		if((Virus.compareTo(nivel, tablero.getElemento(x, y))> 0)){
+		if((Virus.compareTo(nivel, tablero.getElemento(x, y))> 0) && evoluciona){
 			agregarNivelDos();
 		}else{
 			evolucionarVecinos(evoluciona, j);
@@ -79,5 +79,9 @@ public class NivelTres extends Virus implements Serializable{
 	 */
 	public boolean sePuedeEvolucionar(){
 		return maxEvolucion; 
+	}
+	
+	public String esDeTipo(){
+		return "NivelTres "+(jugador != null ? jugador.toString() : 0);
 	}
 }

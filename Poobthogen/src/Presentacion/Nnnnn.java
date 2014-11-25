@@ -46,5 +46,6 @@ public class Nnnnn {
 		t.agregarElemento(1, 2, 2, "NivelUno", true);
 		t.cambiarTurno();
 		t.imprimir();
+		System.out.println(t.getElemento(2, 2).esDeTipo());
 	}
 }

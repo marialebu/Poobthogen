@@ -19,22 +19,22 @@ public class PoobthogenGUI extends JFrame{
 	
 	private Tablero juego;
 	private boolean tipoDeJuego;
+	//private Color turnos;
 	private JButton[] panelJugUno;
 	private JButton[] panelJugDos;
-	private String coloresUno;
-	private String coloresDos;
 	private final String[] cantTurnos = {"10", "15", "20", "30", "Ilimitado"};
 	private final String[] cantTiempo = {"5 minutos", "10 minutos", "20 minutos", "Ilimitado"};
 	private final int[] pequeno = {6, 6};
 	private final int[] mediano = {8, 8};
 	private final int[] grande = {10,10};
-	private final String[] colorVirus = {"verde", "roja", "amarilla", "azul"};
+	private final String[] colorVirus = {"verde", "roja", "amarilla", "azul", "neutral"};
 	private String colorJugUno;
 	private String colorJugDos;
 	private int turnosJuego = 10;
 	private int tiempoJuego = 300;
 	private String tipoMaquina;
 	private final String[] maquina = {"Timida", "Ofensiva", "Irreflexiva"};
+	private RoundButton[][] fichasJuego;
 	
 	private JPanel principal;
 	private JPanel contenedorBotones;
@@ -48,8 +48,12 @@ public class PoobthogenGUI extends JFrame{
 	private JButton volver; 
 	
 	private int k;
-	private JButton vacio;
-	private JButton interrogante;
+	private JButton vacioPequeno;
+	private JButton interrogantePequeno;
+	private JButton vacioMediano;
+	private JButton interroganteMediano;
+	private JButton vacioGrande;
+	private JButton interroganteGrande;
 	private JPanel fichasPreJuego;
 	private JPanel jugadorUnoFichas;
 	private JPanel jugadorDosFichas;
@@ -71,6 +75,7 @@ public class PoobthogenGUI extends JFrame{
 	private JLabel muestraTiempo;
 	private JPanel tablero;
 	private JButton[] fichas;
+	private JPanel tableroJuego;
 	
 	public PoobthogenGUI(){
 		setTitle("Poobthogen");
@@ -204,7 +209,7 @@ public class PoobthogenGUI extends JFrame{
 	private void prepareAccionesVentanaConfInicialUno(){
 		aceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				prepareElementosConfiguracionTablero();
+				checkAceptarMaquina();
 			}
 		});
 		
@@ -218,7 +223,7 @@ public class PoobthogenGUI extends JFrame{
 			panelJugUno[k].addActionListener(new ActionListener() {
 				final int j = k;
 				public void actionPerformed(ActionEvent arg0) {
-					colorJugUno = colorVirus[j];			
+					escogerColorMaquina(j);	
 				}
 			});
 		}
@@ -247,10 +252,26 @@ public class PoobthogenGUI extends JFrame{
 				establecerTiempo(eleccion);
 			}
 		});
-		
-		//Faltan acciones para guardar configuracion :D
 	}
 	
+	private void checkAceptarMaquina(){
+		if(colorJugDos == null || colorJugUno == null){
+			JOptionPane.showMessageDialog(this, "Escoja un color de ficha", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}else if(tipoMaquina == null){
+			JOptionPane.showMessageDialog(this,  "Debe escoger una dificultad","ERROR",JOptionPane.ERROR_MESSAGE);
+		}else{
+			prepareElementosConfiguracionTablero();
+		}	
+	}
+	
+	private void escogerColorMaquina(int j){
+		colorJugUno = colorVirus[j];		
+		Random r = new Random();
+		colorJugDos = colorVirus[r.nextInt(3)];
+		while (colorJugDos == colorJugUno){
+			colorJugDos = colorVirus[r.nextInt(3)];
+		}
+	}
 	private void prepareVentanaConfiguracionTablero(){
 		principal.removeAll();
 		principal.updateUI();
@@ -275,7 +296,7 @@ public class PoobthogenGUI extends JFrame{
 		
 		aceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				prepareElementosVentanaJuego();
+				checkConfiguracionTablero();
 			}
 		});
 		
@@ -291,22 +312,73 @@ public class PoobthogenGUI extends JFrame{
 			}
 		});
 		
-		vacio.addActionListener(new ActionListener() {
+		vacioPequeno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int opcion = tableros.getSelectedIndex();
-				System.out.println("jajaja");
-				System.out.println(opcion);
+				try{
+					juego = new Tablero(pequeno[0], pequeno[1], false);
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,(Object)e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
+		vacioMediano.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					juego = new Tablero(mediano[0], mediano[1], false);
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		
+		vacioGrande.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					juego = new Tablero(grande[0], grande[1], false);
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		
+		interrogantePequeno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					juego = new Tablero(pequeno[0], pequeno[1], true);
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		
+		interroganteMediano.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					juego = new Tablero(mediano[0], mediano[1], true);
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		
-		
-		
-		
-		//Faltan acciones para guardar configuracion :D
+		interroganteGrande.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					juego = new Tablero(grande[0], grande[1], true);
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+	}
+	
+	private void checkConfiguracionTablero(){
+		if(juego == null){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this,"Debe escoger una configuracion de tablero", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}else{
+			prepareElementosVentanaJuego();
+		}
 	}
 	
 	private void prepareElementosVentanaJuego(){
@@ -324,7 +396,7 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void prepareContenedoresJuego(){
-		JPanel contenedor = prepareContenedor(new JPanel(), Color.BLACK, "", false); 
+		JPanel contenedor = prepareContenedor(new JPanel(),"", false); 
 		contenedor.setLayout(new GridLayout(1, 4));
 		contenedor.add(prepareTextosBorder("Turnos: "));
 		muestraTurnos = prepareTextosBorder(turnosJuego == -1 ? "Ilimitado" : turnosJuego+"");
@@ -334,21 +406,51 @@ public class PoobthogenGUI extends JFrame{
 		contenedor.add(muestraTiempo);
 		principal.add(contenedor, BorderLayout.PAGE_START);
 		prepareMenuJugador();
+		refresque();
 	}
 	
 	private void prepareMenuJugador(){
-		JPanel menuUno = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel menuUno = prepareContenedor(new JPanel(),"", false);
 		menuUno.setLayout(new GridLayout(4, 1));
 		panelJugUno = menuJugador(menuUno, colorJugUno);
 		principal.add(menuUno, BorderLayout.WEST);
-		JPanel menuDos = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel menuDos = prepareContenedor(new JPanel(),"", false);
 		menuDos.setLayout(new GridLayout(4, 1));
 		panelJugDos = menuJugador(menuDos, colorJugDos);
 		principal.add(menuDos, BorderLayout.EAST);
 	}
 	
 	private void refresque(){
-		
+		tableroJuego = prepareContenedor(new JPanel(), "", false);
+		Border temp = new CompoundBorder(new LineBorder(Color.MAGENTA, 10), new LineBorder(new Color(0f,0f,0f,0f), 30));
+		Border b = new CompoundBorder(new LineBorder(new Color(0f,0f,0f,0f), 50), temp);
+		tableroJuego.setBorder(b);
+		principal.remove(tableroJuego);
+		tableroJuego.setPreferredSize(new Dimension(33*juego.filas(), 33*juego.columnas()));
+		int filas = juego.filas();
+		int columnas = juego.columnas();
+		tableroJuego.setLayout(new GridLayout(filas, columnas));
+		fichasJuego = new RoundButton[filas][columnas];
+		RoundButton t; 
+		for (int i = 0; i < filas; i++){
+			for (int j = 0; j < columnas; j++) {
+				t = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(rutaVirus(juego.getElemento(i, j)))).getImage()));
+				t.setPreferredSize(new Dimension(33*1, 33*1));
+				fichasJuego[i][j] = t;
+				tableroJuego.add(t);
+			}
+		}
+		principal.add(tableroJuego, BorderLayout.CENTER);
+	}
+	private String rutaVirus(Virus v){
+		String ruta;
+		if(v!=null){
+			String[] tipo = v.esDeTipo().split(" ");
+			ruta = "/Presentacion/"+(tipo[1].equals("1")?colorJugUno : tipo[1].equals("2") ? colorJugDos : "neutral")+"/"+tipo[0]+".png"; 
+		}else{
+			ruta = "/Presentacion/neutral/fichaNula.png"; 
+		}
+		return ruta;
 	}
 	
 	private JButton[] menuJugador(JPanel j, String opcion){
@@ -391,7 +493,6 @@ public class PoobthogenGUI extends JFrame{
 		opciones.add(salir);
 		barra.add(opciones);
 	}
-	
 	
 	private void prepareVentanaConfiguracionInicial(){
 		remove(principal);
@@ -436,17 +537,17 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private JPanel preparePanelTurnosTiempo(){
-		JPanel endOfWin = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel endOfWin = prepareContenedor(new JPanel(),"", false);
 		endOfWin.setLayout(new GridLayout(1, 2));
-		JPanel turnosTiempo = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel turnosTiempo = prepareContenedor(new JPanel(),"", false);
 		turnosTiempo.setLayout(new GridLayout(2, 1));
-		JPanel turnos =  prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel turnos =  prepareContenedor(new JPanel(),"", false);
 		turnos.setLayout(new BorderLayout());
 		turnos.add(prepareTextosBorder("Turnos"), BorderLayout.PAGE_START);
 		this.turnos = new JComboBox(cantTurnos);
 		turnos.add(this.turnos, BorderLayout.CENTER);
 		turnosTiempo.add(turnos);
-		JPanel tiempo =  prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel tiempo =  prepareContenedor(new JPanel(),"", false);
 		tiempo.setLayout(new BorderLayout());
 		tiempo.add(prepareTextosBorder("Tiempo"), BorderLayout.PAGE_START);
 		this.tiempo = new JComboBox(cantTiempo);
@@ -457,10 +558,10 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void preparePanelEscogerFicha(){
-		fichasPreJuego = prepareContenedor(new JPanel(), Color.BLACK, "", true);
+		fichasPreJuego = prepareContenedor(new JPanel(), "", true);
 		fichasPreJuego.setLayout(new BorderLayout());
 		fichasPreJuego.add(prepareTextosBorder("Jugadores"), BorderLayout.NORTH);
-		JPanel contenedor = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel contenedor = prepareContenedor(new JPanel(),"", false);
 		contenedor.setLayout(new GridLayout(1, 2));
 		prepareContenedoresFichaUno(contenedor);
 		prepareContenedoresFichaDos(contenedor);
@@ -469,10 +570,10 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void preparePanelEscogerFichaUno(){
-		fichasPreJuego = prepareContenedor(new JPanel(), Color.BLACK, "", true);
+		fichasPreJuego = prepareContenedor(new JPanel(), "", true);
 		fichasPreJuego.setLayout(new BorderLayout());
 		fichasPreJuego.add(prepareTextosBorder("Jugadores"), BorderLayout.NORTH);
-		JPanel contenedor = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel contenedor = prepareContenedor(new JPanel(),"", false);
 		contenedor.setLayout(new GridLayout(1, 1));
 		prepareContenedoresFichaUno(contenedor);
 		prepareContenedoresFichaDosMaquina(contenedor);
@@ -481,10 +582,10 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void prepareContenedoresFichaUno(JPanel contenedor){
-		JPanel fichasUno = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel fichasUno = prepareContenedor(new JPanel(),"", false);
 		fichasUno.setLayout(new BorderLayout());
 		fichasUno.add(prepareTextosBorder("Jugador 1"), BorderLayout.NORTH);
-		jugadorUnoFichas = prepareContenedor(new JPanel(), Color.BLACK, "", true);
+		jugadorUnoFichas = prepareContenedor(new JPanel(), "", true);
 		jugadorUnoFichas.setLayout(new GridLayout(1, 4));
 		panelJugUno = prepareBotonesFichas(jugadorUnoFichas, panelJugUno);
 		fichasUno.add(jugadorUnoFichas, BorderLayout.CENTER);
@@ -492,10 +593,10 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void prepareContenedoresFichaDos(JPanel contenedor){
-		JPanel fichasDos = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel fichasDos = prepareContenedor(new JPanel(),"", false);
 		fichasDos.setLayout(new BorderLayout());
 		fichasDos.add(prepareTextosBorder("Jugador 2"), BorderLayout.NORTH);
-		jugadorDosFichas = prepareContenedor(new JPanel(), Color.BLACK, "", true);
+		jugadorDosFichas = prepareContenedor(new JPanel(),"", true);
 		jugadorDosFichas.setLayout(new GridLayout(1, 4));
 		panelJugDos = prepareBotonesFichas(jugadorDosFichas, panelJugDos);
 		fichasDos.add(jugadorDosFichas, BorderLayout.CENTER);
@@ -503,10 +604,10 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void prepareContenedoresFichaDosMaquina(JPanel contenedor){
-		JPanel fichasDos = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		JPanel fichasDos = prepareContenedor(new JPanel(),"", false);
 		fichasDos.setLayout(new BorderLayout());
 		fichasDos.add(prepareTextosBorder("Jugador 2"), BorderLayout.NORTH);
-		jugadorDosFichas = prepareContenedor(new JPanel(), Color.BLACK, "", true);
+		jugadorDosFichas = prepareContenedor(new JPanel(), "", true);
 		jugadorDosFichas.setLayout(new GridLayout(1, 4));
 		panelJugDos = prepareMaquinaFichas(jugadorDosFichas, panelJugDos);
 		fichasDos.add(jugadorDosFichas, BorderLayout.CENTER);
@@ -521,11 +622,11 @@ public class PoobthogenGUI extends JFrame{
 		return text1;
 	}
 	
-	private JPanel prepareContenedor(JPanel j, Color c, String mensaje, boolean borde){
+	private JPanel prepareContenedor(JPanel j, String mensaje, boolean borde){
 		if (borde){
 			j.setBorder(new CompoundBorder( new EmptyBorder(1, 1, 1, 1), new TitledBorder(mensaje)));
 		}
-		j.setBackground(c);
+		j.setBackground(Color.BLACK);
 		j.setOpaque(false);
 		j.setLayout(new GridLayout(1, 4));
 		j.setForeground(Color.WHITE);
@@ -544,46 +645,46 @@ public class PoobthogenGUI extends JFrame{
 	
 	private JPanel prepareAreaPequeno(String ruta1, String ruta2){
 		areaPequeno = new JPanel();
-		prepareContenedor(areaPequeno,  Color.BLACK, "", false);
+		prepareContenedor(areaPequeno, "", false);
 		areaPequeno.setOpaque(false);
-		vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
-		vacio.setBackground(Color.BLACK);
-		vacio.setOpaque(false);
-		areaPequeno.add(vacio); 
-		interrogante = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		interrogante.setBackground(Color.BLACK);
-		interrogante.setOpaque(false);
-		areaPequeno.add(interrogante);
+		vacioPequeno = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacioPequeno.setBackground(Color.BLACK);
+		vacioPequeno.setOpaque(false);
+		areaPequeno.add(vacioPequeno); 
+		interrogantePequeno = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interrogantePequeno.setBackground(Color.BLACK);
+		interrogantePequeno.setOpaque(false);
+		areaPequeno.add(interrogantePequeno);
 		return areaPequeno;
 	}
 	
 	private JPanel prepareAreaMediano(String ruta1, String ruta2){
 		areaMediano = new JPanel();
-		prepareContenedor(areaMediano, Color.BLACK, "", false);
+		prepareContenedor(areaMediano, "", false);
 		areaMediano.setOpaque(false);
-		vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
-		vacio.setBackground(Color.BLACK);
-		vacio.setOpaque(false);
-		areaMediano.add(vacio); 
-		interrogante = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		interrogante.setBackground(Color.BLACK);
-		interrogante.setOpaque(false);
-		areaMediano.add(interrogante);
+		vacioMediano = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacioMediano.setBackground(Color.BLACK);
+		vacioMediano.setOpaque(false);
+		areaMediano.add(vacioMediano); 
+		interroganteMediano = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interroganteMediano.setBackground(Color.BLACK);
+		interroganteMediano.setOpaque(false);
+		areaMediano.add(interroganteMediano);
 		return areaMediano;
 	}
 	
 	private JPanel prepareAreaGrande(String ruta1, String ruta2){
 		areaGrande = new JPanel();
-		prepareContenedor(areaGrande, Color.BLACK, "", false);
+		prepareContenedor(areaGrande, "", false);
 		areaGrande.setOpaque(false);
-		vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
-		vacio.setBackground(Color.BLACK);
-		vacio.setOpaque(false);
-		areaGrande.add(vacio); 
-		interrogante = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		interrogante.setBackground(Color.BLACK);
-		interrogante.setOpaque(false);
-		areaGrande.add(interrogante);
+		vacioGrande = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacioGrande.setBackground(Color.BLACK);
+		vacioGrande.setOpaque(false);
+		areaGrande.add(vacioGrande); 
+		interroganteGrande = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interroganteGrande.setBackground(Color.BLACK);
+		interroganteGrande.setOpaque(false);
+		areaGrande.add(interroganteGrande);
 		return areaGrande;
 	}
 	
@@ -652,9 +753,7 @@ public class PoobthogenGUI extends JFrame{
 		contenedorBotones.add(creditos);
 		principal.add(contenedorBotones, BorderLayout.PAGE_END);
 	}
-	
-	
-	
+
 	private void preparePantallaNuevoJuego(){
 		remove(principal);
 		principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
@@ -769,6 +868,7 @@ public class PoobthogenGUI extends JFrame{
 			}catch (PoobthogenExcepcion ev){
 				JOptionPane.showMessageDialog(this,(Object)ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
+			prepareElementosVentanaJuego();
 		}else if(eleccion == JOptionPane.NO_OPTION){
 			try{
 				escogerArchivoImportar();
@@ -776,6 +876,10 @@ public class PoobthogenGUI extends JFrame{
 				JOptionPane.showMessageDialog(this,(Object)ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		if (juego != null){
+			prepareElementosVentanaJuego();
+		}
+		
 	}
 	
 	/**

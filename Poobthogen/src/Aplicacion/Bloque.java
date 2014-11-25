@@ -39,4 +39,8 @@ public class Bloque extends Virus implements Serializable{
 		return false;
 	}
 	
+	public String esDeTipo(){
+		return "Bloque "+(jugador != null ? jugador.toString() : 0);
+	}
+	
 }

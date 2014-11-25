@@ -113,8 +113,8 @@ public class Tablero  implements Serializable{
 	 */
 	public void GenerarFichasNeutrales() throws PoobthogenExcepcion{
 		Random r = new Random();
-		int cantidad = r.nextInt((int)((filas*columnas)*0.05));
-		String[] tipos = {"Bloque", "NivelUno", "NivelDos"}; 
+		int cantidad = r.nextInt((int)((filas*columnas)*0.20));
+		String[] tipos = {"NivelUno", "NivelDos", "Bloque"}; 
 		for(int i = 0; i <= cantidad; i++){
 			int posx = r.nextInt(filas-1);
 			int posy = r.nextInt(columnas-1);

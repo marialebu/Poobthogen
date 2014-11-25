@@ -106,4 +106,6 @@ public abstract class Virus implements Serializable{
 	public Jugador getJugador() {
 		return jugador;
 	}
+	
+	public abstract String esDeTipo();
 }
