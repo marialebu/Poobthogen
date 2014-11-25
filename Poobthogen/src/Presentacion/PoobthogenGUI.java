@@ -1,11 +1,17 @@
 package Presentacion;
 
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
+
 import javax.swing.border.*;
+
 import java.util.*;
+
 import Aplicacion.*; 
+
 import java.io.*;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,6 +25,16 @@ public class PoobthogenGUI extends JFrame{
 	private String coloresDos;
 	private final String[] cantTurnos = {"10", "15", "20", "30", "Ilimitado"};
 	private final String[] cantTiempo = {"5 minutos", "10 minutos", "20 minutos", "Ilimitado"};
+	private final int[] pequeno = {6, 6};
+	private final int[] mediano = {8, 8};
+	private final int[] grande = {10,10};
+	private final String[] colorVirus = {"verde", "roja", "amarilla", "azul"};
+	private String colorJugUno;
+	private String colorJugDos;
+	private int turnosJuego = 10;
+	private int tiempoJuego = 300;
+	private String tipoMaquina;
+	private final String[] maquina = {"Timida", "Ofensiva", "Irreflexiva"};
 	
 	private JPanel principal;
 	private JPanel contenedorBotones;
@@ -31,6 +47,9 @@ public class PoobthogenGUI extends JFrame{
 	private JButton dosJugadores;
 	private JButton volver; 
 	
+	private int k;
+	private JButton vacio;
+	private JButton interrogante;
 	private JPanel fichasPreJuego;
 	private JPanel jugadorUnoFichas;
 	private JPanel jugadorDosFichas;
@@ -44,6 +63,15 @@ public class PoobthogenGUI extends JFrame{
 	private JComboBox turnos;
 	private JComboBox tiempo;
 	
+	private JMenuItem guardar;
+	private JMenuItem exportar;
+	private JMenuItem reiniciar;
+	private JMenuItem salir;
+	private JLabel muestraTurnos;
+	private JLabel muestraTiempo;
+	private JPanel tablero;
+	private JButton[] fichas;
+	
 	public PoobthogenGUI(){
 		setTitle("Poobthogen");
 		preparePantalla();
@@ -51,6 +79,7 @@ public class PoobthogenGUI extends JFrame{
 		prepareElementosInicio();	
 		setResizable(false);
 	}
+	
 	/**
 	 * @param args
 	 */
@@ -92,12 +121,12 @@ public class PoobthogenGUI extends JFrame{
 	
 	private void prepareElementosPreJuego(){
 		prepareVentanaConfiguracionInicial();
-		prepareAccionesVentanaConfInicialDos();
+		prepareAccionesVentanaConfInicial();
 	}
 	
 	private void prepareElementosPreJuegoUno(){
 		prepareVentanaConfiguracionInicialUno();
-		prepareAccionesVentanaConfInicialDos();
+		prepareAccionesVentanaConfInicialUno();
 	}
 	
 	private void prepareElementosConfiguracionTablero(){
@@ -105,7 +134,74 @@ public class PoobthogenGUI extends JFrame{
 		prepareAccionesVentanaConfTablero();
 	}
 	
-	private void prepareAccionesVentanaConfInicialDos(){
+	private void prepareAccionesVentanaConfInicial(){
+		aceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				checkAceptar();
+			}
+		});
+		
+		cancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				prepareElementosNuevo();
+			}
+		});
+		
+		for (k = 0; k < panelJugUno.length; k++) {
+			panelJugUno[k].addActionListener(new ActionListener() {
+				final int j = k;
+				public void actionPerformed(ActionEvent arg0) {
+					colorJugUno = colorVirus[j];			
+				}
+			});
+		}
+		
+		for (k = 0; k < panelJugDos.length; k++) {
+			panelJugDos[k].addActionListener(new ActionListener() {
+				final int j = k;
+				public void actionPerformed(ActionEvent arg0) {
+					colorJugDos = colorVirus[j];			
+				}
+			});
+		}
+
+		turnos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				String eleccion = (String)comboBox.getSelectedItem();
+				turnosJuego = eleccion == "Ilimitado" ? -1 : Integer.parseInt(eleccion);
+			}
+		});
+		
+		tiempo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				String eleccion = (String)comboBox.getSelectedItem();
+				establecerTiempo(eleccion);
+			}
+		});
+	}
+	
+	private void checkAceptar(){
+		if(colorJugDos == null || colorJugUno == null){
+			JOptionPane.showMessageDialog(this, "Escoja un color de ficha", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}else if(colorJugDos == colorJugUno){
+			JOptionPane.showMessageDialog(this,  "Los colores de los jugadores deben ser diferentes","ERROR",JOptionPane.ERROR_MESSAGE);
+		}else{
+			prepareElementosConfiguracionTablero();
+		}
+	}
+	
+	private void establecerTiempo(String eleccion){
+		if(eleccion=="Ilimitado"){
+			tiempoJuego = -1;
+		}else{
+			String[] temporal = eleccion.split(" ");
+			tiempoJuego = Integer.parseInt(temporal[0])*60;
+		}
+	}
+	
+	private void prepareAccionesVentanaConfInicialUno(){
 		aceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				prepareElementosConfiguracionTablero();
@@ -115,6 +211,40 @@ public class PoobthogenGUI extends JFrame{
 		cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				prepareElementosNuevo();
+			}
+		});
+		
+		for (k = 0; k < panelJugUno.length; k++) {
+			panelJugUno[k].addActionListener(new ActionListener() {
+				final int j = k;
+				public void actionPerformed(ActionEvent arg0) {
+					colorJugUno = colorVirus[j];			
+				}
+			});
+		}
+		
+		for (k = 0; k < maquina.length; k++) {
+			panelJugDos[k].addActionListener(new ActionListener() {
+				final int j = k;
+				public void actionPerformed(ActionEvent arg0) {
+					tipoMaquina = maquina[j];			
+				}
+			});
+		}
+		
+		turnos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				String eleccion = (String)comboBox.getSelectedItem();
+				turnosJuego = eleccion == "Ilimitado" ? -1 : Integer.parseInt(eleccion);
+			}
+		});
+		
+		tiempo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				String eleccion = (String)comboBox.getSelectedItem();
+				establecerTiempo(eleccion);
 			}
 		});
 		
@@ -131,7 +261,7 @@ public class PoobthogenGUI extends JFrame{
 		principal.add(tableros, BorderLayout.CENTER);
 		contenedorBotones = new JPanel();
 		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		contenedorBotones.setBackground(Color.BLACK);
 		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(aceptar);
 		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
@@ -161,6 +291,21 @@ public class PoobthogenGUI extends JFrame{
 			}
 		});
 		
+		vacio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int opcion = tableros.getSelectedIndex();
+				System.out.println("jajaja");
+				System.out.println(opcion);
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
 		//Faltan acciones para guardar configuracion :D
 	}
 	
@@ -169,11 +314,84 @@ public class PoobthogenGUI extends JFrame{
 		preparePantallaJuego();
 	}
 	private void prepareVentanaJuego(){
+		prepareMenu();
+		remove(principal);
 		JOptionPane.showMessageDialog(this, "Bienvenido a Poobthogen\nEl juego esta por comenzar.");
-		principal.removeAll();
-		principal.updateUI();
-		principal.setLayout(new GridLayout(2,1));
+		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
+		add(principal);
+		principal.setLayout(new BorderLayout());
+		prepareContenedoresJuego();
 	}
+	
+	private void prepareContenedoresJuego(){
+		JPanel contenedor = prepareContenedor(new JPanel(), Color.BLACK, "", false); 
+		contenedor.setLayout(new GridLayout(1, 4));
+		contenedor.add(prepareTextosBorder("Turnos: "));
+		muestraTurnos = prepareTextosBorder(turnosJuego == -1 ? "Ilimitado" : turnosJuego+"");
+		contenedor.add(muestraTurnos);
+		contenedor.add(prepareTextosBorder("Tiempo: "));
+		muestraTiempo = prepareTextosBorder(tiempoJuego == -1 ? "Ilimitado" : tiempoJuego+"");
+		contenedor.add(muestraTiempo);
+		principal.add(contenedor, BorderLayout.PAGE_START);
+		prepareMenuJugador();
+	}
+	
+	private void prepareMenuJugador(){
+		JPanel menuUno = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		menuUno.setLayout(new GridLayout(4, 1));
+		panelJugUno = menuJugador(menuUno, colorJugUno);
+		principal.add(menuUno, BorderLayout.WEST);
+		JPanel menuDos = prepareContenedor(new JPanel(), Color.BLACK, "", false);
+		menuDos.setLayout(new GridLayout(4, 1));
+		panelJugDos = menuJugador(menuDos, colorJugDos);
+		principal.add(menuDos, BorderLayout.EAST);
+	}
+	
+	private void refresque(){
+		
+	}
+	
+	private JButton[] menuJugador(JPanel j, String opcion){
+		JButton[] arreglo = new JButton[4];
+		arreglo[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelUno.png")).getImage()));
+		arreglo[0].setBackground(Color.BLACK);
+		arreglo[0].setOpaque(false);
+		arreglo[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelDos.png")).getImage()));
+		arreglo[1].setBackground(Color.BLACK);
+		arreglo[1].setOpaque(false);
+		arreglo[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelTres.png")).getImage()));
+		arreglo[2].setBackground(Color.BLACK);
+		arreglo[2].setOpaque(false);
+		arreglo[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/Destructor.png")).getImage()));
+		arreglo[3].setBackground(Color.BLACK);
+		arreglo[3].setOpaque(false);
+		for (JButton b : arreglo){
+			j.add(b);
+		}
+		return arreglo;
+	}
+	
+	private void prepareMenu(){
+		JMenuBar barra = new JMenuBar();
+		setJMenuBar(barra);
+		JMenu opciones = new JMenu("Opciones");
+		opciones.setFont(f);
+		guardar = new JMenuItem("Guardar");
+		guardar.setFont(f);
+		exportar = new JMenuItem("Exportar");
+		exportar.setFont(f);
+		reiniciar = new JMenuItem("Reiniciar");
+		reiniciar.setFont(f);
+		salir = new JMenuItem("Salir");
+		salir.setFont(f);
+		opciones.add(guardar);
+		opciones.add(exportar);
+		opciones.add(new JSeparator());
+		opciones.add(reiniciar);
+		opciones.add(salir);
+		barra.add(opciones);
+	}
+	
 	
 	private void prepareVentanaConfiguracionInicial(){
 		remove(principal);
@@ -187,7 +405,7 @@ public class PoobthogenGUI extends JFrame{
 		JPanel endOfWin = preparePanelTurnosTiempo();
 		contenedorBotones = new JPanel();
 		contenedorBotones.setLayout(new GridLayout(2, 1));
-		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		contenedorBotones.setBackground(Color.BLACK);
 		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(aceptar);
 		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
@@ -208,7 +426,7 @@ public class PoobthogenGUI extends JFrame{
 		JPanel endOfWin = preparePanelTurnosTiempo();
 		contenedorBotones = new JPanel();
 		contenedorBotones.setLayout(new GridLayout(2, 1));
-		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		contenedorBotones.setBackground(Color.BLACK);
 		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(aceptar);
 		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
@@ -268,7 +486,7 @@ public class PoobthogenGUI extends JFrame{
 		fichasUno.add(prepareTextosBorder("Jugador 1"), BorderLayout.NORTH);
 		jugadorUnoFichas = prepareContenedor(new JPanel(), Color.BLACK, "", true);
 		jugadorUnoFichas.setLayout(new GridLayout(1, 4));
-		prepareBotonesFichas(jugadorUnoFichas);
+		panelJugUno = prepareBotonesFichas(jugadorUnoFichas, panelJugUno);
 		fichasUno.add(jugadorUnoFichas, BorderLayout.CENTER);
 		contenedor.add(fichasUno);
 	}
@@ -279,7 +497,7 @@ public class PoobthogenGUI extends JFrame{
 		fichasDos.add(prepareTextosBorder("Jugador 2"), BorderLayout.NORTH);
 		jugadorDosFichas = prepareContenedor(new JPanel(), Color.BLACK, "", true);
 		jugadorDosFichas.setLayout(new GridLayout(1, 4));
-		prepareBotonesFichas(jugadorDosFichas);
+		panelJugDos = prepareBotonesFichas(jugadorDosFichas, panelJugDos);
 		fichasDos.add(jugadorDosFichas, BorderLayout.CENTER);
 		contenedor.add(fichasDos);
 	}
@@ -290,7 +508,7 @@ public class PoobthogenGUI extends JFrame{
 		fichasDos.add(prepareTextosBorder("Jugador 2"), BorderLayout.NORTH);
 		jugadorDosFichas = prepareContenedor(new JPanel(), Color.BLACK, "", true);
 		jugadorDosFichas.setLayout(new GridLayout(1, 4));
-		prepareMaquinaFichas(jugadorDosFichas);
+		panelJugDos = prepareMaquinaFichas(jugadorDosFichas, panelJugDos);
 		fichasDos.add(jugadorDosFichas, BorderLayout.CENTER);
 		contenedor.add(fichasDos);
 	}
@@ -318,98 +536,100 @@ public class PoobthogenGUI extends JFrame{
 	private void prepareMenuTableros(){
 		tableros = new JTabbedPane();
 		tableros.setFont(f);
-		tableros.add("Pequeño", prepareAreaPequeno("/Presentacion/imagenes/pathogenMap.jpg ","/Presentacion/imagenes/interrogante.jpg"));
-		tableros.add("Mediano", prepareAreaMediano("/Presentacion/imagenes/pathogenMap.jpg ","/Presentacion/imagenes/interrogante.jpg"));
-		tableros.add("Grande", prepareAreaGrande("/Presentacion/imagenes/pathogenMap.jpg", "/Presentacion/imagenes/interrogante.jpg"));
+		tableros.addTab("Pequeño", prepareAreaPequeno("/Presentacion/imagenes/pathogenMap.jpg ","/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Mediano", prepareAreaMediano("/Presentacion/imagenes/pathogenMap.jpg ","/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Grande", prepareAreaGrande("/Presentacion/imagenes/pathogenMap.jpg", "/Presentacion/imagenes/interrogante.png"));
 		principal.add(tableros);
 	}
 	
 	private JPanel prepareAreaPequeno(String ruta1, String ruta2){
 		areaPequeno = new JPanel();
-		prepareContenedor(areaPequeno,  new Color(0f, 0f, 0f, 0.1f), "", false);
+		prepareContenedor(areaPequeno,  Color.BLACK, "", false);
 		areaPequeno.setOpaque(false);
-		JButton vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
 		vacio.setBackground(Color.BLACK);
 		vacio.setOpaque(false);
 		areaPequeno.add(vacio); 
-		JButton j = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		j.setBackground(Color.BLACK);
-		j.setOpaque(false);
-		areaPequeno.add(j);
+		interrogante = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interrogante.setBackground(Color.BLACK);
+		interrogante.setOpaque(false);
+		areaPequeno.add(interrogante);
 		return areaPequeno;
 	}
 	
 	private JPanel prepareAreaMediano(String ruta1, String ruta2){
 		areaMediano = new JPanel();
-		prepareContenedor(areaMediano, new Color(0f, 0f, 0f, 0.1f), "", false);
+		prepareContenedor(areaMediano, Color.BLACK, "", false);
 		areaMediano.setOpaque(false);
-		JButton vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
 		vacio.setBackground(Color.BLACK);
 		vacio.setOpaque(false);
 		areaMediano.add(vacio); 
-		JButton j = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		j.setBackground(Color.BLACK);
-		j.setOpaque(false);
-		areaMediano.add(j);
+		interrogante = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interrogante.setBackground(Color.BLACK);
+		interrogante.setOpaque(false);
+		areaMediano.add(interrogante);
 		return areaMediano;
 	}
 	
 	private JPanel prepareAreaGrande(String ruta1, String ruta2){
 		areaGrande = new JPanel();
-		prepareContenedor(areaGrande, new Color(0f, 0f, 0f, 0.1f), "", false);
+		prepareContenedor(areaGrande, Color.BLACK, "", false);
 		areaGrande.setOpaque(false);
-		JButton vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
+		vacio = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta1)).getImage()));
 		vacio.setBackground(Color.BLACK);
 		vacio.setOpaque(false);
 		areaGrande.add(vacio); 
-		JButton j = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
-		j.setBackground(Color.BLACK);
-		j.setOpaque(false);
-		areaGrande.add(j);
+		interrogante = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interrogante.setBackground(Color.BLACK);
+		interrogante.setOpaque(false);
+		areaGrande.add(interrogante);
 		return areaGrande;
 	}
 	
-	private void prepareBotonesFichas(JPanel j){
-		panelJugUno = new JButton[4];
-		panelJugUno[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
-		panelJugUno[0].setBackground(Color.BLACK);
-		panelJugUno[0].setOpaque(false);
-		panelJugUno[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
-		panelJugUno[1].setBackground(Color.BLACK);
-		panelJugUno[1].setOpaque(false);
-		panelJugUno[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
-		panelJugUno[2].setBackground(Color.BLACK);
-		panelJugUno[2].setOpaque(false);
-		panelJugUno[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
-		panelJugUno[3].setBackground(Color.BLACK);
-		panelJugUno[3].setOpaque(false);
-		for (JButton b : panelJugUno){
+	private JButton[] prepareBotonesFichas(JPanel j, JButton[] arreglo){
+		arreglo = new JButton[4];
+		arreglo[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
+		arreglo[0].setBackground(Color.BLACK);
+		arreglo[0].setOpaque(false);
+		arreglo[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
+		arreglo[1].setBackground(Color.BLACK);
+		arreglo[1].setOpaque(false);
+		arreglo[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
+		arreglo[2].setBackground(Color.BLACK);
+		arreglo[2].setOpaque(false);
+		arreglo[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
+		arreglo[3].setBackground(Color.BLACK);
+		arreglo[3].setOpaque(false);
+		for (JButton b : arreglo){
 			j.add(b);
 		}
+		return arreglo;
 	}
 	
-	private void prepareMaquinaFichas(JPanel j){
+	private JButton[] prepareMaquinaFichas(JPanel j, JButton[] arreglo){
 		f = new Font("Century Gothic", Font.PLAIN, 12);
-		panelJugUno = new JButton[3];
-		panelJugUno[0] = new RoundButton("Timida");
-		panelJugUno[0].setBackground(Color.BLACK);
-		panelJugUno[0].setOpaque(false);
-		panelJugUno[0].setFont(f);
-		panelJugUno[0].setForeground(Color.WHITE);
-		panelJugUno[1] = new RoundButton("Ofensiva");
-		panelJugUno[1].setBackground(Color.BLACK);
-		panelJugUno[1].setOpaque(false);
-		panelJugUno[1].setFont(f);
-		panelJugUno[1].setForeground(Color.WHITE);
-		panelJugUno[2] = new RoundButton("Irreflexiva");
-		panelJugUno[2].setBackground(Color.BLACK);
-		panelJugUno[2].setOpaque(false);
-		panelJugUno[2].setFont(f);
-		panelJugUno[2].setForeground(Color.WHITE);
-		for (JButton b : panelJugUno){
+		arreglo = new JButton[3];
+		arreglo[0] = new RoundButton("Timida");
+		arreglo[0].setBackground(Color.BLACK);
+		arreglo[0].setOpaque(false);
+		arreglo[0].setFont(f);
+		arreglo[0].setForeground(Color.WHITE);
+		arreglo[1] = new RoundButton("Ofensiva");
+		arreglo[1].setBackground(Color.BLACK);
+		arreglo[1].setOpaque(false);
+		arreglo[1].setFont(f);
+		arreglo[1].setForeground(Color.WHITE);
+		arreglo[2] = new RoundButton("Irreflexiva");
+		arreglo[2].setBackground(Color.BLACK);
+		arreglo[2].setOpaque(false);
+		arreglo[2].setFont(f);
+		arreglo[2].setForeground(Color.WHITE);
+		for (JButton b : arreglo){
 			j.add(b);
 		}
 		f = new Font("Century Gothic", Font.PLAIN, 20);
+		return arreglo;
 	}
 	
 	private void preparePantallaInicio(){
@@ -422,7 +642,7 @@ public class PoobthogenGUI extends JFrame{
 		Dimension tam = this.getContentPane().getSize();
 		contenedorBotones = new JPanel();
 		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		contenedorBotones.setBackground(Color.BLACK);
 		f = new Font("Century Gothic", Font.PLAIN, 20);
 		juegoNuevo = creaBoton(0, 0,"Juego Nuevo",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(juegoNuevo);
@@ -445,7 +665,7 @@ public class PoobthogenGUI extends JFrame{
 		Dimension tam = this.getContentPane().getSize();
 		contenedorBotones = new JPanel();
 		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(new Color(0f, 0f, 0f, 0.1f));
+		contenedorBotones.setBackground(Color.BLACK);
 		unJugador = creaBoton(0, 0,"Un jugador",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(unJugador);
 		dosJugadores = creaBoton(0, 0,"Dos jugadores",tam.height-50, tam.width-50, f);
