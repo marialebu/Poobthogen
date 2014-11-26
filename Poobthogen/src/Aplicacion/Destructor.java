@@ -42,6 +42,6 @@ public class Destructor extends Virus implements Serializable{
 	}
 	
 	public String esDeTipo(){
-		return "Destructor "+(jugador != null ? jugador.toString() : 0);
+		return null;
 	}
 }

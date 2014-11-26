@@ -79,6 +79,11 @@ public class Tablero  implements Serializable{
 	 * @param j Posicion en j en el tablero. 
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
@@ -96,7 +101,7 @@ public class Tablero  implements Serializable{
 			}
 		}catch (InstantiationException  | ClassNotFoundException e){
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
-		}catch (Exception e){
+		}catch (IllegalAccessException | IllegalArgumentException| InvocationTargetException| NoSuchMethodException| SecurityException e){
 			e.printStackTrace();
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+" "+e.getMessage());
 		}
@@ -256,6 +261,10 @@ public class Tablero  implements Serializable{
 		return e;
 	}
 	
+	public Jugador getJugador(int indice){
+		return jugadores.get(indice);
+	}
+	
 	/**
 	 * Consulta la cantidad de filas del tablero. 
 	 * @return Cantidad de filas. 
@@ -273,7 +282,10 @@ public class Tablero  implements Serializable{
 
 	public void setEvolucionTemporal(int x, int y) {
 		TurnoEvolucionados[x][y] = true;
-		
 	}	
+	
+	public boolean getTurno(){
+		return turno;
+	}
 	
 }

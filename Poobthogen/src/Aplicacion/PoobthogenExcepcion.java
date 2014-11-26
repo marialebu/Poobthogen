@@ -19,7 +19,7 @@ public class PoobthogenExcepcion extends Exception{
 	public static final String  ERROR_INESPERADO = "Se ha generado un error inesperado.";
 	public static final String  ACCION_NO_PERMITIDA = "No se puede realizar esa accion";
 	public static final String JUEGO_TERMINADO = "No se puede realizar mas movimientos";
-	
+	public static final String ESCOJA_VIRUS = "Primero debe escoger el virus que quiere agregar";
 	
 	public PoobthogenExcepcion(String mensaje){
 		super(mensaje); 

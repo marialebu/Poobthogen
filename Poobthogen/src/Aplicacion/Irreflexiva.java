@@ -2,8 +2,8 @@ package Aplicacion;
 
 public class Irreflexiva extends Maquina{
 
-	public Irreflexiva(char id) throws PoobthogenExcepcion {
-		super(id);
+	public Irreflexiva(char id, Tablero t) throws PoobthogenExcepcion {
+		super(id, t);
 		// TODO Auto-generated constructor stub
 	}
 

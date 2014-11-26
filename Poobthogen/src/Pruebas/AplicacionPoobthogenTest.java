@@ -34,8 +34,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelUno", true);
 			assertEquals("Deberian ser iguales", prueba, t.obtener());
     	}catch (PoobthogenExcepcion e){
@@ -54,8 +54,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "U1", "U1", "U1", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelUno", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelUno", true);
@@ -80,8 +80,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "U1", "U1", "U1", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelUno", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelUno", true);
@@ -106,8 +106,8 @@ public class AplicacionPoobthogenTest{
     		{"-","U1","D1","U1","-"},
     		{"-", "-","U1","-","-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelUno", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelUno", true);
@@ -133,8 +133,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	        	Tablero t = new Tablero(5, 5, false);
-	        	t.agregaJugador(new Jugador('1'));
-	    		t.agregaJugador(new Jugador('2'));
+	        	t.agregaJugador(new Jugador('1', t));
+				t.agregaJugador(new Jugador('2', t));
 	    		t.agregarElemento(1, 2, 2, "NivelUno", true);
 	    		t.cambiarTurno();
 	    		t.agregarElemento(1, 2, 1, "NivelUno", true);
@@ -159,8 +159,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	        	Tablero t = new Tablero(5, 5, false);
-	        	t.agregaJugador(new Jugador('1'));
-	    		t.agregaJugador(new Jugador('2'));
+	        	t.agregaJugador(new Jugador('1', t));
+				t.agregaJugador(new Jugador('2', t));
 	    		t.agregarElemento(1, 2, 2, "NivelUno", true);
 	    		t.cambiarTurno();
 	    		t.agregarElemento(1, 2, 1, "NivelUno", true);
@@ -186,8 +186,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "U2", "U2", "U2", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelUno", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelUno", true);
@@ -212,8 +212,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "U1", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelDos", true);
 			assertEquals("Deberian ser iguales", prueba, t.obtener());
     	}catch (PoobthogenExcepcion e){
@@ -232,8 +232,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelDos", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelDos", true);
@@ -258,8 +258,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelDos", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelDos", true);
@@ -284,8 +284,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "U1", "U1", "U1", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelDos", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelDos", true);
@@ -309,8 +309,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	        	Tablero t = new Tablero(5, 5, false);
-	        	t.agregaJugador(new Jugador('1'));
-	    		t.agregaJugador(new Jugador('2'));
+	        	t.agregaJugador(new Jugador('1', t));
+				t.agregaJugador(new Jugador('2', t));
 	    		t.agregarElemento(1, 2, 2, "NivelDos", true);
 	    		t.cambiarTurno();
 	    		t.agregarElemento(1, 2, 1, "NivelDos", true);
@@ -336,8 +336,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	        	Tablero t = new Tablero(5, 5, false);
-	        	t.agregaJugador(new Jugador('1'));
-	    		t.agregaJugador(new Jugador('2'));
+	        	t.agregaJugador(new Jugador('1', t));
+				t.agregaJugador(new Jugador('2', t));
 	    		t.agregarElemento(1, 2, 2, "NivelDos", true);
 	    		t.cambiarTurno();
 	    		t.agregarElemento(1, 2, 1, "NivelDos", true);
@@ -363,8 +363,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "U1", "D1", "U1", "-"},
     			{"-", "-", "U1", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			assertEquals("Deberian ser iguales", prueba, t.obtener());
     	}catch (PoobthogenExcepcion e){
@@ -383,8 +383,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelTres", true);
@@ -409,8 +409,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelTres", true);
@@ -435,8 +435,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelTres", true);
@@ -461,8 +461,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelTres", true);
@@ -487,8 +487,8 @@ public class AplicacionPoobthogenTest{
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 1, "NivelTres", true);
@@ -515,8 +515,8 @@ public class AplicacionPoobthogenTest{
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
-	    	t.agregaJugador(new Jugador('1'));
-			t.agregaJugador(new Jugador('2'));
+	    	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
 			t.agregarElemento(1, 2, 2, "NivelUno", true);
 			t.agregarElemento(1, 2, 2, "Destructor", true);
 			t.agregarElemento(1, 2, 2, "NivelUno", true);

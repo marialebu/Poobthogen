@@ -2,9 +2,11 @@ package Pruebas;
 
 import Aplicacion.*; 
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.*;
  
 public class ArchivosPoobthogenTest{
@@ -30,8 +32,8 @@ public class ArchivosPoobthogenTest{
         Tablero t = new Tablero(1, 1,-1);
         File archivo = new File("archivo.dat");
         try{
-            t.agregaJugador(new Jugador('1'));
-            t.agregaJugador(new Jugador('2'));
+        	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
             t.agregarElemento(1, 0, 0, "NivelDos", false);
             PoobthogenArchivos.guardar(archivo, t); 
         }catch(Exception e){
@@ -111,8 +113,8 @@ public class ArchivosPoobthogenTest{
         Tablero t = new Tablero(1, 1,-1);
         File archivo = new File("archivo.dat");
         try{
-            t.agregaJugador(new Jugador('1'));
-            t.agregaJugador(new Jugador('2'));
+        	t.agregaJugador(new Jugador('1', t));
+			t.agregaJugador(new Jugador('2', t));
             t.agregarElemento(1, 0, 0, "NivelDos", false);
             PoobthogenArchivos.guardar(archivo, d); 
             Tablero n = PoobthogenArchivos.abrir(archivo); 
