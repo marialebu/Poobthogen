@@ -23,5 +23,4 @@ public class Jugador implements Serializable{
 		return identificador+""; 
 	}
 	
-
 }

@@ -19,7 +19,7 @@ public class PoobthogenGUI extends JFrame{
 	
 	private Tablero juego;
 	private boolean tipoDeJuego;
-	//private Color turnos;
+	private HashMap<String, Color> colores;
 	private JButton[] panelJugUno;
 	private JButton[] panelJugDos;
 	private final String[] cantTurnos = {"10", "15", "20", "30", "Ilimitado"};
@@ -77,20 +77,29 @@ public class PoobthogenGUI extends JFrame{
 	private JButton[] fichas;
 	private JPanel tableroJuego;
 	
-	public PoobthogenGUI(){
-		setTitle("Poobthogen");
-		preparePantalla();
-		f = new Font("Century Gothic", Font.PLAIN, 20);
-		prepareElementosInicio();	
-		setResizable(false);
-	}
-	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		PoobthogenGUI juego  = new PoobthogenGUI();
 		juego.setVisible(true);
+	}
+	
+	public PoobthogenGUI(){
+		setTitle("Poobthogen");
+		preparePantalla();
+		f = new Font("Century Gothic", Font.PLAIN, 20);
+		prepareElementosInicio();	
+		setResizable(false);
+		colores = new HashMap<String, Color>();
+		inicializaColores();
+	}
+	
+	private void inicializaColores(){
+		colores.put("amarillo", new Color(221,172,69));
+		colores.put("verde", new Color(100,203,176));
+		colores.put("rojo", new Color(225,65,129));
+		colores.put("azul", new Color(91,104,206));	
 	}
 	
 	/**
@@ -193,7 +202,11 @@ public class PoobthogenGUI extends JFrame{
 		}else if(colorJugDos == colorJugUno){
 			JOptionPane.showMessageDialog(this,  "Los colores de los jugadores deben ser diferentes","ERROR",JOptionPane.ERROR_MESSAGE);
 		}else{
-			prepareElementosConfiguracionTablero();
+			if(juego == null){
+				prepareElementosConfiguracionTablero();
+			}else{
+				prepareElementosVentanaJuego();
+			}	
 		}
 	}
 	
@@ -384,7 +397,36 @@ public class PoobthogenGUI extends JFrame{
 	private void prepareElementosVentanaJuego(){
 		prepareVentanaJuego();
 		preparePantallaJuego();
+		prepareAccionesJuego();
 	}
+	private void prepareAccionesJuego(){
+		guardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					archivoNuevo();
+				}catch (Exception ev){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		exportar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					archivoNuevoExportar();
+				}catch (PoobthogenExcepcion ev){
+					JOptionPane.showMessageDialog(PoobthogenGUI.this,ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salga();
+			}
+		});
+	}
+	
 	private void prepareVentanaJuego(){
 		prepareMenu();
 		remove(principal);
@@ -422,11 +464,10 @@ public class PoobthogenGUI extends JFrame{
 	
 	private void refresque(){
 		tableroJuego = prepareContenedor(new JPanel(), "", false);
-		Border temp = new CompoundBorder(new LineBorder(Color.MAGENTA, 10), new LineBorder(new Color(0f,0f,0f,0f), 30));
+		Border temp = new CompoundBorder(new LineBorder(colores.get(colorJugUno), 10), new LineBorder(new Color(0f,0f,0f,0f), 30));
 		Border b = new CompoundBorder(new LineBorder(new Color(0f,0f,0f,0f), 50), temp);
 		tableroJuego.setBorder(b);
 		principal.remove(tableroJuego);
-		tableroJuego.setPreferredSize(new Dimension(33*juego.filas(), 33*juego.columnas()));
 		int filas = juego.filas();
 		int columnas = juego.columnas();
 		tableroJuego.setLayout(new GridLayout(filas, columnas));
@@ -435,7 +476,6 @@ public class PoobthogenGUI extends JFrame{
 		for (int i = 0; i < filas; i++){
 			for (int j = 0; j < columnas; j++) {
 				t = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(rutaVirus(juego.getElemento(i, j)))).getImage()));
-				t.setPreferredSize(new Dimension(33*1, 33*1));
 				fichasJuego[i][j] = t;
 				tableroJuego.add(t);
 			}
@@ -868,7 +908,6 @@ public class PoobthogenGUI extends JFrame{
 			}catch (PoobthogenExcepcion ev){
 				JOptionPane.showMessageDialog(this,(Object)ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
-			prepareElementosVentanaJuego();
 		}else if(eleccion == JOptionPane.NO_OPTION){
 			try{
 				escogerArchivoImportar();
@@ -877,9 +916,8 @@ public class PoobthogenGUI extends JFrame{
 			}
 		}
 		if (juego != null){
-			prepareElementosVentanaJuego();
+			prepareElementosPreJuego();
 		}
-		
 	}
 	
 	/**
@@ -892,6 +930,19 @@ public class PoobthogenGUI extends JFrame{
 		File e = fileChooser.getSelectedFile();
 		if (returnV == fileChooser.APPROVE_OPTION){
 			PoobthogenArchivos.guardar(e, juego); 
+		}
+	}
+	
+	/**
+	 *Crea un nuevo archivo para salvar mostrando una ventana para crearlo. 
+	 *@throws E8oMasExcepcion
+	 */
+	private void archivoNuevoExportar() throws PoobthogenExcepcion{
+		JFileChooser fileChooser = new JFileChooser(); 
+		int returnV = fileChooser.showSaveDialog(this);
+		File e = fileChooser.getSelectedFile();
+		if (returnV == fileChooser.APPROVE_OPTION){
+			PoobthogenArchivos.exportar(e, juego); 
 		}
 	}
 	
