@@ -103,15 +103,6 @@ public class Tablero  implements Serializable{
 		return verificar();
 	}
 	
-	private Virus[][] copiaTablero(){
-		Virus[][] temporal = new Virus[filas][columnas];
-		for (int i = 0; i < filas; i++) {
-			for (int j = 0; j < columnas; j++) {
-				temporal [i][j] = elementos[i][j];		
-			}
-		}
-		return temporal;
-	}
 	/**Termina el juego. 
 	 */
 	public void finish(){
@@ -265,6 +256,11 @@ public class Tablero  implements Serializable{
 		return e;
 	}
 	
+	/**
+	 * Consulta un jugador 
+	 * @param indice Puede ser 1 o 2, dependiendo del jugador. 
+	 * @return El jugador 1 o 2 segun lo solicitado.  
+	 */
 	public Jugador getJugador(int indice){
 		return jugadores.get(indice);
 	}
@@ -283,10 +279,15 @@ public class Tablero  implements Serializable{
 	public int columnas(){
 		return columnas;
 	}
+	
 	public void setEvolucionTemporal(int x, int y) {
 		TurnoEvolucionados[x][y] = true;
 	}	
 	
+	/**
+	 * Consulta quien esta jugando actualmente
+	 * @return Retorna verdadero si juega el uno o falso si juega el dos. 
+	 */
 	public boolean getTurno(){
 		return turno;
 	}

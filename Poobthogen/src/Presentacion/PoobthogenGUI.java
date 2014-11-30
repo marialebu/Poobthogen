@@ -28,6 +28,8 @@ public class PoobthogenGUI extends JFrame{
 	private final String[] MAQUINA = {"Timida", "Ofensiva", "Irreflexiva"};
 	private final String[] TIPOS_VIRUS = {"NivelUno", "NivelDos", "NivelTres", "Destructor"};
 	private final String[] JUGADORES = {"Jugador uno", "Jugador dos"};
+	private int x;
+	private int y;
 	
 	private Tablero juego;
 	private Jugador jugadorUno;
@@ -107,8 +109,8 @@ public class PoobthogenGUI extends JFrame{
 	
 	public PoobthogenGUI(){
 		setTitle("Poobthogen");
-		preparePantalla();
 		f = new Font("Century Gothic", Font.PLAIN, 20);
+		preparePantalla();
 		prepareElementosInicio();	
 		setResizable(false);
 		colores = new HashMap<String, Color>();
@@ -139,13 +141,18 @@ public class PoobthogenGUI extends JFrame{
 		prepareAccionesNuevo();
 	}
 	
+	private void configureTamañoPantalla(){
+		 setSize(x, y);
+	     setLocation(x/2-50, y/2-100);
+	}
+	
 	private void preparePantalla(){
 		Dimension screen  = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screen.width - getSize().width) / 2+50; 
-        int y = (screen.height - getSize().height) / 2+100; 
+        x = (screen.width - getSize().width) / 2+50; 
+        y = (screen.height - getSize().height) / 2+100; 
         setSize(x, y);
         setLocation(x/2-50, y/2-100);
-        principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
+		principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
         add(principal);
 	}
 	
@@ -346,7 +353,7 @@ public class PoobthogenGUI extends JFrame{
 		principal.updateUI();
 		Dimension tam = this.getContentPane().getSize();
 		principal.setLayout(new BorderLayout());
-		principal.add(prepareTextosBorder("Configuraciï¿½n de tablero"), BorderLayout.PAGE_START);
+		principal.add(prepareTextosBorder("Configuracion de tablero"), BorderLayout.PAGE_START);
 		prepareMenuTableros();
 		principal.add(tableros, BorderLayout.CENTER);
 		contenedorBotones = new JPanel();
@@ -640,15 +647,16 @@ public class PoobthogenGUI extends JFrame{
 						try{
 							boolean gana = jugar(i, j);
 							if(!gana && turnosJuego != 0){
+								refresque();
 								turnosJuego--;
 								refresqueTurnos(contenedor);
-								refresque();
 							}else{
 								int ganadorJuego = juego.determinaGanador(); 
 								ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
 								prepareElementosGanadorJuego();
 							}
 						}catch (PoobthogenExcepcion e){
+							refresque();
 							JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 						}
 					}
@@ -665,12 +673,18 @@ public class PoobthogenGUI extends JFrame{
 	private void prepareAccionesVentanaGanador(){
 		revancha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				juego = null;
+				configureTamañoPantalla();
 				prepareElementosPreJuego();
 			}
 		});
 		
 		volverAlMenuPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				remove(principal);
+				principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
+		        add(principal);
+		        configureTamañoPantalla();
 				prepareElementosInicio();
 			}
 		});
@@ -685,6 +699,7 @@ public class PoobthogenGUI extends JFrame{
 	}
 	private void prepareVentanaGanadorJuego(){
 		timer.stop();
+		refresque();
 		JOptionPane.showMessageDialog(this,  ganador!= null ? "Ha ganado el jugador: "+ganador.toString() : "Empate");
 		remove(principal);
 		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
