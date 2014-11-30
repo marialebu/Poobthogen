@@ -41,7 +41,7 @@ public abstract class Virus implements Serializable{
 		return res;
 	}
 	
-	/*
+	/**
 	 * Evolucionar vecinos
 	 */
 	protected void evolucionarVecinos(boolean evoluciona, Jugador j) throws PoobthogenExcepcion{

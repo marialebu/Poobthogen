@@ -72,7 +72,7 @@ public class PoobthogenArchivos {
 				}
 				ArrayList<String> elemento = new ArrayList<String>();
 				int[] filCol = cuenta(elemento);
-				tablero = new Tablero(filCol[1], filCol[0], -1);
+				tablero = new Tablero(filCol[1], filCol[0]);
 				tablero.agregaJugador(new Jugador('1', tablero));
 				tablero.agregaJugador(new Jugador('2', tablero));
 				for (int i = 0 ; i < elemento.size(); i++) {

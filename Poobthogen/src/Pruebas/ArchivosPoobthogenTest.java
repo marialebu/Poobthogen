@@ -29,7 +29,7 @@ public class ArchivosPoobthogenTest{
     @Test
     public void deberiaGuardarElTablero()throws PoobthogenExcepcion{
     	//String[][] texample = {{"B1"}};
-        Tablero t = new Tablero(1, 1,-1);
+        Tablero t = new Tablero(1, 1);
         File archivo = new File("archivo.dat");
         try{
         	t.agregaJugador(new Jugador('1', t));
@@ -43,7 +43,7 @@ public class ArchivosPoobthogenTest{
 
     @Test
     public void deberiaDarErrorSiNoHayArchivo(){
-        Tablero d = new Tablero(1, 1,-1);
+        Tablero d = new Tablero(1, 1);
         try{
             PoobthogenArchivos.guardar(null, d); 
             fail(EXCEPCION);
@@ -70,7 +70,7 @@ public class ArchivosPoobthogenTest{
     @Test
     public void deberiaDarErrorSiElFormatoDelArchivoNoEsCorrecto(){
         File archivo = new File("archivo.txt");
-        Tablero d = new Tablero(1, 1,-1);
+        Tablero d = new Tablero(1, 1);
         try{
             PoobthogenArchivos.guardar(archivo, d); 
             fail(EXCEPCION);
@@ -108,9 +108,9 @@ public class ArchivosPoobthogenTest{
 
     @Test
     public void deberiaAbrirElTablero(){
-        Tablero d = new Tablero(1, 1,-1);
+        Tablero d = new Tablero(1, 1);
         String[][] texample = {{"B1"}};
-        Tablero t = new Tablero(1, 1,-1);
+        Tablero t = new Tablero(1, 1);
         File archivo = new File("archivo.dat");
         try{
         	t.agregaJugador(new Jugador('1', t));
@@ -151,7 +151,7 @@ public class ArchivosPoobthogenTest{
     
     @Test
     public void deberiaDarErrorSiNoHayArchivoValido(){
-        Tablero d = new Tablero(1, 1, -1);
+        Tablero d = new Tablero(1, 1);
         try{
             PoobthogenArchivos.exportar(null, d); 
             fail(EXCEPCION);
@@ -178,7 +178,7 @@ public class ArchivosPoobthogenTest{
     @Test
     public void deberiaDarErrorSiElFormatoDelArchivoNoEsCorrectoAlExportar(){
         File archivo = new File("archivo.doc");
-        Tablero d = new Tablero(1, 1,-1);
+        Tablero d = new Tablero(1, 1);
         try{
             PoobthogenArchivos.exportar(archivo, d); 
             fail(EXCEPCION);
@@ -216,7 +216,7 @@ public class ArchivosPoobthogenTest{
 
     @Test
     public void deberiaImportarElTeatro(){
-        Tablero d = new Tablero(1,1,-1);
+        Tablero d = new Tablero(1,1);
         File archivo = new File("archivo.txt");
         try{
             PoobthogenArchivos.exportar(archivo, d); 

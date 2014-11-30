@@ -55,12 +55,11 @@ public class Tablero  implements Serializable{
 	 * @param filas Cantidad de filas del tablero
 	 * @param neutrales Cantidad de fichas neutrales
 	 */
-	public Tablero(int filas, int columnas, int turnos){
+	public Tablero(int filas, int columnas){
 		finalizado = false; 
 		turno = true; 
 		this.filas = filas;
 		this.columnas = columnas;
-		this.turnos = turnos;
 		elementos = new  Virus[filas][columnas]; 
 		jugadores = new ArrayList<Jugador>(2); 
 		TurnoTemporal = new boolean[filas][columnas];
@@ -79,14 +78,8 @@ public class Tablero  implements Serializable{
 	 * @param j Posicion en j en el tablero. 
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
-		boolean sePudo = true;
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
 			if(elementos[i][j] == null || 
@@ -108,6 +101,16 @@ public class Tablero  implements Serializable{
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+" "+e.getMessage());
 		}
 		return verificar();
+	}
+	
+	private Virus[][] copiaTablero(){
+		Virus[][] temporal = new Virus[filas][columnas];
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				temporal [i][j] = elementos[i][j];		
+			}
+		}
+		return temporal;
 	}
 	/**Termina el juego. 
 	 */
