@@ -100,6 +100,9 @@ public class PoobthogenArchivos {
 	    try{
 		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
 		    out.println("VIRUS");
+		    if(tiposVirus == null){
+		    	throw new PoobthogenExcepcion(PoobthogenExcepcion.NO_TIPOS_VIRUS);
+		    }
 		    for(String r : tiposVirus.keySet()){
 		    	out.println(r+" "+tiposVirus.get(r));
 		    }
@@ -176,6 +179,8 @@ public class PoobthogenArchivos {
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_ENTRADA); 
 		}
 	}
+	
+	
 	
 	/**Busca y agrega los tipos de elementos de una linea al tablero. 
 	 * @param t linea que se leyo. 

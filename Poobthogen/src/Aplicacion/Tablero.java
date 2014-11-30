@@ -93,10 +93,12 @@ public class Tablero  implements Serializable{
 				throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
 			}
 		}catch (InstantiationException  | ClassNotFoundException e){
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage()); 
-		}catch (IllegalAccessException | IllegalArgumentException| InvocationTargetException| NoSuchMethodException| SecurityException e){
-			e.printStackTrace();
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+" "+e.getMessage());
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage());
+		}catch (InvocationTargetException e){
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
+		}catch (IllegalAccessException | IllegalArgumentException| NoSuchMethodException| SecurityException e){
+			Log.registreError(e);
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO);
 		}
 		return verificar();
 	}
@@ -296,9 +298,9 @@ public class Tablero  implements Serializable{
 			for (int j = 0; j < columnas; j++) {
 				if(elementos[i][j] != null){
 					if(elementos[i][j].getNivel() > 0){
-						if(elementos[i][j].getJugador().toString() == jugadores.get(0).toString()){
+						if(elementos[i][j].getJugador() != null && elementos[i][j].getJugador().toString().equals(jugadores.get(0).toString())){
 							jugador1++;
-						}else{
+						}else if (elementos[i][j].getJugador() != null &&elementos[i][j].getJugador().toString().equals(jugadores.get(1).toString())){
 							jugador2++;
 						}
 					}
@@ -308,7 +310,24 @@ public class Tablero  implements Serializable{
 		return Integer.compare(jugador1, jugador2);
 	}
 	
-	
-	
-	
+	public int[] proporciones(){
+		float jugador1 = 0;
+		float jugador2= 0;
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				if(elementos[i][j] != null){
+					if(elementos[i][j].getNivel() > 0){
+						if(elementos[i][j].getJugador() != null && elementos[i][j].getJugador().toString().equals(jugadores.get(0).toString())){
+							jugador1++;
+						}else if (elementos[i][j].getJugador() != null && elementos[i][j].getJugador().toString().equals(jugadores.get(1).toString())){
+							jugador2++;
+						}
+					}
+				}
+			}
+		}
+		int total = filas*columnas;
+		int[] proporciones = {(int) ((jugador1/total)*100), (int) ((jugador2/total)*100)};
+		return proporciones;
+	}
 }

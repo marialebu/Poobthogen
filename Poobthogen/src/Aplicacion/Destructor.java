@@ -15,8 +15,7 @@ public class Destructor extends Virus implements Serializable{
 		if(evoluciona){
 			destruirVecinos(j);
 		}
-		nivel = Integer.MIN_VALUE;
-		
+		nivel = Integer.MIN_VALUE;	
 	}
 
 	/**Consulta la informacion asociada a un virus

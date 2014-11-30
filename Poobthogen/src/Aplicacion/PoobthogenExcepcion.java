@@ -21,6 +21,8 @@ public class PoobthogenExcepcion extends Exception{
 	public static final String JUEGO_TERMINADO = "No se puede realizar mas movimientos";
 	public static final String ESCOJA_VIRUS = "Primero debe escoger el virus que quiere agregar";
 	public static final String SELECCION_INVALIDA = "Debe seleccionar un virus de su propio color";
+	public static final String NO_TIPOS_VIRUS = "No hay definicion previa de los virus";
+	public static final String NO_PROPORCION = "No se puede establecer una proporcion";
 	
 	public PoobthogenExcepcion(String mensaje){
 		super(mensaje); 
