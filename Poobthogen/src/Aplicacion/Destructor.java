@@ -31,12 +31,29 @@ public class Destructor extends Virus implements Serializable{
 		}
 		return res;
 	}
-	public void evolucionar(boolean evoluciona, Jugador j){}
-
+	
+	/**
+	 * Evoluciona al virus. 
+	 * @param evoluciona Saber si el virus se expande o no. 
+	 * @param j Jugador que evoluciona al virus. 
+	 * @throws PoobthogenExcepcion
+	 */
+	public void evolucionar(boolean evoluciona, Jugador j){
+		
+	}
+	
+	/**
+	 * Consulta si un virus se puede evolucionar
+	 * @return Verdadero si no ha evolucionado y falso en caso contrario. 
+	 */
 	public boolean sePuedeEvolucionar() {
 		return false;
 	}
 	
+	/**
+	 * Consulta de que tipo es el virus. 
+	 * @return
+	 */
 	public String esDeTipo(){
 		return null;
 	}

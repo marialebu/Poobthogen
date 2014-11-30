@@ -76,6 +76,7 @@ public class Tablero  implements Serializable{
 	 * @param j Posicion en j en el tablero. 
 	 * @param elemento Elemento que se va a agregar
 	 * @throws PoobthogenExcepcion
+	 * @return Verdadero si el juego termina y falso en caso contrario.
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
@@ -280,6 +281,11 @@ public class Tablero  implements Serializable{
 		return columnas;
 	}
 	
+	/**
+	 * Establece que en esa casilla se evoluciono un virus en el turno actual. 
+	 * @param x Posicion en x
+	 * @param y Posicion en y 
+	 */
 	public void setEvolucionTemporal(int x, int y) {
 		TurnoEvolucionados[x][y] = true;
 	}	
@@ -292,6 +298,10 @@ public class Tablero  implements Serializable{
 		return turno;
 	}
 	
+	/**
+	 * Determina el ganador del juego con el conteo de fichas de cada uno. 
+	 * @return 1 si gana el jugador uno, -1 si gana el jugador 2 y 0 si es un empate. 
+	 */
 	public int determinaGanador(){
 		int jugador1 = 0;
 		int jugador2= 0;
@@ -311,6 +321,10 @@ public class Tablero  implements Serializable{
 		return Integer.compare(jugador1, jugador2);
 	}
 	
+	/**
+	 * Establece las proporciones de fichas que tiene cada jugador en el tablero.
+	 * @return Un arreglo con la proporcion del jugador uno en la primera casilla y la proporcion del jugador dos en la segunda. 
+	 */
 	public int[] proporciones(){
 		float jugador1 = 0;
 		float jugador2= 0;

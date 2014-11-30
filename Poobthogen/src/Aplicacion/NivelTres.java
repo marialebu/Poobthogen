@@ -6,7 +6,14 @@ import java.lang.reflect.InvocationTargetException;
 
 public class NivelTres extends Virus implements Serializable{
 	
-
+	/**
+	 * Constructor de la clase NivelTres
+	 * @param j Jugador al que pertenece
+	 * @param x Posicion en x
+	 * @param y posicion en y 
+	 * @param t Tablero en el que se crea
+	 * @param evoluciona Si se expande o no el virus
+	 */
 	public NivelTres(Jugador j, int x, int y, Tablero t, boolean evoluciona) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
 		maxEvolucion = true;
@@ -21,6 +28,10 @@ public class NivelTres extends Virus implements Serializable{
 		}
 	}
 
+	/**
+	 * Agrega los virus de nivel dos que deben crearse al crear una de nivel tres. 
+	 * @throws PoobthogenExcepcion
+	 */
 	public void agregarNivelDos() throws PoobthogenExcepcion{
 		try{
 			for (int i = 0; i < dx.length; i++) {
@@ -35,6 +46,12 @@ public class NivelTres extends Virus implements Serializable{
 		}
 	}
 	
+	/**
+	 * Trata de agregar la ficha de nivel dos
+	 * @param i Posicion x en el tablero. 
+	 * @param j Posicion y en el tablero. 
+	 * @throws PoobthogenExcepcion
+	 */
 	private void trateDeAgregarNivelDos(int i, int j) throws PoobthogenExcepcion{
 		if(compareTo(2, tablero.getElemento(i, j)) ==0 && !tablero.getElementoTemporal(i, j)){
 			tablero.agregarElemento(jugador == null ? -1 : Integer.parseInt(jugador.toString()), i, j, "NivelTres", true);
@@ -59,13 +76,17 @@ public class NivelTres extends Virus implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Consulta si un virus se puede evolucionar
+	 * @return Verdadero si no ha evolucionado y falso en caso contrario. 
 	 */
 	public boolean sePuedeEvolucionar(){
 		return maxEvolucion; 
 	}
 	
+	/**
+	 * Consulta de que tipo es el virus con su jugador.  
+	 * @return Una cadena con el nombre de la clase y el jugador al que pertenece
+	 */
 	public String esDeTipo(){
 		return "NivelTres "+(jugador != null ? jugador.toString() : 0);
 	}

@@ -28,6 +28,7 @@ public class PoobthogenGUI extends JFrame{
 	private final String[] MAQUINA = {"Timida", "Ofensiva", "Irreflexiva"};
 	private final String[] TIPOS_VIRUS = {"NivelUno", "NivelDos", "NivelTres", "Destructor"};
 	private final String[] JUGADORES = {"Jugador uno", "Jugador dos"};
+	private boolean neutrales;
 	private int x;
 	private int y;
 	
@@ -98,8 +99,8 @@ public class PoobthogenGUI extends JFrame{
 	private JPanel menuDos; 
 	private JButton revancha;
 	private JButton volverAlMenuPrincipal;
-	private JButton salirFinal;
-	/**
+	
+	/**Ejecuta el juego. 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -107,6 +108,9 @@ public class PoobthogenGUI extends JFrame{
 		juego.setVisible(true);
 	}
 	
+	/**
+	 * Constructor de la interfaz.
+	 */
 	public PoobthogenGUI(){
 		setTitle("Poobthogen");
 		f = new Font("Century Gothic", Font.PLAIN, 20);
@@ -121,6 +125,9 @@ public class PoobthogenGUI extends JFrame{
 		comienza = true;
 	}
 	
+	/**
+	 * Inicializa los colores por defecto. 
+	 */
 	private void inicializaColores(){
 		colores.put("amarilla", new Color(221,172,69));
 		colores.put("verde", new Color(100,203,176));
@@ -129,23 +136,287 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	/**
-	 * 
+	 * Prepara los elementos del inicio del juego. 
 	 */
 	private void prepareElementosInicio(){
 		preparePantallaInicio();
 		prepareAccionesInicio();
 	}
 	
+	/**
+	 * Prepara los elementos para la ventana de juego nuevo. 
+	 */
 	private void prepareElementosNuevo(){
 		preparePantallaNuevoJuego();
 		prepareAccionesNuevo();
 	}
 	
+	/**
+	 * Prepara los elementos para la ventana de configuracion inicial del juego pvp
+	 */
+	private void prepareElementosPreJuego(){
+		prepareVentanaConfiguracionInicial();
+		prepareAccionesVentanaConfInicial();
+	}
+	
+	/**
+	 * Prepara los elementos para la ventana de configuracion inicial del juego contra la maquina
+	 */
+	private void prepareElementosPreJuegoUno(){
+		prepareVentanaConfiguracionInicialUno();
+		prepareAccionesVentanaConfInicialUno();
+	}
+	
+	/**
+	 * Prepara los elementos para la ventana de configuracion del tablero. 
+	 */
+	private void prepareElementosConfiguracionTablero(){
+		prepareVentanaConfiguracionTablero();
+		prepareAccionesVentanaConfTablero();
+	}
+	
+	/**
+	 * Prepara la ventana del juego configurando la pantalla. 
+	 */
+	private void prepareElementosVentanaJuego(){
+		prepareVentanaJuego();
+		preparePantallaJuego();
+		prepareAccionesJuego();
+	}
+	
+	/**
+	 * Prepara los elementos de la pantalla de estadisticas
+	 */
+	private void prepareElementosGanadorJuego(){
+		prepareVentanaGanadorJuego();
+		prepareAccionesVentanaGanador();
+	}
+	
+	/**
+	 * Prepara el diseño de la pantalla de nuevo juego. 
+	 */
+	private void preparePantallaNuevoJuego(){
+		remove(principal);
+		principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
+		add(principal);
+		principal.removeAll();
+		principal.updateUI();
+		principal.setLayout(new BorderLayout());
+		Dimension tam = this.getContentPane().getSize();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(1, 3));
+		contenedorBotones.setBackground(Color.BLACK);
+		unJugador = creaBoton(0, 0,"Un jugador",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(unJugador);
+		dosJugadores = creaBoton(0, 0,"Dos jugadores",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(dosJugadores);
+		volver = creaBoton(0, 0,"Volver",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(volver);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
+	}
+	
+	/**
+	 * Prepara el diseño de la pantalla inicial 
+	 */
+	private void preparePantallaInicio(){
+		remove(principal);
+		principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
+		add(principal);
+		principal.removeAll();
+		principal.updateUI();
+		principal.setLayout(new BorderLayout());
+		Dimension tam = this.getContentPane().getSize();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(1, 3));
+		contenedorBotones.setBackground(Color.BLACK);
+		f = new Font("Century Gothic", Font.PLAIN, 20);
+		juegoNuevo = creaBoton(0, 0,"Juego Nuevo",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(juegoNuevo);
+		cargarJuego = creaBoton(0, 0,"Cargar Juego",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(cargarJuego);
+		creditos= creaBoton(0, 0,"Creditos",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(creditos);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
+	}
+	
+	/**
+	 * Prepara el diseño de la ventana de configuracion inicial para el juego contra maquina
+	 */
+	private void prepareVentanaConfiguracionInicialUno(){
+		remove(principal);
+		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
+		add(principal);
+		principal.removeAll();
+		principal.updateUI();
+		principal.setLayout(new GridLayout(2,1));
+		Dimension tam = this.getContentPane().getSize();
+		preparePanelEscogerFichaUno();
+		JPanel endOfWin = preparePanelTurnosTiempo();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(2, 1));
+		contenedorBotones.setBackground(Color.BLACK);
+		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(aceptar);
+		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(cancelar);
+		endOfWin.add(contenedorBotones);
+		principal.add(endOfWin);
+	}
+	
+	/**
+	 * Prepara el diseño de la ventana de configuracion inicial para el pvp
+	 */
+	private void prepareVentanaConfiguracionInicial(){
+		remove(principal);
+		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
+		add(principal);
+		principal.removeAll();
+		principal.updateUI();
+		principal.setLayout(new GridLayout(2,1));
+		Dimension tam = this.getContentPane().getSize();
+		preparePanelEscogerFicha();
+		JPanel endOfWin = preparePanelTurnosTiempo();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(2, 1));
+		contenedorBotones.setBackground(Color.BLACK);
+		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(aceptar);
+		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(cancelar);
+		endOfWin.add(contenedorBotones);
+		principal.add(endOfWin);
+	}
+	
+	/**
+	 * Prepara las acciones de la ventana de estadisticas
+	 */
+	private void prepareAccionesVentanaGanador(){
+		revancha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				juego = null;
+				configureTamañoPantalla();
+				prepareElementosPreJuego();
+			}
+		});
+		
+		volverAlMenuPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				remove(principal);
+				principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
+		        add(principal);
+		        configureTamañoPantalla();
+				prepareElementosInicio();
+			}
+		});
+	}
+	
+	/**
+	 * Prepara los contenedores de la ventana de estadisticas
+	 */
+	private void prepareVentanaGanadorJuego(){
+		timer.stop();
+		refresque();
+		JOptionPane.showMessageDialog(this,  ganador!= null ? "Ha ganado el jugador: "+ganador.toString() : "Empate");
+		remove(principal);
+		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
+		add(principal);
+		if(ganador != null){
+			principal.setBorder(new LineBorder(ganador.toString().equals("1") ? colores.get(colorJugUno) : colores.get(colorJugDos), 20));
+		}
+		principal.setLayout(new BorderLayout());
+		principal.add(prepareTextosBorder("Estadisticas"), BorderLayout.NORTH);
+		prepareContenedoresEstadisticas();
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(1, 3));
+		contenedorBotones.setBackground(Color.BLACK);
+		volverAlMenuPrincipal = creaBoton(0, 0,"Menu Principal",0, 0, f);
+		contenedorBotones.add(volverAlMenuPrincipal);
+		revancha = creaBoton(0, 0,"Revancha",0, 0, f);
+		contenedorBotones.add(revancha);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
+		
+	}
+	
+	/**
+	 * Prepara los contenedores de la ventana de estadisticas
+	 */
+	private void prepareContenedoresEstadisticas(){
+		int[] proporciones = juego.proporciones();
+		JPanel estadisticas = prepareContenedor(new JPanel(), "", false);
+		estadisticas.setLayout(new GridLayout(2, 1));
+		JPanel estadisticasUno = prepareContenedor(new JPanel(), "", false);
+		estadisticasUno.setLayout(new BorderLayout());
+		estadisticasUno.add(prepareTextosBorder("Jugador Uno"), BorderLayout.NORTH);
+		estadisticasUno.add(prepareGrafica(proporciones[0], colorJugUno));
+		estadisticasUno.setBorder(new LineBorder(new Color(0f,0f,0f,0f), 20));
+		estadisticas.add(estadisticasUno);
+		JPanel estadisticasDos = prepareContenedor(new JPanel(), "", false);
+		estadisticasDos.setLayout(new BorderLayout());
+		estadisticasDos.add(prepareTextosBorder("Jugador Dos"), BorderLayout.NORTH);
+		estadisticasDos.add(prepareGrafica(proporciones[1], colorJugDos));
+		estadisticasDos.setBorder(new LineBorder(new Color(0f,0f,0f,0f), 20));
+		estadisticas.add(estadisticasDos);
+		principal.add(estadisticas);
+	}
+	
+	/**
+	 * Crea la grafica de la proporcion de fichas del jugador. 
+	 * @param prop Proporcion de fichas
+	 * @param color Color escogido por el jugador. 
+	 * @return Un panel con la grafica hecha en botones. 
+	 */
+	private JPanel prepareGrafica(int prop, String color){
+		JPanel estadica = prepareContenedor(new JPanel(), "", false);
+		estadica.setLayout(new GridLayout(1, 100));
+		JButton cantidad;
+		for (int i = 1; i < 100; i++) {
+			cantidad = new JButton("");
+			cantidad.setBorder(new LineBorder(new Color(0f,0f,0f,0f)));
+			cantidad.setBackground(Color.black);
+			if(i <= prop){
+				cantidad.setBackground(colores.get(color));
+			}
+			estadica.add(cantidad);
+		}
+		return estadica;
+	}
+	/**
+	 * Prepara los menus del juego para el jugador uno teniendo en cuenta el turno actual del juago.  
+	 * @param j Posicion en y del boton
+	 * @throws PoobthogenExcepcion
+	 */
+	private void preparePanelJugUno(int j) throws PoobthogenExcepcion{
+		if(juego.getTurno()){
+			opcionVirus = TIPOS_VIRUS[j]; 	
+		}else{
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.SELECCION_INVALIDA);
+		}
+	}
+	
+	/**
+	 * Prepara los menus del juego para el jugador uno teniendo en cuenta el turno actual del juago.  
+	 * @param j Posicion en y del boton
+	 * @throws PoobthogenExcepcion
+	 */
+	private void preparePanelJugDos(int j) throws PoobthogenExcepcion{
+		if(!juego.getTurno()){
+			opcionVirus = TIPOS_VIRUS[j]; 	
+		}else{
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.SELECCION_INVALIDA);
+		}
+	}
+	
+	/**
+	 * Configura el tamaño de la pantalla. 
+	 */
 	private void configureTamañoPantalla(){
 		 setSize(x, y);
 	     setLocation(x/2-50, y/2-100);
 	}
 	
+	/**
+	 * Prepara el JFrame con el fondo y un tamaño establecido. 
+	 */
 	private void preparePantalla(){
 		Dimension screen  = Toolkit.getDefaultToolkit().getScreenSize();
         x = (screen.width - getSize().width) / 2+50; 
@@ -156,6 +427,9 @@ public class PoobthogenGUI extends JFrame{
         add(principal);
 	}
 	
+	/**
+	 * Prepara el JFrame para la ventana de juego, con un nuevo fondo y un nuevo tamano. 
+	 */
 	private void preparePantallaJuego(){
 		Dimension screen  = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = screen.width - getSize().width/10; 
@@ -164,21 +438,120 @@ public class PoobthogenGUI extends JFrame{
         setLocation( getSize().width/40, 0);
 	}
 	
-	private void prepareElementosPreJuego(){
-		prepareVentanaConfiguracionInicial();
-		prepareAccionesVentanaConfInicial();
+	/**
+	 * Prepara la ventana donde se ejecuta el juego.
+	 */
+	private void prepareVentanaJuego(){
+		prepareMenu();
+		remove(principal);
+		JOptionPane.showMessageDialog(this, "Bienvenido a Poobthogen\nEl juego esta por comenzar.");
+		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
+		add(principal);
+		principal.setLayout(new BorderLayout());
+		prepareContenedoresJuego();
+		opcionVirus = "NivelUno";
 	}
 	
-	private void prepareElementosPreJuegoUno(){
-		prepareVentanaConfiguracionInicialUno();
-		prepareAccionesVentanaConfInicialUno();
+	/**
+	 * Prepara la barra de menus
+	 */
+	private void prepareMenu(){
+		JMenuBar barra = new JMenuBar();
+		setJMenuBar(barra);
+		JMenu opciones = new JMenu("Opciones");
+		opciones.setFont(f);
+		guardar = new JMenuItem("Guardar");
+		guardar.setFont(f);
+		exportar = new JMenuItem("Exportar");
+		exportar.setFont(f);
+		reiniciar = new JMenuItem("Reiniciar");
+		reiniciar.setFont(f);
+		salir = new JMenuItem("Salir");
+		salir.setFont(f);
+		opciones.add(guardar);
+		opciones.add(exportar);
+		opciones.add(new JSeparator());
+		opciones.add(reiniciar);
+		opciones.add(salir);
+		barra.add(opciones);
 	}
 	
-	private void prepareElementosConfiguracionTablero(){
-		prepareVentanaConfiguracionTablero();
-		prepareAccionesVentanaConfTablero();
+	/**
+	 * Prepara el diseno de la ventana de configuracion del tablero. 
+	 */
+	private void prepareVentanaConfiguracionTablero(){
+		principal.removeAll();
+		principal.updateUI();
+		Dimension tam = this.getContentPane().getSize();
+		principal.setLayout(new BorderLayout());
+		principal.add(prepareTextosBorder("Configuracion de tablero"), BorderLayout.PAGE_START);
+		prepareMenuTableros();
+		principal.add(tableros, BorderLayout.CENTER);
+		contenedorBotones = new JPanel();
+		contenedorBotones.setLayout(new GridLayout(1, 3));
+		contenedorBotones.setBackground(Color.BLACK);
+		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(aceptar);
+		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(cancelar);
+		volver = creaBoton(0, 0,"Volver",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(volver);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
 	}
 	
+	/**
+	 * Prepara los contenedores de la ventana del juego. 
+	 */
+	private void prepareContenedoresJuego(){
+		Dimension tam = this.getContentPane().getSize();
+		contenedor = prepareContenedor(new JPanel(),"", false); 
+		contenedor.setLayout(new GridLayout(1, 4));
+		contenedor.add(prepareTextosBorder("Turnos: "));
+		muestraTurnos = prepareTextosBorder(turnosJuego  <=0 ? "Ilimitado" : turnosJuego+"");
+		contenedor.add(muestraTurnos);
+		contenedor.add(prepareTextosBorder("Tiempo: "));
+		muestraTiempo = prepareTextosBorder(tiempoJuego <= 0 ? "Ilimitado" : tiempoJuego+"");
+		contenedor.add(muestraTiempo);
+		contadorTiempo(contenedor);
+		timer.start();
+		principal.add(contenedor, BorderLayout.PAGE_START);
+		prepareMenuJugador();
+		tableroJuego = prepareContenedor(new JPanel(), "", false);
+		if(!comienza){
+			juego.cambiarTurno();
+		}
+		refresque();
+		JPanel contenedorBotones = prepareContenedor(new JPanel(),"", false);
+		contenedorBotones.setLayout(new GridLayout(1, 2));
+		pasaTurno = creaBoton(0, 0,"Pasar turno",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(pasaTurno);
+		rendirse = creaBoton(0, 0,"Rendirse",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(rendirse);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
+	}
+	
+	/**
+	 * Prepara el diseño del menu del jugador. 
+	 */
+	private void prepareMenuJugador(){
+		int[] proporciones = juego.proporciones();
+		menuUno = prepareContenedor(new JPanel(),"", false);
+		menuUno.setLayout(new GridLayout(5, 1));
+		proporcionUno = prepareTextosBorder(proporciones[0]+"%");
+		menuUno.add(proporcionUno);
+		panelJugUno = menuJugador(menuUno, colorJugUno);
+		principal.add(menuUno, BorderLayout.WEST);
+		menuDos = prepareContenedor(new JPanel(),"", false);
+		menuDos.setLayout(new GridLayout(5, 1));
+		proporcionDos = prepareTextosBorder(proporciones[1]+"%");
+		menuDos.add(proporcionDos);
+		panelJugDos = menuJugador(menuDos, colorJugDos);
+		principal.add(menuDos, BorderLayout.EAST);
+	}
+	
+	/**
+	 * Prepara las acciones para la ventana de configuracion inicial del juego pvp. 
+	 */
 	private void prepareAccionesVentanaConfInicial(){
 		aceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -235,45 +608,9 @@ public class PoobthogenGUI extends JFrame{
 		});
 	}
 	
-	private void checkAceptar(){
-		if(colorJugDos == null || colorJugUno == null){
-			JOptionPane.showMessageDialog(this, "Escoja un color de ficha", "ERROR", JOptionPane.ERROR_MESSAGE);
-		}else if(colorJugDos == colorJugUno){
-			JOptionPane.showMessageDialog(this,  "Los colores de los jugadores deben ser diferentes","ERROR",JOptionPane.ERROR_MESSAGE);
-		}else{
-			if(juego == null){
-				prepareElementosConfiguracionTablero();
-			}else{
-				prepareElementosVentanaJuego();
-			}	
-		}
-	}
-	
-	private void preparePanelJugUno(int j) throws PoobthogenExcepcion{
-		if(juego.getTurno()){
-			opcionVirus = TIPOS_VIRUS[j]; 	
-		}else{
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.SELECCION_INVALIDA);
-		}
-	}
-	
-	private void preparePanelJugDos(int j) throws PoobthogenExcepcion{
-		if(!juego.getTurno()){
-			opcionVirus = TIPOS_VIRUS[j]; 	
-		}else{
-			throw new PoobthogenExcepcion(PoobthogenExcepcion.SELECCION_INVALIDA);
-		}
-	}
-	
-	private void establecerTiempo(String eleccion){
-		if(eleccion=="Ilimitado"){
-			tiempoJuego = -1;
-		}else{
-			String[] temporal = eleccion.split(" ");
-			tiempoJuego = Integer.parseInt(temporal[0])*60;
-		}
-	}
-	
+	/**
+	 * Prepara las acciones para la ventana de configuracion inicial del juego contra la maquina. 
+	 */
 	private void prepareAccionesVentanaConfInicialUno(){
 		aceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -330,44 +667,9 @@ public class PoobthogenGUI extends JFrame{
 		});
 	}
 	
-	private void checkAceptarMaquina(){
-		if(colorJugDos == null || colorJugUno == null){
-			JOptionPane.showMessageDialog(this, "Escoja un color de ficha", "ERROR", JOptionPane.ERROR_MESSAGE);
-		}else if(tipoMaquina == null){
-			JOptionPane.showMessageDialog(this,  "Debe escoger una dificultad","ERROR",JOptionPane.ERROR_MESSAGE);
-		}else{
-			prepareElementosConfiguracionTablero();
-		}	
-	}
-	
-	private void escogerColorMaquina(int j){
-		colorJugUno = COLOR_VIRUS[j];		
-		Random r = new Random();
-		colorJugDos = COLOR_VIRUS[r.nextInt(3)];
-		while (colorJugDos == colorJugUno){
-			colorJugDos = COLOR_VIRUS[r.nextInt(3)];
-		}
-	}
-	private void prepareVentanaConfiguracionTablero(){
-		principal.removeAll();
-		principal.updateUI();
-		Dimension tam = this.getContentPane().getSize();
-		principal.setLayout(new BorderLayout());
-		principal.add(prepareTextosBorder("Configuracion de tablero"), BorderLayout.PAGE_START);
-		prepareMenuTableros();
-		principal.add(tableros, BorderLayout.CENTER);
-		contenedorBotones = new JPanel();
-		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(Color.BLACK);
-		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(aceptar);
-		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(cancelar);
-		volver = creaBoton(0, 0,"Volver",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(volver);
-		principal.add(contenedorBotones, BorderLayout.PAGE_END);
-	}
-	
+	/**
+	 * Prepara las acciones de la ventana de configuracion del tablero. 
+	 */
 	private void prepareAccionesVentanaConfTablero(){
 		
 		aceptar.addActionListener(new ActionListener() {
@@ -391,6 +693,7 @@ public class PoobthogenGUI extends JFrame{
 		vacioPequeno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					neutrales = false;
 					creaTablero(PEQUENO, false);
 				}catch(PoobthogenExcepcion e){
 					JOptionPane.showMessageDialog(PoobthogenGUI.this,(Object)e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -401,6 +704,7 @@ public class PoobthogenGUI extends JFrame{
 		vacioMediano.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					neutrales = false;
 					creaTablero(MEDIANO, false);
 				}catch(PoobthogenExcepcion e){
 					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -411,6 +715,7 @@ public class PoobthogenGUI extends JFrame{
 		vacioGrande.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					neutrales = false;
 					creaTablero(GRANDE, false);
 				}catch(PoobthogenExcepcion e){
 					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -421,6 +726,7 @@ public class PoobthogenGUI extends JFrame{
 		interrogantePequeno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					neutrales = true;
 					creaTablero(PEQUENO, true);
 				}catch(PoobthogenExcepcion e){
 					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -431,6 +737,7 @@ public class PoobthogenGUI extends JFrame{
 		interroganteMediano.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					neutrales = true;
 					creaTablero(MEDIANO, true);
 				}catch(PoobthogenExcepcion e){
 					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -441,6 +748,7 @@ public class PoobthogenGUI extends JFrame{
 		interroganteGrande.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					neutrales = true;
 					creaTablero(GRANDE, true);
 				}catch(PoobthogenExcepcion e){
 					JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -449,27 +757,9 @@ public class PoobthogenGUI extends JFrame{
 		});
 	}
 	
-	private void creaTablero(int[] dimension, boolean neutrales) throws PoobthogenExcepcion{
-		juego = new Tablero(dimension[0], dimension[1], neutrales);
-		jugadorUno = new Jugador('1', juego);
-		jugadorDos = new Jugador('2', juego);
-		juego.agregaJugador(jugadorUno);
-		juego.agregaJugador(jugadorDos);
-	}
-	
-	private void checkConfiguracionTablero(){
-		if(juego == null){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this,"Debe escoger una configuracion de tablero", "ERROR", JOptionPane.ERROR_MESSAGE);
-		}else{
-			prepareElementosVentanaJuego();
-		}
-	}
-	
-	private void prepareElementosVentanaJuego(){
-		prepareVentanaJuego();
-		preparePantallaJuego();
-		prepareAccionesJuego();
-	}
+	/**
+	 * Prepara las acciones de la ventana de juego
+	 */
 	private void prepareAccionesJuego(){
 		guardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -536,107 +826,24 @@ public class PoobthogenGUI extends JFrame{
 				prepareElementosGanadorJuego();
 			}
 		});
-	}
-	
-	private void refrescaTurnos(){
-		turnosJuego--;
-		if(turnosJuego !=0){
-			juego.cambiarTurno();
-			refresqueTurnos(contenedor);
-			refresque();
-		}else{
-			int ganadorJuego = juego.determinaGanador(); 
-			ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-			prepareElementosGanadorJuego();
-		}
-	}
-	
-	private boolean jugar(int i, int j) throws PoobthogenExcepcion{
-		boolean turno = juego.getTurno();
-		Jugador actual = turno == true ? jugadorUno : jugadorDos;
-		boolean gana = false;
-		try{
-			gana = actual.juega(i, j, opcionVirus); 
- 			if(!gana && turnosJuego != 0){
-				juego.cambiarTurno();
-				refresqueProporciones();
-			}else{
-				int ganadorJuego = juego.determinaGanador();
-				timer.stop();
-				ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-				prepareElementosGanadorJuego();
-			}
-		}catch (PoobthogenExcepcion e){
-			throw e;
-		}
-		return gana;
-	}
-	
-	private void prepareVentanaJuego(){
-		prepareMenu();
-		remove(principal);
-		JOptionPane.showMessageDialog(this, "Bienvenido a Poobthogen\nEl juego esta por comenzar.");
-		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
-		add(principal);
-		principal.setLayout(new BorderLayout());
-		prepareContenedoresJuego();
-		opcionVirus = "NivelUno";
-	}
-	
-	private void prepareContenedoresJuego(){
-		Dimension tam = this.getContentPane().getSize();
-		contenedor = prepareContenedor(new JPanel(),"", false); 
-		contenedor.setLayout(new GridLayout(1, 4));
-		contenedor.add(prepareTextosBorder("Turnos: "));
-		muestraTurnos = prepareTextosBorder(turnosJuego  <=0 ? "Ilimitado" : turnosJuego+"");
-		contenedor.add(muestraTurnos);
-		contenedor.add(prepareTextosBorder("Tiempo: "));
-		muestraTiempo = prepareTextosBorder(tiempoJuego <= 0 ? "Ilimitado" : tiempoJuego+"");
-		contenedor.add(muestraTiempo);
-		contadorTiempo(contenedor);
-		timer.start();
-		principal.add(contenedor, BorderLayout.PAGE_START);
-		prepareMenuJugador();
-		tableroJuego = prepareContenedor(new JPanel(), "", false);
-		if(!comienza){
-			juego.cambiarTurno();
-		}
-		refresque();
-		JPanel contenedorBotones = prepareContenedor(new JPanel(),"", false);
-		contenedorBotones.setLayout(new GridLayout(1, 2));
-		pasaTurno = creaBoton(0, 0,"Pasar turno",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(pasaTurno);
-		rendirse = creaBoton(0, 0,"Rendirse",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(rendirse);
-		principal.add(contenedorBotones, BorderLayout.PAGE_END);
-	}
-	
-	private void contadorTiempo(final JPanel contenedor){
-		timer  = new Timer(ONE_SECOND, new ActionListener() {
+		
+		reiniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(tiempoJuego != 0){
-					tiempoJuego--;
-					refresqueTiempo(contenedor);
-				}else{
-					timer.stop();
-					int ganadorJuego = juego.determinaGanador(); 
-					ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-					prepareElementosGanadorJuego();
+				int filas = juego.filas();
+				int columnas = juego.columnas();
+				try {
+					juego = new Tablero(filas, columnas, neutrales);
+					refresque();
+				} catch (PoobthogenExcepcion ev) {
+					JOptionPane.showMessageDialog(PoobthogenGUI.this, ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 	}
 	
-	private void refresqueTiempo(JPanel contenedor){
-		contenedor.updateUI();
-		muestraTiempo.setText(tiempoJuego <= -1 ? "Ilimitado" : tiempoJuego+"");
-	}
-	
-	private void refresqueTurnos(JPanel contenedor){
-		contenedor.updateUI();
-		muestraTurnos.setText(turnosJuego <= -1 ? "Ilimitado" : turnosJuego+"");
-	}
-	
+	/**
+	 * Prepara las acciones de los botones al jugar. 
+	 */
 	private void prepareAccionesBotones(){
 		for (k = 0; k < juego.filas(); k++) {
 			for (k1 = 0; k1 < juego.columnas(); k1++) {
@@ -665,31 +872,172 @@ public class PoobthogenGUI extends JFrame{
 		}
 	}
 	
-	private void prepareElementosGanadorJuego(){
-		prepareVentanaGanadorJuego();
-		prepareAccionesVentanaGanador();
+	/**
+	 * Revisa si se puede avanzar a la ventana del juego. 
+	 */
+	private void checkAceptar(){
+		if(colorJugDos == null || colorJugUno == null){
+			JOptionPane.showMessageDialog(this, "Escoja un color de ficha", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}else if(colorJugDos == colorJugUno){
+			JOptionPane.showMessageDialog(this,  "Los colores de los jugadores deben ser diferentes","ERROR",JOptionPane.ERROR_MESSAGE);
+		}else{
+			if(juego == null){
+				prepareElementosConfiguracionTablero();
+			}else{
+				prepareElementosVentanaJuego();
+			}	
+		}
 	}
 	
-	private void prepareAccionesVentanaGanador(){
-		revancha.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				juego = null;
-				configureTamañoPantalla();
-				prepareElementosPreJuego();
+	/**
+	 * Establece el tiempo del juego segun la opcion del usuario. 
+	 * @param eleccion Eleccion del usuario. 
+	 */
+	private void establecerTiempo(String eleccion){
+		if(eleccion=="Ilimitado"){
+			tiempoJuego = -1;
+		}else{
+			String[] temporal = eleccion.split(" ");
+			tiempoJuego = Integer.parseInt(temporal[0])*60;
+		}
+	}
+	
+	/**
+	 * Revisa si se puede avanzar a la ventana de configuracion del tablero en el juego contra la maquina. 
+	 */
+	private void checkAceptarMaquina(){
+		if(colorJugDos == null || colorJugUno == null){
+			JOptionPane.showMessageDialog(this, "Escoja un color de ficha", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}else if(tipoMaquina == null){
+			JOptionPane.showMessageDialog(this,  "Debe escoger una dificultad","ERROR",JOptionPane.ERROR_MESSAGE);
+		}else{
+			prepareElementosConfiguracionTablero();
+		}	
+	}
+	
+	/**
+	 * Escoge el color de ficha de la maquina. 
+	 * @param j Posicion en x del boton
+	 */
+	private void escogerColorMaquina(int j){
+		colorJugUno = COLOR_VIRUS[j];		
+		Random r = new Random();
+		colorJugDos = COLOR_VIRUS[r.nextInt(3)];
+		while (colorJugDos == colorJugUno){
+			colorJugDos = COLOR_VIRUS[r.nextInt(3)];
+		}
+	}
+	
+	/**
+	 * Crea el tablero del juego con las dimensiones establecidas y las fichas neutrales si fue escogido por el usuario. 
+	 * @param dimension Arreglo con las dimensiones establecidas
+	 * @param neutrales Si lleva fichas neutrales o no
+	 * @throws PoobthogenExcepcion
+	 */
+	private void creaTablero(int[] dimension, boolean neutrales) throws PoobthogenExcepcion{
+		juego = new Tablero(dimension[0], dimension[1], neutrales);
+		jugadorUno = new Jugador('1', juego);
+		jugadorDos = new Jugador('2', juego);
+		juego.agregaJugador(jugadorUno);
+		juego.agregaJugador(jugadorDos);
+	}
+	
+	/**
+	 * Revisa si puede avanzar a la ventana del juego.  
+	 */
+	private void checkConfiguracionTablero(){
+		if(juego == null){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this,"Debe escoger una configuracion de tablero", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}else{
+			prepareElementosVentanaJuego();
+		}
+	}
+	
+	/**
+	 * Cambia los turnos del juego cada vez que un jugador realiza un movimiento cuando los turnos acaban, se pasa a la tabla de estadisticas.
+	 */
+	private void refrescaTurnos(){
+		turnosJuego--;
+		if(turnosJuego !=0){
+			juego.cambiarTurno();
+			refresqueTurnos(contenedor);
+			refresque();
+		}else{
+			int ganadorJuego = juego.determinaGanador(); 
+			ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+			prepareElementosGanadorJuego();
+		}
+	}
+	
+	/**
+	 * Realiza una jugada si es posible
+	 * @param i Posicion en i del tablero
+	 * @param j Posicion en j del tablero
+	 * @return Verdadero si el juego ha acabado, falso en caso contrario. 
+	 * @throws PoobthogenExcepcion
+	 */
+	private boolean jugar(int i, int j) throws PoobthogenExcepcion{
+		boolean turno = juego.getTurno();
+		Jugador actual = turno == true ? jugadorUno : jugadorDos;
+		boolean gana = false;
+		try{
+			gana = actual.juega(i, j, opcionVirus); 
+ 			if(!gana && turnosJuego != 0){
+				juego.cambiarTurno();
+				refresqueProporciones();
+			}else{
+				int ganadorJuego = juego.determinaGanador();
+				timer.stop();
+				ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+				prepareElementosGanadorJuego();
 			}
-		});
-		
-		volverAlMenuPrincipal.addActionListener(new ActionListener() {
+		}catch (PoobthogenExcepcion e){
+			throw e;
+		}
+		return gana;
+	}
+	
+	/**
+	 * Crea el cronometro de tiempo. 
+	 * @param contenedor Contenedor en el cual se incluira
+	 */
+	private void contadorTiempo(final JPanel contenedor){
+		timer  = new Timer(ONE_SECOND, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				remove(principal);
-				principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
-		        add(principal);
-		        configureTamañoPantalla();
-				prepareElementosInicio();
+				if(tiempoJuego != 0){
+					tiempoJuego--;
+					refresqueTiempo(contenedor);
+				}else{
+					timer.stop();
+					int ganadorJuego = juego.determinaGanador(); 
+					ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+					prepareElementosGanadorJuego();
+				}
 			}
 		});
 	}
 	
+	/**
+	 * Refresca el texto del contador. 
+	 * @param contenedor Contenedor en el que se incluye. 
+	 */
+	private void refresqueTiempo(JPanel contenedor){
+		contenedor.updateUI();
+		muestraTiempo.setText(tiempoJuego <= -1 ? "Ilimitado" : tiempoJuego+"");
+	}
+	
+	/**
+	 * Refresca el texto de los turnos. 
+	 * @param contenedor Contenedor en el que se incluye. 
+	 */
+	private void refresqueTurnos(JPanel contenedor){
+		contenedor.updateUI();
+		muestraTurnos.setText(turnosJuego <= -1 ? "Ilimitado" : turnosJuego+"");
+	}
+	
+	/** 
+	 * Refresca los textos de las proporciones de cada jugador
+	 */
 	private void refresqueProporciones(){
 		menuDos.updateUI();
 		menuUno.updateUI();
@@ -697,81 +1045,10 @@ public class PoobthogenGUI extends JFrame{
 		proporcionUno.setText(proporciones[0]+"%");
 		proporcionDos.setText(proporciones[1]+"%");
 	}
-	private void prepareVentanaGanadorJuego(){
-		timer.stop();
-		refresque();
-		JOptionPane.showMessageDialog(this,  ganador!= null ? "Ha ganado el jugador: "+ganador.toString() : "Empate");
-		remove(principal);
-		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
-		add(principal);
-		if(ganador != null){
-			principal.setBorder(new LineBorder(ganador.toString().equals("1") ? colores.get(colorJugUno) : colores.get(colorJugDos), 20));
-		}
-		principal.setLayout(new BorderLayout());
-		principal.add(prepareTextosBorder("Estadisticas"), BorderLayout.NORTH);
-		prepareContenedoresEstadisticas();
-		contenedorBotones = new JPanel();
-		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(Color.BLACK);
-		volverAlMenuPrincipal = creaBoton(0, 0,"Menu Principal",0, 0, f);
-		contenedorBotones.add(volverAlMenuPrincipal);
-		revancha = creaBoton(0, 0,"Revancha",0, 0, f);
-		contenedorBotones.add(revancha);
-		principal.add(contenedorBotones, BorderLayout.PAGE_END);
-		
-	}
 	
-	private void prepareContenedoresEstadisticas(){
-		int[] proporciones = juego.proporciones();
-		JPanel estadisticas = prepareContenedor(new JPanel(), "", false);
-		estadisticas.setLayout(new GridLayout(2, 1));
-		JPanel estadisticasUno = prepareContenedor(new JPanel(), "", false);
-		estadisticasUno.setLayout(new BorderLayout());
-		estadisticasUno.add(prepareTextosBorder("Jugador Uno"), BorderLayout.NORTH);
-		estadisticasUno.add(prepareGrafica(proporciones[0], colorJugUno));
-		estadisticasUno.setBorder(new LineBorder(new Color(0f,0f,0f,0f), 20));
-		estadisticas.add(estadisticasUno);
-		JPanel estadisticasDos = prepareContenedor(new JPanel(), "", false);
-		estadisticasDos.setLayout(new BorderLayout());
-		estadisticasDos.add(prepareTextosBorder("Jugador Dos"), BorderLayout.NORTH);
-		estadisticasDos.add(prepareGrafica(proporciones[1], colorJugDos));
-		estadisticasDos.setBorder(new LineBorder(new Color(0f,0f,0f,0f), 20));
-		estadisticas.add(estadisticasDos);
-		principal.add(estadisticas);
-	}
-	
-	private JPanel prepareGrafica(int prop, String color){
-		JPanel estadica = prepareContenedor(new JPanel(), "", false);
-		estadica.setLayout(new GridLayout(1, 100));
-		JButton cantidad;
-		for (int i = 1; i < 100; i++) {
-			cantidad = new JButton("");
-			cantidad.setBorder(new LineBorder(new Color(0f,0f,0f,0f)));
-			cantidad.setBackground(Color.black);
-			if(i <= prop){
-				cantidad.setBackground(colores.get(color));
-			}
-			estadica.add(cantidad);
-		}
-		return estadica;
-	}
-	
-	private void prepareMenuJugador(){
-		int[] proporciones = juego.proporciones();
-		menuUno = prepareContenedor(new JPanel(),"", false);
-		menuUno.setLayout(new GridLayout(5, 1));
-		proporcionUno = prepareTextosBorder(proporciones[0]+"%");
-		menuUno.add(proporcionUno);
-		panelJugUno = menuJugador(menuUno, colorJugUno);
-		principal.add(menuUno, BorderLayout.WEST);
-		menuDos = prepareContenedor(new JPanel(),"", false);
-		menuDos.setLayout(new GridLayout(5, 1));
-		proporcionDos = prepareTextosBorder(proporciones[1]+"%");
-		menuDos.add(proporcionDos);
-		panelJugDos = menuJugador(menuDos, colorJugDos);
-		principal.add(menuDos, BorderLayout.EAST);
-	}
-	
+	/**
+	 * Refresca el color del borde segun el turno. 
+	 */
 	private void refresqueBorde(){
 		boolean turno = juego.getTurno();
 		Border temp = new CompoundBorder(new LineBorder(colores.get(turno == true ? colorJugUno : colorJugDos), 10), new LineBorder(new Color(0f,0f,0f,0f), 30));
@@ -779,6 +1056,9 @@ public class PoobthogenGUI extends JFrame{
 		tableroJuego.setBorder(b);
 	}
 	
+	/**
+	 * Refresca el tablero con la ultima jugada. 
+	 */
 	private void refresque(){
 		refresqueBorde();
 		tableroJuego.removeAll();
@@ -802,6 +1082,12 @@ public class PoobthogenGUI extends JFrame{
 		prepareAccionesBotones();
 		principal.add(tableroJuego, BorderLayout.CENTER);
 	}
+	
+	/**
+	 * Crea la ruta para buscar la imagen asociada al virus. 
+	 * @param v Virus al cual esta asociada la imagen. 
+	 * @return Una cadena con la ruta de la carpeta del virus. 
+	 */
 	private String rutaVirus(Virus v){
 		String ruta;
 		if(v!=null && v.esDeTipo() != null){
@@ -814,15 +1100,21 @@ public class PoobthogenGUI extends JFrame{
 		return ruta;
 	}
 	
+	/**
+	 * Crea el menu de virus para el jugador. 
+	 * @param j Panel en el que se incluyen
+	 * @param opcion Color que eligio el jugador. 
+	 * @return
+	 */
 	private JButton[] menuJugador(JPanel j, String opcion){
 		JButton[] arreglo = new JButton[4];
-		arreglo[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelUno.png")).getImage()));
+		arreglo[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelUno1.png")).getImage()));
 		arreglo[0].setBackground(Color.BLACK);
 		arreglo[0].setOpaque(false);
-		arreglo[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelDos.png")).getImage()));
+		arreglo[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelDos1.png")).getImage()));
 		arreglo[1].setBackground(Color.BLACK);
 		arreglo[1].setOpaque(false);
-		arreglo[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelTres.png")).getImage()));
+		arreglo[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/NivelTres1.png")).getImage()));
 		arreglo[2].setBackground(Color.BLACK);
 		arreglo[2].setOpaque(false);
 		arreglo[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/"+opcion+"/Destructor.png")).getImage()));
@@ -832,69 +1124,6 @@ public class PoobthogenGUI extends JFrame{
 			j.add(b);
 		}
 		return arreglo;
-	}
-	
-	private void prepareMenu(){
-		JMenuBar barra = new JMenuBar();
-		setJMenuBar(barra);
-		JMenu opciones = new JMenu("Opciones");
-		opciones.setFont(f);
-		guardar = new JMenuItem("Guardar");
-		guardar.setFont(f);
-		exportar = new JMenuItem("Exportar");
-		exportar.setFont(f);
-		reiniciar = new JMenuItem("Reiniciar");
-		reiniciar.setFont(f);
-		salir = new JMenuItem("Salir");
-		salir.setFont(f);
-		opciones.add(guardar);
-		opciones.add(exportar);
-		opciones.add(new JSeparator());
-		opciones.add(reiniciar);
-		opciones.add(salir);
-		barra.add(opciones);
-	}
-	
-	private void prepareVentanaConfiguracionInicial(){
-		remove(principal);
-		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
-		add(principal);
-		principal.removeAll();
-		principal.updateUI();
-		principal.setLayout(new GridLayout(2,1));
-		Dimension tam = this.getContentPane().getSize();
-		preparePanelEscogerFicha();
-		JPanel endOfWin = preparePanelTurnosTiempo();
-		contenedorBotones = new JPanel();
-		contenedorBotones.setLayout(new GridLayout(2, 1));
-		contenedorBotones.setBackground(Color.BLACK);
-		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(aceptar);
-		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(cancelar);
-		endOfWin.add(contenedorBotones);
-		principal.add(endOfWin);
-	}
-	
-	private void prepareVentanaConfiguracionInicialUno(){
-		remove(principal);
-		principal = new ImagenFondo("/Presentacion/imagenes/fondoPoobthogen.jpg");
-		add(principal);
-		principal.removeAll();
-		principal.updateUI();
-		principal.setLayout(new GridLayout(2,1));
-		Dimension tam = this.getContentPane().getSize();
-		preparePanelEscogerFichaUno();
-		JPanel endOfWin = preparePanelTurnosTiempo();
-		contenedorBotones = new JPanel();
-		contenedorBotones.setLayout(new GridLayout(2, 1));
-		contenedorBotones.setBackground(Color.BLACK);
-		aceptar = creaBoton(0, 0,"Aceptar",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(aceptar);
-		cancelar = creaBoton(0, 0,"Cancelar",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(cancelar);
-		endOfWin.add(contenedorBotones);
-		principal.add(endOfWin);
 	}
 	
 	private JPanel preparePanelTurnosTiempo(){
@@ -924,6 +1153,9 @@ public class PoobthogenGUI extends JFrame{
 		return endOfWin;
 	}
 	
+	/**
+	 *Prepara el panel de escoger el color de ficha. 
+	 */
 	private void preparePanelEscogerFicha(){
 		fichasPreJuego = prepareContenedor(new JPanel(), "", true);
 		fichasPreJuego.setLayout(new BorderLayout());
@@ -936,6 +1168,9 @@ public class PoobthogenGUI extends JFrame{
 		principal.add(fichasPreJuego);
 	}
 	
+	/**
+	 *Prepara el panel de escoger el color de ficha para el pve.  
+	 */
 	private void preparePanelEscogerFichaUno(){
 		fichasPreJuego = prepareContenedor(new JPanel(), "", true);
 		fichasPreJuego.setLayout(new BorderLayout());
@@ -948,6 +1183,10 @@ public class PoobthogenGUI extends JFrame{
 		principal.add(fichasPreJuego);
 	}
 	
+	/**
+	 * Prepara el diseño de la seccion de escoger el color de ficha del jugador uno. 
+	 * @param contenedor
+	 */
 	private void prepareContenedoresFichaUno(JPanel contenedor){
 		JPanel fichasUno = prepareContenedor(new JPanel(),"", false);
 		fichasUno.setLayout(new BorderLayout());
@@ -959,6 +1198,10 @@ public class PoobthogenGUI extends JFrame{
 		contenedor.add(fichasUno);
 	}
 	
+	/**
+	 * Prepara el diseño de la seccion de escoger el color de ficha del jugador dos. 
+	 * @param contenedor
+	 */
 	private void prepareContenedoresFichaDos(JPanel contenedor){
 		JPanel fichasDos = prepareContenedor(new JPanel(),"", false);
 		fichasDos.setLayout(new BorderLayout());
@@ -970,6 +1213,10 @@ public class PoobthogenGUI extends JFrame{
 		contenedor.add(fichasDos);
 	}
 	
+	/**
+	 * Prepara el diseño de la seccion de escoger el tipo de maquina
+	 * @param contenedor
+	 */
 	private void prepareContenedoresFichaDosMaquina(JPanel contenedor){
 		JPanel fichasDos = prepareContenedor(new JPanel(),"", false);
 		fichasDos.setLayout(new BorderLayout());
@@ -981,6 +1228,11 @@ public class PoobthogenGUI extends JFrame{
 		contenedor.add(fichasDos);
 	}
 	
+	/**
+	 * Prepara un Jlabel con configuraciones por defecto
+	 * @param texto Que se quiere incluir 
+	 * @return El Label con las configuraciones. 
+	 */
 	private JLabel prepareTextosBorder(String texto){
 		JLabel text1 = new JLabel(texto);
 		text1.setForeground(Color.WHITE);
@@ -989,6 +1241,13 @@ public class PoobthogenGUI extends JFrame{
 		return text1;
 	}
 	
+	/**
+	 * Prepara un contenedor con configuraciones por defecto. 
+	 * @param j Panel 
+	 * @param mensaje Mensaje que tiene el borde. 
+	 * @param borde Si se le quiere agregar borde o no. 
+	 * @return Contenedor con configuraciones por defecto. 
+	 */
 	private JPanel prepareContenedor(JPanel j, String mensaje, boolean borde){
 		if (borde){
 			j.setBorder(new CompoundBorder( new EmptyBorder(1, 1, 1, 1), new TitledBorder(mensaje)));
@@ -1001,6 +1260,9 @@ public class PoobthogenGUI extends JFrame{
 		return j;
 	}
 	
+	/**
+	 * Prepara el diseño del menu de escoger tablero. 
+	 */
 	private void prepareMenuTableros(){
 		tableros = new JTabbedPane();
 		tableros.setFont(f);
@@ -1010,6 +1272,12 @@ public class PoobthogenGUI extends JFrame{
 		principal.add(tableros);
 	}
 	
+	/**
+	 * Prepara el diseño del panel de tablero pequeno
+	 * @param ruta1 Imagen tablero vacio
+	 * @param ruta2 Imagen tablero random
+	 * @return Un panel con la configuracion
+	 */
 	private JPanel prepareAreaPequeno(String ruta1, String ruta2){
 		areaPequeno = new JPanel();
 		prepareContenedor(areaPequeno, "", false);
@@ -1025,6 +1293,13 @@ public class PoobthogenGUI extends JFrame{
 		return areaPequeno;
 	}
 	
+
+	/**
+	 * Prepara el diseño del panel de tablero mediano
+	 * @param ruta1 Imagen tablero vacio
+	 * @param ruta2 Imagen tablero random
+	 * @return Un panel con la configuracion
+	 */
 	private JPanel prepareAreaMediano(String ruta1, String ruta2){
 		areaMediano = new JPanel();
 		prepareContenedor(areaMediano, "", false);
@@ -1040,6 +1315,13 @@ public class PoobthogenGUI extends JFrame{
 		return areaMediano;
 	}
 	
+
+	/**
+	 * Prepara el diseño del panel de tablero grande
+	 * @param ruta1 Imagen tablero vacio
+	 * @param ruta2 Imagen tablero random
+	 * @return Un panel con la configuracion
+	 */
 	private JPanel prepareAreaGrande(String ruta1, String ruta2){
 		areaGrande = new JPanel();
 		prepareContenedor(areaGrande, "", false);
@@ -1055,18 +1337,24 @@ public class PoobthogenGUI extends JFrame{
 		return areaGrande;
 	}
 	
+	/**
+	 * Prepara los botones para escoger color de ficha
+	 * @param j Panel que lo incluye
+	 * @param arreglo Arreglo al que se le anaden los botones 
+	 * @return El arreglo de botones configurados
+	 */
 	private JButton[] prepareBotonesFichas(JPanel j, JButton[] arreglo){
 		arreglo = new JButton[4];
-		arreglo[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno.png")).getImage()));
+		arreglo[0] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/verde/NivelUno1.png")).getImage()));
 		arreglo[0].setBackground(Color.BLACK);
 		arreglo[0].setOpaque(false);
-		arreglo[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno.png")).getImage()));
+		arreglo[1] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/roja/NivelUno1.png")).getImage()));
 		arreglo[1].setBackground(Color.BLACK);
 		arreglo[1].setOpaque(false);
-		arreglo[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno.png")).getImage()));
+		arreglo[2] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/amarilla/NivelUno1.png")).getImage()));
 		arreglo[2].setBackground(Color.BLACK);
 		arreglo[2].setOpaque(false);
-		arreglo[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno.png")).getImage()));
+		arreglo[3] = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource("/Presentacion/azul/NivelUno1.png")).getImage()));
 		arreglo[3].setBackground(Color.BLACK);
 		arreglo[3].setOpaque(false);
 		for (JButton b : arreglo){
@@ -1075,6 +1363,12 @@ public class PoobthogenGUI extends JFrame{
 		return arreglo;
 	}
 	
+	/**
+	 * Prepara los botones para escoger tipo de maquina
+	 * @param j Panel que lo incluye
+	 * @param arreglo Arreglo al que se le anaden los botones 
+	 * @return El arreglo de botones configurados
+	 */
 	private JButton[] prepareMaquinaFichas(JPanel j, JButton[] arreglo){
 		f = new Font("Century Gothic", Font.PLAIN, 12);
 		arreglo = new JButton[3];
@@ -1100,46 +1394,8 @@ public class PoobthogenGUI extends JFrame{
 		return arreglo;
 	}
 	
-	private void preparePantallaInicio(){
-		remove(principal);
-		principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
-		add(principal);
-		principal.removeAll();
-		principal.updateUI();
-		principal.setLayout(new BorderLayout());
-		Dimension tam = this.getContentPane().getSize();
-		contenedorBotones = new JPanel();
-		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(Color.BLACK);
-		f = new Font("Century Gothic", Font.PLAIN, 20);
-		juegoNuevo = creaBoton(0, 0,"Juego Nuevo",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(juegoNuevo);
-		cargarJuego = creaBoton(0, 0,"Cargar Juego",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(cargarJuego);
-		creditos= creaBoton(0, 0,"Creditos",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(creditos);
-		principal.add(contenedorBotones, BorderLayout.PAGE_END);
-	}
 
-	private void preparePantallaNuevoJuego(){
-		remove(principal);
-		principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
-		add(principal);
-		principal.removeAll();
-		principal.updateUI();
-		principal.setLayout(new BorderLayout());
-		Dimension tam = this.getContentPane().getSize();
-		contenedorBotones = new JPanel();
-		contenedorBotones.setLayout(new GridLayout(1, 3));
-		contenedorBotones.setBackground(Color.BLACK);
-		unJugador = creaBoton(0, 0,"Un jugador",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(unJugador);
-		dosJugadores = creaBoton(0, 0,"Dos jugadores",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(dosJugadores);
-		volver = creaBoton(0, 0,"Volver",tam.height-50, tam.width-50, f);
-		contenedorBotones.add(volver);
-		principal.add(contenedorBotones, BorderLayout.PAGE_END);
-	}
+
 	
 	/**
 	 * Crea un boton con bordes redondeados con unas especificaciones 
@@ -1218,7 +1474,8 @@ public class PoobthogenGUI extends JFrame{
 	 * Muestra los creditos del juego
 	 */
 	private void muestreCreditos(){
-		String mensaje = "Bla bla bla y mas bla bla";
+		String mensaje = "Juego creado por Maria Alejandra Blanco Uribe y Nicolas Gomez Solano\n"+new Date().getDay()+":"+new Date().getMonth()+":"+new Date().getYear()+1900+"\n"
+				+"POOB 2014-2";
 		JOptionPane.showMessageDialog(this,(Object)mensaje, "Creditos", JOptionPane.INFORMATION_MESSAGE);
 	}
 	

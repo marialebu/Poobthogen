@@ -4,9 +4,13 @@ import java.io.*;
 
 public class Log {
 	
-	private static final String NAME_LOGFILE="programasLibres.log";
+	private static final String NAME_LOGFILE="poobthogen.log";
     private static File LOG_FILE = new File(NAME_LOGFILE);
     
+    /**
+     * Registra el error en el log. 
+     * @param excepcion
+     */
     public static void registreError(Exception excepcion){
         try{
            FileWriter out = new FileWriter( LOG_FILE, true );

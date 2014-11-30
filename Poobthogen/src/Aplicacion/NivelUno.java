@@ -4,6 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 
 public class NivelUno extends Virus implements Serializable{ 
 	
+	/**
+	 * Constructor de la clase NivelUno
+	 * @param j Jugador al que pertenece
+	 * @param x Posicion en x
+	 * @param y posicion en y 
+	 * @param t Tablero en el que se crea
+	 * @param evoluciona Si se expande o no el virus
+	 */
 	public NivelUno(Jugador j, int x ,int y, Tablero t, boolean evoluciona) throws PoobthogenExcepcion{
 		super(j, x, y, t, evoluciona);
 		nextLevel = "NivelDos";
@@ -28,13 +36,19 @@ public class NivelUno extends Virus implements Serializable{
 		return res;
 	}
 	
+
 	/**
-	 * 
+	 * Consulta si un virus se puede evolucionar
+	 * @return Verdadero si no ha evolucionado y falso en caso contrario. 
 	 */
 	public boolean sePuedeEvolucionar() {
 		return true;
 	}
 	
+	/**
+	 * Consulta de que tipo es el virus con su jugador.  
+	 * @return Una cadena con el nombre de la clase y el jugador al que pertenece
+	 */
 	public String esDeTipo(){
 		return "NivelUno "+(jugador != null ? jugador.toString() : 0);
 	}

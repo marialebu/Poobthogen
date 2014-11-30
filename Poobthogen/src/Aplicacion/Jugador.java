@@ -24,6 +24,14 @@ public class Jugador implements Serializable{
 		return identificador+""; 
 	}
 	
+	/**
+	 * Realiza una jugada. 
+	 * @param x Posicion en x del tablero
+	 * @param y Posicion en y del tablero
+	 * @param virus Tipo de virus que quiere colocar
+	 * @return Si se ha ganado el juego o no
+	 * @throws PoobthogenExcepcion
+	 */
 	public boolean juega(int x, int y, String virus) throws PoobthogenExcepcion{
 		return tablero.agregarElemento(Integer.parseInt(identificador+""), x, y, virus, true);
 	}
