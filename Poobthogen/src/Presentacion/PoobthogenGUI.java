@@ -492,9 +492,11 @@ public class PoobthogenGUI extends JFrame{
 		
 		pasaTurno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				juego.cambiarTurno();
-				disminuyeTurnos(false);
-				refresque();
+				turnosJuego--;
+				if(turnosJuego > 0){
+					juego.cambiarTurno();
+					refresque();
+				}
 			}
 		});
 		
@@ -512,7 +514,7 @@ public class PoobthogenGUI extends JFrame{
 		boolean gana = false;
 		try{
 			gana = actual.juega(i, j, opcionVirus); 
- 			if(!gana){
+ 			if(!gana && turnosJuego > 0){
 				juego.cambiarTurno();
 				juego.imprimir();
 			}
@@ -538,10 +540,10 @@ public class PoobthogenGUI extends JFrame{
 		contenedor = prepareContenedor(new JPanel(),"", false); 
 		contenedor.setLayout(new GridLayout(1, 4));
 		contenedor.add(prepareTextosBorder("Turnos: "));
-		muestraTurnos = prepareTextosBorder(turnosJuego == -1 ? "Ilimitado" : turnosJuego+"");
+		muestraTurnos = prepareTextosBorder(turnosJuego  <=0 ? "Ilimitado" : turnosJuego+"");
 		contenedor.add(muestraTurnos);
 		contenedor.add(prepareTextosBorder("Tiempo: "));
-		muestraTiempo = prepareTextosBorder(tiempoJuego >= 0 ? "Ilimitado" : tiempoJuego+"");
+		muestraTiempo = prepareTextosBorder(tiempoJuego <= 0 ? "Ilimitado" : tiempoJuego+"");
 		contenedor.add(muestraTiempo);
 		contadorTiempo(contenedor);
 		timer.start();
@@ -593,7 +595,14 @@ public class PoobthogenGUI extends JFrame{
 					public void actionPerformed(ActionEvent arg0) {
 						try{
 							boolean gana = jugar(i, j);
-							disminuyeTurnos(gana);
+							if(!gana && turnosJuego > 0){
+								turnosJuego--;
+								refresqueTurnos(contenedor);
+							}else{
+								int ganadorJuego = juego.determinaGanador(); 
+								ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+								prepareVentanaGanadorJuego();
+							}
 						}catch (PoobthogenExcepcion e){
 							JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 						}
@@ -603,24 +612,10 @@ public class PoobthogenGUI extends JFrame{
 			}
 		}
 	}
-	
-	private void disminuyeTurnos(boolean gana){
-		if(!gana || turnosJuego > 0){
-			turnosJuego--;
-			refresqueTurnos(contenedor);
-		}else{
-			int ganadorJuego = juego.determinaGanador(); 
-			ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-			prepareVentanaGanadorJuego();
-		}
-	}
-	
 	private void prepareVentanaGanadorJuego(){
 		JOptionPane.showMessageDialog(this, "Ha ganado el jugador: "+ganador.toString());
 		principal.removeAll();
 		principal.updateUI();
-		
-		
 	}
 	
 	private void prepareMenuJugador(){
