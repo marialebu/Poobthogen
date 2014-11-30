@@ -13,26 +13,11 @@ public class NivelTres extends Virus implements Serializable{
 		nextLevel = "Bloque";
 		nivel = 3;
 		destruido = false; 
-		if(tablero.getElemento(x, y)!=null && evoluciona){
+		if(tablero.getElemento(x, y)!=null && evoluciona && compareTo(nivel,tablero.getElemento(x, y))==0){
 			evolucionar(evoluciona,j);
 		}
 		if((Virus.compareTo(nivel, tablero.getElemento(x, y))> 0) && evoluciona){
 			agregarNivelDos();
-		}else{
-			evolucionarVecinos(evoluciona, j);
-		}
-	}
-	
-	protected void evolucionarVecinos(boolean evoluciona, Jugador j) throws PoobthogenExcepcion{
-		for (int i = 0; i < dx.length; i++) {
-			int temp_dx = x+dx[i];
-			int temp_dy = y+dy[i];
-			if(temp_dx>=0 && temp_dx < tablero.filas() && temp_dy>=0 && temp_dy < tablero.columnas() && !tablero.getElementoTemporal(temp_dx, temp_dy)){
-				Virus vecino = tablero.getElemento(temp_dx, temp_dy);
-				if(vecino != null && vecino.sePuedeEvolucionar() && compareTo(nivel,vecino)==0){
-					vecino.evolucionar(evoluciona, j);
-				}
-			}
 		}
 	}
 

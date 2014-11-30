@@ -89,10 +89,14 @@ public class Tablero  implements Serializable{
 		boolean sePudo = true;
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
-			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel()) ||  (elementos[i][j] != null && niveles.get(elemento)==elementos[i][j].getNivel() && (jugador == -1 ? null : jugadores.get(jugador-1)) == elementos[i][j].getJugador())){
+			if(elementos[i][j] == null || 
+					(elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel()) ||
+						(elementos[i][j] != null && niveles.get(elemento)==elementos[i][j].getNivel() &&
+							(jugador == -1 ? null : jugadores.get(jugador-1)) == elementos[i][j].getJugador())){
 				TurnoTemporal[i][j] = true;
 				Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
-				elementos[i][j] = elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
+				elementos[i][j] = elementos[i][j] == null || 
+						(elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
 			}else{
 				TurnoTemporal[i][j] = false;
 				throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
@@ -103,7 +107,7 @@ public class Tablero  implements Serializable{
 			e.printStackTrace();
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+" "+e.getMessage());
 		}
-		return sePudo;
+		return verificar();
 	}
 	/**Termina el juego. 
 	 */
@@ -285,5 +289,26 @@ public class Tablero  implements Serializable{
 	public boolean getTurno(){
 		return turno;
 	}
+	
+	public int determinaGanador(){
+		int jugador1 = 0;
+		int jugador2= 0;
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				if(elementos[i][j] != null){
+					if(elementos[i][j].getNivel() > 0){
+						if(elementos[i][j].getJugador().toString() == jugadores.get(0).toString()){
+							jugador1++;
+						}else{
+							jugador2++;
+						}
+					}
+				}
+			}
+		}
+		return Integer.compare(jugador1, jugador2);
+	}
+	
+	
 	
 }

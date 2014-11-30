@@ -86,6 +86,7 @@ public class PoobthogenGUI extends JFrame{
 	private JPanel tableroJuego;
 	private Timer timer;
 	private JPanel contenedor;
+	private JButton pasaTurno;
 	
 	/**
 	 * @param args
@@ -488,17 +489,20 @@ public class PoobthogenGUI extends JFrame{
 		}
 	}
 	
-	private void jugar(int i, int j) throws PoobthogenExcepcion{
+	private boolean jugar(int i, int j) throws PoobthogenExcepcion{
+		boolean turno = juego.getTurno();
+		Jugador actual = turno == true ? jugadorUno : jugadorDos;
+		boolean gana = false;
 		try{
-			boolean turno = juego.getTurno();
-			Jugador actual = turno == true ? jugadorUno : jugadorDos;
-			if(actual.juega(i, j, opcionVirus)){
+			gana = actual.juega(i, j, opcionVirus); 
+ 			if(!gana){
 				juego.cambiarTurno();
 				juego.imprimir();
 			}
 		}catch (PoobthogenExcepcion e){
 			throw e;
 		}
+		return gana;
 	}
 	
 	private void prepareVentanaJuego(){
@@ -528,6 +532,7 @@ public class PoobthogenGUI extends JFrame{
 		tableroJuego = prepareContenedor(new JPanel(), "", false);
 		refresqueBorde();
 		refresque();
+		//JPanel contenedorBotones 
 	}
 	
 	private void contadorTiempo(final JPanel contenedor){
@@ -561,9 +566,13 @@ public class PoobthogenGUI extends JFrame{
 					final int i = k;
 					public void actionPerformed(ActionEvent arg0) {
 						try{
-							jugar(i, j);
-							turnosJuego--;
-							refresqueTurnos(contenedor);
+							boolean gana = jugar(i, j);
+							if(!gana){
+								turnosJuego--;
+								refresqueTurnos(contenedor);
+							}else{
+								prepareVentanaGanadorJuego();
+							}
 						}catch (PoobthogenExcepcion e){
 							JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 						}
@@ -572,6 +581,10 @@ public class PoobthogenGUI extends JFrame{
 				});
 			}
 		}
+	}
+	
+	private void prepareVentanaGanadorJuego(){
+		
 	}
 	
 	private void prepareMenuJugador(){

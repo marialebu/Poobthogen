@@ -29,7 +29,7 @@ public abstract class Virus implements Serializable{
 	 * @param v Elemento con el que se quiere comparar
 	 * @return 0 si son del mismo nivel, 1 si el primer elemento es mayor y -1 en caso contrario. 
 	 */
-	public static int compareTo(int nivel, Virus v2) {
+	public static int compareTo(int nivel, Virus v2){
 		int res = 1;
 		if(v2 != null){
 			if(nivel < v2.getNivel()){
@@ -87,16 +87,12 @@ public abstract class Virus implements Serializable{
 	}
 
 	public void destruir(Jugador j) throws PoobthogenExcepcion{
-		if(sePuedeDestruir() && compareTo(nivel, tablero.getElemento(x, y)) == 0){
-			destruido = true;
-			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", false);
-
-		}
+		destruido = true;
+		tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, "Destructor", true);
 	}
-	
-	//El evolucionar deberia estar ac� creo yo. 
+	 
 	public void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion{
-		if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
+		if(evoluciona){
 			maxEvolucion = false;
 			tablero.setEvolucionTemporal(x,y);
 			tablero.agregarElemento(Integer.parseInt(j.toString()), x, y, nextLevel, true);
@@ -108,4 +104,6 @@ public abstract class Virus implements Serializable{
 	}
 	
 	public abstract String esDeTipo();
+	
+	
 }
