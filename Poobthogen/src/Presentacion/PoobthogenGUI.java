@@ -1291,9 +1291,9 @@ public class PoobthogenGUI extends JFrame{
 		tableros = new JTabbedPane();
 		tableros.setFont(f);
 		f = new Font("Century Gothic", Font.PLAIN, 50);
-		tableros.addTab("Pequeno", prepareAreaPequeno("/Presentacion/imagenes/pequeno.jpg","/Presentacion/imagenes/interrogante.png"));
-		tableros.addTab("Mediano", prepareAreaMediano("/Presentacion/imagenes/mediano.jpg","/Presentacion/imagenes/interrogante.png"));
-		tableros.addTab("Grande", prepareAreaGrande("/Presentacion/imagenes/grande.jpg", "/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Pequeno", prepareAreaPequeno("/Presentacion/imagenes/pequeno.png","/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Mediano", prepareAreaMediano("/Presentacion/imagenes/mediano.png","/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Grande", prepareAreaGrande("/Presentacion/imagenes/grande.png", "/Presentacion/imagenes/interrogante.png"));
 		principal.add(tableros);
 		f = new Font("Century Gothic", Font.PLAIN, 20);
 	}
