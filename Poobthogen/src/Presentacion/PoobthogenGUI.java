@@ -29,6 +29,8 @@ public class PoobthogenGUI extends JFrame{
 	private final String[] TIPOS_VIRUS = {"NivelUno", "NivelDos", "NivelTres", "Destructor"};
 	private final String[] JUGADORES = {"Jugador uno", "Jugador dos"};
 	private boolean neutrales;
+	private int iniciales;
+	private int tiempoIncial;
 	private int x;
 	private int y;
 	
@@ -507,13 +509,15 @@ public class PoobthogenGUI extends JFrame{
 		contenedor = prepareContenedor(new JPanel(),"", false); 
 		contenedor.setLayout(new GridLayout(1, 4));
 		contenedor.add(prepareTextosBorder("Turnos: "));
+		iniciales = turnosJuego;
 		muestraTurnos = prepareTextosBorder(turnosJuego  <=0 ? "Ilimitado" : turnosJuego+"");
 		contenedor.add(muestraTurnos);
 		contenedor.add(prepareTextosBorder("Tiempo: "));
+		tiempoIncial = tiempoJuego;
 		muestraTiempo = prepareTextosBorder(tiempoJuego <= 0 ? "Ilimitado" : tiempoJuego+"");
 		contenedor.add(muestraTiempo);
 		contadorTiempo(contenedor);
-		timer.start();
+		inicia();
 		principal.add(contenedor, BorderLayout.PAGE_START);
 		prepareMenuJugador();
 		tableroJuego = prepareContenedor(new JPanel(), "", false);
@@ -829,11 +833,8 @@ public class PoobthogenGUI extends JFrame{
 		
 		reiniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int filas = juego.filas();
-				int columnas = juego.columnas();
 				try {
-					juego = new Tablero(filas, columnas, neutrales);
-					refresque();
+					reinicia();
 				} catch (PoobthogenExcepcion ev) {
 					JOptionPane.showMessageDialog(PoobthogenGUI.this, ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
@@ -841,6 +842,29 @@ public class PoobthogenGUI extends JFrame{
 		});
 	}
 	
+	/**
+	 * Inicia la cuenta del cronometro
+	 */
+	private void inicia(){
+		timer.stop();
+		timer.start();
+	}
+	
+	/**
+	 * Reinicia los estados del juego.
+	 * @throws PoobthogenExcepcion
+	 */
+	private void reinicia() throws PoobthogenExcepcion{
+		int filas = juego.filas();
+		int columnas = juego.columnas();
+		juego = new Tablero(filas, columnas, neutrales);
+		tiempoJuego = tiempoIncial;
+		inicia();
+		turnosJuego = iniciales;
+		refresque();
+		refresqueProporciones();
+		refrescaTurnos();
+	}
 	/**
 	 * Prepara las acciones de los botones al jugar. 
 	 */
@@ -1266,10 +1290,12 @@ public class PoobthogenGUI extends JFrame{
 	private void prepareMenuTableros(){
 		tableros = new JTabbedPane();
 		tableros.setFont(f);
-		tableros.addTab("Pequeno", prepareAreaPequeno("/Presentacion/imagenes/pathogenMap.jpg","/Presentacion/imagenes/interrogante.png"));
-		tableros.addTab("Mediano", prepareAreaMediano("/Presentacion/imagenes/pathogenMap.jpg","/Presentacion/imagenes/interrogante.png"));
-		tableros.addTab("Grande", prepareAreaGrande("/Presentacion/imagenes/pathogenMap.jpg", "/Presentacion/imagenes/interrogante.png"));
+		f = new Font("Century Gothic", Font.PLAIN, 50);
+		tableros.addTab("Pequeno", prepareAreaPequeno("/Presentacion/imagenes/pequeno.jpg","/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Mediano", prepareAreaMediano("/Presentacion/imagenes/mediano.jpg","/Presentacion/imagenes/interrogante.png"));
+		tableros.addTab("Grande", prepareAreaGrande("/Presentacion/imagenes/grande.jpg", "/Presentacion/imagenes/interrogante.png"));
 		principal.add(tableros);
+		f = new Font("Century Gothic", Font.PLAIN, 20);
 	}
 	
 	/**
@@ -1286,7 +1312,8 @@ public class PoobthogenGUI extends JFrame{
 		vacioPequeno.setBackground(Color.BLACK);
 		vacioPequeno.setOpaque(false);
 		areaPequeno.add(vacioPequeno); 
-		interrogantePequeno = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interrogantePequeno = new RoundButton("?");
+		interrogantePequeno.setFont(f);
 		interrogantePequeno.setBackground(Color.BLACK);
 		interrogantePequeno.setOpaque(false);
 		areaPequeno.add(interrogantePequeno);
@@ -1308,7 +1335,8 @@ public class PoobthogenGUI extends JFrame{
 		vacioMediano.setBackground(Color.BLACK);
 		vacioMediano.setOpaque(false);
 		areaMediano.add(vacioMediano); 
-		interroganteMediano = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interroganteMediano = new RoundButton("?");
+		interroganteMediano.setFont(f);
 		interroganteMediano.setBackground(Color.BLACK);
 		interroganteMediano.setOpaque(false);
 		areaMediano.add(interroganteMediano);
@@ -1330,7 +1358,8 @@ public class PoobthogenGUI extends JFrame{
 		vacioGrande.setBackground(Color.BLACK);
 		vacioGrande.setOpaque(false);
 		areaGrande.add(vacioGrande); 
-		interroganteGrande = new RoundButton(new ImageIcon(new ImageIcon(getClass().getResource(ruta2)).getImage()));
+		interroganteGrande = new RoundButton("?");
+		interroganteGrande.setFont(f);
 		interroganteGrande.setBackground(Color.BLACK);
 		interroganteGrande.setOpaque(false);
 		areaGrande.add(interroganteGrande);
