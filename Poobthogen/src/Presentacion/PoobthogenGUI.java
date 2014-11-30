@@ -87,6 +87,8 @@ public class PoobthogenGUI extends JFrame{
 	private Timer timer;
 	private JPanel contenedor;
 	private JButton pasaTurno;
+	private JButton rendirse;
+	private Jugador ganador;
 	
 	/**
 	 * @param args
@@ -487,6 +489,21 @@ public class PoobthogenGUI extends JFrame{
 				}
 			});
 		}
+		
+		pasaTurno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				juego.cambiarTurno();
+				disminuyeTurnos(false);
+				refresque();
+			}
+		});
+		
+		rendirse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ganador = juego.rendirse() == true ? jugadorUno : jugadorDos;
+				prepareVentanaGanadorJuego();
+			}
+		});
 	}
 	
 	private boolean jugar(int i, int j) throws PoobthogenExcepcion{
@@ -517,6 +534,7 @@ public class PoobthogenGUI extends JFrame{
 	}
 	
 	private void prepareContenedoresJuego(){
+		Dimension tam = this.getContentPane().getSize();
 		contenedor = prepareContenedor(new JPanel(),"", false); 
 		contenedor.setLayout(new GridLayout(1, 4));
 		contenedor.add(prepareTextosBorder("Turnos: "));
@@ -530,9 +548,14 @@ public class PoobthogenGUI extends JFrame{
 		principal.add(contenedor, BorderLayout.PAGE_START);
 		prepareMenuJugador();
 		tableroJuego = prepareContenedor(new JPanel(), "", false);
-		refresqueBorde();
 		refresque();
-		//JPanel contenedorBotones 
+		JPanel contenedorBotones = prepareContenedor(new JPanel(),"", false);
+		contenedorBotones.setLayout(new GridLayout(1, 2));
+		pasaTurno = creaBoton(0, 0,"Pasar turno",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(pasaTurno);
+		rendirse = creaBoton(0, 0,"Rendirse",tam.height-50, tam.width-50, f);
+		contenedorBotones.add(rendirse);
+		principal.add(contenedorBotones, BorderLayout.PAGE_END);
 	}
 	
 	private void contadorTiempo(final JPanel contenedor){
@@ -543,6 +566,9 @@ public class PoobthogenGUI extends JFrame{
 					refresqueTiempo(contenedor);
 				}else{
 					timer.stop();
+					int ganadorJuego = juego.determinaGanador(); 
+					ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+					prepareVentanaGanadorJuego();
 				}
 			}
 		});
@@ -550,7 +576,7 @@ public class PoobthogenGUI extends JFrame{
 	
 	private void refresqueTiempo(JPanel contenedor){
 		contenedor.updateUI();
-		muestraTiempo.setText(tiempoJuego <= 0 ? "Ilimitado" : tiempoJuego+"");
+		muestraTiempo.setText(tiempoJuego <= -1 ? "Ilimitado" : tiempoJuego+"");
 	}
 	
 	private void refresqueTurnos(JPanel contenedor){
@@ -567,12 +593,7 @@ public class PoobthogenGUI extends JFrame{
 					public void actionPerformed(ActionEvent arg0) {
 						try{
 							boolean gana = jugar(i, j);
-							if(!gana){
-								turnosJuego--;
-								refresqueTurnos(contenedor);
-							}else{
-								prepareVentanaGanadorJuego();
-							}
+							disminuyeTurnos(gana);
 						}catch (PoobthogenExcepcion e){
 							JOptionPane.showMessageDialog(PoobthogenGUI.this,e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 						}
@@ -583,7 +604,22 @@ public class PoobthogenGUI extends JFrame{
 		}
 	}
 	
+	private void disminuyeTurnos(boolean gana){
+		if(!gana || turnosJuego > 0){
+			turnosJuego--;
+			refresqueTurnos(contenedor);
+		}else{
+			int ganadorJuego = juego.determinaGanador(); 
+			ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+			prepareVentanaGanadorJuego();
+		}
+	}
+	
 	private void prepareVentanaGanadorJuego(){
+		JOptionPane.showMessageDialog(this, "Ha ganado el jugador: "+ganador.toString());
+		principal.removeAll();
+		principal.updateUI();
+		
 		
 	}
 	

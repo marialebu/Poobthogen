@@ -14,7 +14,6 @@ public class Tablero  implements Serializable{
 	private boolean[][] TurnoTemporal;
 	private boolean[][] TurnoEvolucionados;
 	private HashMap<String, Integer> niveles; 
-	private int turnos;
 	
 	
 	
@@ -45,7 +44,6 @@ public class Tablero  implements Serializable{
 		niveles.put("NivelTres", 3);
 		niveles.put("Bloque", Integer.MAX_VALUE);
 		niveles.put("Destructor", Integer.MAX_VALUE);
-		turnos = -1;
 		if(neutral){
 			GenerarFichasNeutrales();
 		}
@@ -161,7 +159,7 @@ public class Tablero  implements Serializable{
 	 * Cambia de turno de cada jugador. 
 	 * @throws PoobthogenExcepcion 
 	 */
-	public void cambiarTurno() throws PoobthogenExcepcion{
+	public void cambiarTurno(){
 		turno = !turno;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
@@ -169,9 +167,8 @@ public class Tablero  implements Serializable{
 				TurnoEvolucionados[i][j] = false;
 			}
 		}
-		turnos--;
-		if(turnos==0)throw new PoobthogenExcepcion(PoobthogenExcepcion.JUEGO_TERMINADO);
 	}
+	
 	/**Muestra el tablero por consola. 
 	 */
 	public void imprimir() {
@@ -284,7 +281,6 @@ public class Tablero  implements Serializable{
 	public int columnas(){
 		return columnas;
 	}
-
 	public void setEvolucionTemporal(int x, int y) {
 		TurnoEvolucionados[x][y] = true;
 	}	
@@ -311,6 +307,7 @@ public class Tablero  implements Serializable{
 		}
 		return Integer.compare(jugador1, jugador2);
 	}
+	
 	
 	
 	
