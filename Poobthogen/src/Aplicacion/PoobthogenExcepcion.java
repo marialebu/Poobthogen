@@ -5,7 +5,7 @@ public class PoobthogenExcepcion extends Exception{
 	
 	public static final String CLASE_NO_ENCONTRADA = "El virus no existe";
 	public static final String ARCHIVO_NO_ENCONTRADO= "El archivo no existe";
-	public static final String ARCHIVO_INFO_INVALIDA= "El archivo contiene información inválida";
+	public static final String ARCHIVO_INFO_INVALIDA= "El archivo contiene informaciï¿½n invï¿½lida";
 	public static final String ERROR_ENTRADA= "Se ha generado un error en la entrada.";
 	public static final String FORMATO_INVALIDO = "El formato dentro del archivo no es correcto";
 	public static final String JUGADOR_INVALIDO = "El juego solo tiene y debe tener dos jugadores";
@@ -20,6 +20,7 @@ public class PoobthogenExcepcion extends Exception{
 	public static final String  ACCION_NO_PERMITIDA = "No se puede realizar esa accion";
 	public static final String JUEGO_TERMINADO = "No se puede realizar mas movimientos";
 	public static final String ESCOJA_VIRUS = "Primero debe escoger el virus que quiere agregar";
+	public static final String SELECCION_INVALIDA = "Debe seleccionar un virus de su propio color";
 	
 	public PoobthogenExcepcion(String mensaje){
 		super(mensaje); 

@@ -94,7 +94,7 @@ public abstract class Virus implements Serializable{
 		}
 	}
 	
-	//El evolucionar deberia estar acá creo yo. 
+	//El evolucionar deberia estar acï¿½ creo yo. 
 	public void evolucionar(boolean evoluciona, Jugador j) throws  PoobthogenExcepcion{
 		if(evoluciona && compareTo(nivel, tablero.getElemento(x, y)) == 0){
 			maxEvolucion = false;

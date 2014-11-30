@@ -86,15 +86,13 @@ public class Tablero  implements Serializable{
 	 * @throws IllegalAccessException 
 	 */
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
+		boolean sePudo = true;
 		try{
-			
 			Class ex = Class.forName("Aplicacion."+elemento);
 			if(elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel()) ||  (elementos[i][j] != null && niveles.get(elemento)==elementos[i][j].getNivel() && (jugador == -1 ? null : jugadores.get(jugador-1)) == elementos[i][j].getJugador())){
 				TurnoTemporal[i][j] = true;
 				Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
-				
 				elementos[i][j] = elementos[i][j] == null || (elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
-				
 			}else{
 				TurnoTemporal[i][j] = false;
 				throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
@@ -105,7 +103,7 @@ public class Tablero  implements Serializable{
 			e.printStackTrace();
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO+" "+e.getMessage());
 		}
-		return verificar();
+		return sePudo;
 	}
 	/**Termina el juego. 
 	 */

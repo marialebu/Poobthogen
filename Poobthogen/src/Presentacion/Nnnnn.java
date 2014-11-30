@@ -4,10 +4,12 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.swing.Timer;
+
 import Aplicacion.*; 
 public class Nnnnn {
 	public static void main(String[] args) throws PoobthogenExcepcion, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		String[][] prueba = 
+	/*	String[][] prueba = 
 			{{"-", "U1", "U1", "U1", "-"},
 			{"U1", "D1", "D1", "D1", "U1"},
 			{"D1", "B1", "B1", "B1", "D1"}, 
@@ -24,6 +26,6 @@ public class Nnnnn {
 		t.cambiarTurno();
 		t.agregarElemento(1, 2, 2, "NivelTres", true);
 		t.cambiarTurno();
-		t.agregarElemento(1, 2, 2, "Destructor", true);
+		t.agregarElemento(1, 2, 2, "Destructor", true);*/
 	}
 }
