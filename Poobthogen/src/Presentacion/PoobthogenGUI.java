@@ -141,57 +141,100 @@ public class PoobthogenGUI extends JFrame{
 	 * Prepara los elementos del inicio del juego. 
 	 */
 	private void prepareElementosInicio(){
-		preparePantallaInicio();
-		prepareAccionesInicio();
+		try{
+			preparePantallaInicio();
+			prepareAccionesInicio();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
 	}
 	
 	/**
 	 * Prepara los elementos para la ventana de juego nuevo. 
 	 */
 	private void prepareElementosNuevo(){
-		preparePantallaNuevoJuego();
-		prepareAccionesNuevo();
+		try{
+			preparePantallaNuevoJuego();
+			prepareAccionesNuevo();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
 	}
 	
 	/**
 	 * Prepara los elementos para la ventana de configuracion inicial del juego pvp
 	 */
 	private void prepareElementosPreJuego(){
-		prepareVentanaConfiguracionInicial();
-		prepareAccionesVentanaConfInicial();
+		try{
+			prepareVentanaConfiguracionInicial();
+			prepareAccionesVentanaConfInicial();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
 	}
 	
 	/**
 	 * Prepara los elementos para la ventana de configuracion inicial del juego contra la maquina
 	 */
 	private void prepareElementosPreJuegoUno(){
-		prepareVentanaConfiguracionInicialUno();
-		prepareAccionesVentanaConfInicialUno();
+		try{
+			prepareVentanaConfiguracionInicialUno();
+			prepareAccionesVentanaConfInicialUno();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
 	}
 	
 	/**
 	 * Prepara los elementos para la ventana de configuracion del tablero. 
 	 */
 	private void prepareElementosConfiguracionTablero(){
-		prepareVentanaConfiguracionTablero();
-		prepareAccionesVentanaConfTablero();
+		try{
+			prepareVentanaConfiguracionTablero();
+			prepareAccionesVentanaConfTablero();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
+		
 	}
 	
 	/**
 	 * Prepara la ventana del juego configurando la pantalla. 
 	 */
 	private void prepareElementosVentanaJuego(){
-		prepareVentanaJuego();
-		preparePantallaJuego();
-		prepareAccionesJuego();
+		try{
+			prepareVentanaJuego();
+			preparePantallaJuego();
+			prepareAccionesJuego();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
 	}
 	
 	/**
 	 * Prepara los elementos de la pantalla de estadisticas
 	 */
 	private void prepareElementosGanadorJuego(){
-		prepareVentanaGanadorJuego();
-		prepareAccionesVentanaGanador();
+		try{
+			prepareVentanaGanadorJuego();
+			prepareAccionesVentanaGanador();
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
+		}
 	}
 	
 	/**
@@ -303,6 +346,7 @@ public class PoobthogenGUI extends JFrame{
 		
 		volverAlMenuPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				juego = null;
 				remove(principal);
 				principal = new ImagenFondo("/Presentacion/imagenes/PoobthogenInicio.jpg");
 		        add(principal);
@@ -1600,6 +1644,14 @@ public class PoobthogenGUI extends JFrame{
 			dispose(); 
     		System.exit(0);
     	}
-		
+    }
+	
+	/**
+	 * Termina con la aplicacion. 
+	 */
+	private void salgaError(){
+		JOptionPane.showMessageDialog(PoobthogenGUI.this, "Se ha generado un error inesperado, la aplicacion se cerrará");
+		dispose(); 
+    	System.exit(0);
     }
 }

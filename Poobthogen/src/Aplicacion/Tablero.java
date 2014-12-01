@@ -136,7 +136,7 @@ public class Tablero  implements Serializable{
 		boolean estaLleno = true;
 		for (int i = 0; i < filas && estaLleno; i++) {
 			for (int j = 0; j < columnas && estaLleno; j++) {
-				estaLleno = elementos[i][j] != null;
+				estaLleno = elementos[i][j] != null && elementos[i][j].getNivel()>0;
 			}
 		}
 		finalizado = estaLleno;
