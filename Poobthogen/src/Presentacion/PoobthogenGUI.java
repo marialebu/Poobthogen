@@ -1142,7 +1142,7 @@ public class PoobthogenGUI extends JFrame{
 				t = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(rutaVirus(juego.getElemento(i, j)))).getImage()));
 				fichasJuego[i][j] = t;
 				t.setOpaque(true);
-				t.setBackground(new Color(0f,0f,0f,0f));
+				t.setBackground(Color.BLACK);
 				t.setBorder(bordeFicha);
 				tableroJuego.add(t);
 			}
