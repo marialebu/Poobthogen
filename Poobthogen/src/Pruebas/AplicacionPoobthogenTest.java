@@ -135,11 +135,11 @@ public class AplicacionPoobthogenTest{
 	        	Tablero t = new Tablero(5, 5, false);
 	        	t.agregaJugador(new Jugador('1', t));
 				t.agregaJugador(new Jugador('2', t));
-	    		t.agregarElemento(1, 2, 2, "NivelUno", true);
+	    		t.agregarElemento(2, 2, 2, "NivelUno", true);
 	    		t.cambiarTurno();
-	    		t.agregarElemento(1, 2, 1, "NivelUno", true);
+	    		t.agregarElemento(2, 2, 1, "NivelUno", true);
 	    		t.cambiarTurno();
-	    		t.agregarElemento(1, 2, 3, "NivelUno", true);
+	    		t.agregarElemento(2, 2, 3, "NivelUno", true);
 	    		t.cambiarTurno();
 	    		t.agregarElemento(1, 2, 2, "Destructor", true);
 	    		t.cambiarTurno();
@@ -155,19 +155,19 @@ public class AplicacionPoobthogenTest{
     		String[][] prueba = 
     			{{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"},
-    			{"-", "U1", "U1", "U1", "-"}, 
+    			{"-", "U2", "U2", "U2", "-"}, 
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	        	Tablero t = new Tablero(5, 5, false);
 	        	t.agregaJugador(new Jugador('1', t));
 				t.agregaJugador(new Jugador('2', t));
-	    		t.agregarElemento(1, 2, 2, "NivelUno", true);
-	    		t.cambiarTurno();
-	    		t.agregarElemento(1, 2, 1, "NivelUno", true);
-	    		t.cambiarTurno();
-	    		t.agregarElemento(1, 2, 3, "NivelUno", true);
-	    		t.cambiarTurno();
 	    		t.agregarElemento(2, 2, 2, "NivelUno", true);
+	    		t.cambiarTurno();
+	    		t.agregarElemento(2, 2, 1, "NivelUno", true);
+	    		t.cambiarTurno();
+	    		t.agregarElemento(2, 2, 3, "NivelUno", true);
+	    		t.cambiarTurno();
+	    		t.agregarElemento(1, 2, 2, "NivelUno", true);
 	    		t.cambiarTurno();
 	    		assertEquals("Deberian ser iguales", prueba, t.obtener());
 	    		fail(EXCEPCION); 
@@ -279,18 +279,18 @@ public class AplicacionPoobthogenTest{
     	try{
     		String[][] prueba = 
     			{{"-", "-", "-", "-", "-"},
-    			{"-", "U1", "U1", "U1", "-"},
-    			{"U1", "G1", "G1", "G1", "U1"}, 
-    			{"-", "U1", "U1", "U1", "-"},
+    			{"-", "U2", "U2", "U2", "-"},
+    			{"U2", "G1", "G1", "G1", "U2"}, 
+    			{"-", "U2", "U2", "U2", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
 	    	t.agregaJugador(new Jugador('1', t));
 			t.agregaJugador(new Jugador('2', t));
-			t.agregarElemento(1, 2, 2, "NivelDos", true);
+			t.agregarElemento(2, 2, 2, "NivelDos", true);
 			t.cambiarTurno();
-			t.agregarElemento(1, 2, 1, "NivelDos", true);
+			t.agregarElemento(2, 2, 1, "NivelDos", true);
 			t.cambiarTurno();
-			t.agregarElemento(1, 2, 3, "NivelDos", true);
+			t.agregarElemento(2, 2, 3, "NivelDos", true);
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 2, "Destructor", true);
 			t.cambiarTurno();
@@ -457,7 +457,7 @@ public class AplicacionPoobthogenTest{
     		String[][] prueba = 
     			{{"-", "U1", "U1", "U1", "-"},
     			{"U1", "D1", "D1", "D1", "U1"},
-    			{"D1", "G1", "G1", "G1", "D1"}, 
+    			{"D1", "G2", "G2", "G2", "D1"}, 
     			{"U1", "D1", "D1", "D1", "U1"},
     			{"-", "U1", "U1", "U1", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
@@ -469,7 +469,7 @@ public class AplicacionPoobthogenTest{
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 3, "NivelTres", true);
 			t.cambiarTurno();
-			t.agregarElemento(1, 2, 2, "Destructor", true);
+			t.agregarElemento(2, 2, 2, "Destructor", true);
 			t.cambiarTurno();
 			assertEquals("Deberian ser iguales", prueba, t.obtener());	
     	}catch (PoobthogenExcepcion e){
@@ -497,7 +497,7 @@ public class AplicacionPoobthogenTest{
 			t.cambiarTurno();
 			t.agregarElemento(1, 2, 2, "NivelTres", true);
 			t.cambiarTurno();
-			t.agregarElemento(1, 2, 2, "Destructor", true);
+			t.agregarElemento(2, 2, 2, "Destructor", true);
 			assertEquals("Deberian ser iguales", prueba, t.obtener());
 			fail(EXCEPCION);
     	}catch (PoobthogenExcepcion e){
@@ -511,15 +511,15 @@ public class AplicacionPoobthogenTest{
     		String[][] prueba = 
     			{{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"},
-    			{"-", "-", "U1", "-", "-"}, 
+    			{"-", "-", "U2", "-", "-"}, 
     			{"-", "-", "-", "-", "-"},
     			{"-", "-", "-", "-", "-"}};
 	    	Tablero t = new Tablero(5, 5, false);
 	    	t.agregaJugador(new Jugador('1', t));
 			t.agregaJugador(new Jugador('2', t));
-			t.agregarElemento(1, 2, 2, "NivelUno", true);
+			t.agregarElemento(2, 2, 2, "NivelUno", true);
 			t.agregarElemento(1, 2, 2, "Destructor", true);
-			t.agregarElemento(1, 2, 2, "NivelUno", true);
+			t.agregarElemento(2, 2, 2, "NivelUno", true);
 			assertEquals("Deberian ser iguales", prueba, t.obtener());
     	}catch (PoobthogenExcepcion e){
     		fail(NOEXCEPCION);
