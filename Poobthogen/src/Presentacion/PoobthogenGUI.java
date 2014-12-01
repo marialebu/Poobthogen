@@ -1495,7 +1495,6 @@ public class PoobthogenGUI extends JFrame{
     	addWindowListener(new WindowAdapter(){
     		public void windowClosing (WindowEvent e){
     			salga();	
-    			JOptionPane.showMessageDialog(PoobthogenGUI.this, "Aplicacion terminada satisfactoriamente");
     		}
     	});
     	
@@ -1640,7 +1639,7 @@ public class PoobthogenGUI extends JFrame{
     	Object [] opciones ={"Aceptar","Cancelar"};
 		int eleccion = JOptionPane.showOptionDialog(this,"En realidad desea cerrar la aplicacion","Mensaje de Confirmacion",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,opciones,"Aceptar");
 		if (eleccion == JOptionPane.YES_OPTION){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, "Aplicacion terminada satisfactoriamente");
+			JOptionPane.showMessageDialog(this, "Aplicacion terminada satisfactoriamente");
 			dispose(); 
     		System.exit(0);
     	}
