@@ -19,8 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class PoobthogenGUI extends JFrame{
 	
 	private final int ONE_SECOND;
-	private final String[] CANT_TURNOS = {"10", "15", "20", "30", "Ilimitado"};
-	private final String[] CANT_TIEMPO = {"5 minutos", "10 minutos", "20 minutos", "Ilimitado"};
+	private final String[] CANT_TURNOS = {"Ilimitado","10", "15", "20", "30"};
+	private final String[] CANT_TIEMPO = {"Ilimitado","5 minutos", "10 minutos", "20 minutos"};
 	private final int[] PEQUENO = {6, 6};
 	private final int[] MEDIANO = {8, 8};
 	private final int[] GRANDE = {10,10};
@@ -1504,7 +1504,7 @@ public class PoobthogenGUI extends JFrame{
 	 * Muestra los creditos del juego
 	 */
 	private void muestreCreditos(){
-		String mensaje = "Juego creado por Maria Alejandra Blanco Uribe y Nicolas Gomez Solano\n"+new Date().getDay()+":"+new Date().getMonth()+":"+new Date().getYear()+1900+"\n"
+		String mensaje = "Juego creado por:\nMaria Alejandra Blanco Uribe y Nicolas Gomez Solano\n"+new Date().getDate()+":"+(new Date().getMonth()+1)+":"+(new Date().getYear()+1900)+"\n"
 				+"POOB 2014-2";
 		JOptionPane.showMessageDialog(this,(Object)mensaje, "Creditos", JOptionPane.INFORMATION_MESSAGE);
 	}
