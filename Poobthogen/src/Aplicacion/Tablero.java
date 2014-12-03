@@ -132,7 +132,7 @@ public class Tablero  implements Serializable{
 	/**Verifica si el tablero se ha llenado
 	 * @return Verdadero si esta lleno, y falso en caso contrario.
 	 */
-	private boolean verificar(){
+	public boolean verificar(){
 		boolean estaLleno = true;
 		for (int i = 0; i < filas && estaLleno; i++) {
 			for (int j = 0; j < columnas && estaLleno; j++) {

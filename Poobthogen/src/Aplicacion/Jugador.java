@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 
 public class Jugador implements Serializable{
-	private char identificador; 
-	private Tablero tablero;
+	protected char identificador; 
+	protected Tablero tablero;
+	
 	/**Constructor de la clase jugador
 	 * @param id Identificador del jugador. 
 	 * a. El identificador debe ser "1" o "2"<br>

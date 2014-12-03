@@ -33,6 +33,7 @@ public class PoobthogenGUI extends JFrame{
 	private int tiempoIncial;
 	private int x;
 	private int y;
+	private boolean juegoPvP;
 	
 	private Tablero juego;
 	private Jugador jugadorUno;
@@ -949,6 +950,7 @@ public class PoobthogenGUI extends JFrame{
 		}else if(colorJugDos == colorJugUno){
 			JOptionPane.showMessageDialog(this,  "Los colores de los jugadores deben ser diferentes","ERROR",JOptionPane.ERROR_MESSAGE);
 		}else{
+			juegoPvP = true;
 			if(juego == null){
 				prepareElementosConfiguracionTablero();
 			}else{
@@ -979,6 +981,7 @@ public class PoobthogenGUI extends JFrame{
 		}else if(tipoMaquina == null){
 			JOptionPane.showMessageDialog(this,  "Debe escoger una dificultad","ERROR",JOptionPane.ERROR_MESSAGE);
 		}else{
+			juegoPvP = false;
 			prepareElementosConfiguracionTablero();
 		}	
 	}
@@ -1005,7 +1008,12 @@ public class PoobthogenGUI extends JFrame{
 	private void creaTablero(int[] dimension, boolean neutrales) throws PoobthogenExcepcion{
 		juego = new Tablero(dimension[0], dimension[1], neutrales);
 		jugadorUno = new Jugador('1', juego);
-		jugadorDos = new Jugador('2', juego);
+		System.out.println(juegoPvP);
+		if(juegoPvP){
+			jugadorDos = new Jugador('2', juego);
+		}else{
+			jugadorDos = new Irreflexiva('2', juego);
+		}
 		juego.agregaJugador(jugadorUno);
 		juego.agregaJugador(jugadorDos);
 	}
@@ -1053,6 +1061,9 @@ public class PoobthogenGUI extends JFrame{
  			if(!gana && turnosJuego != 0){
 				juego.cambiarTurno();
 				refresqueProporciones();
+				if(!juego.getTurno() && !juegoPvP){
+					jugar(0,0);
+				}
 			}else{
 				int ganadorJuego = juego.determinaGanador();
 				timer.stop();
