@@ -11,7 +11,7 @@ public class Destructor extends Virus implements Serializable{
 		Virus v2= tablero.getElemento(x, y);
 		if(v2== null) throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
 		if(v2.getJugador() == null) throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
-		nivel = v2.getNivel();
+		nivel = v2.getNivel(true);
 		destruido = true;
 		if(evoluciona){
 			destruirVecinos(j);
@@ -56,5 +56,13 @@ public class Destructor extends Virus implements Serializable{
 	 */
 	public String esDeTipo(){
 		return null;
+	}
+	
+	public int getNivel(boolean b){
+		int nivelReal = Integer.MAX_VALUE;
+		if(b){
+			nivelReal = nivel;
+		}
+		return nivelReal;
 	}
 }

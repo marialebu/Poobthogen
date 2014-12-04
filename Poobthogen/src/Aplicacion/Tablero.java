@@ -38,12 +38,12 @@ public class Tablero  implements Serializable{
 			}
 		}
 		jugadores = new ArrayList<Jugador>(2); 
-		niveles = new HashMap<String, Integer>(); 
+		/*niveles = new HashMap<String, Integer>(); 
 		niveles.put("NivelUno", 1);
 		niveles.put("NivelDos", 2);
 		niveles.put("NivelTres", 3);
 		niveles.put("Bloque", Integer.MAX_VALUE);
-		niveles.put("Destructor", Integer.MAX_VALUE);
+		niveles.put("Destructor", Integer.MAX_VALUE);*/
 		if(neutral){
 			GenerarFichasNeutrales();
 		}
@@ -62,12 +62,12 @@ public class Tablero  implements Serializable{
 		jugadores = new ArrayList<Jugador>(2); 
 		TurnoTemporal = new boolean[filas][columnas];
 		TurnoEvolucionados = new boolean[filas][columnas];
-		niveles = new HashMap<String, Integer>();
+		/*niveles = new HashMap<String, Integer>();
 		niveles.put("NivelUno", 1);
 		niveles.put("NivelDos", 2);
 		niveles.put("NivelTres", 3);
 		niveles.put("Bloque", Integer.MAX_VALUE);
-		niveles.put("Destructor", Integer.MAX_VALUE);
+		niveles.put("Destructor", Integer.MAX_VALUE);*/
 	}
 	
 	/**Agrega un elemento al tablero
@@ -81,14 +81,15 @@ public class Tablero  implements Serializable{
 	public boolean agregarElemento(int jugador, int i, int j, String elemento, boolean seExpande) throws PoobthogenExcepcion{
 		try{
 			Class ex = Class.forName("Aplicacion."+elemento);
+			int nivelElemento = getVirusNivel(elemento);
 			if(elementos[i][j] == null || 
-					(elementos[i][j] != null && niveles.get(elemento)>elementos[i][j].getNivel()) ||
-						(elementos[i][j] != null && niveles.get(elemento)==elementos[i][j].getNivel() &&
+					(elementos[i][j] != null && nivelElemento>elementos[i][j].getNivel(true)) ||
+						(elementos[i][j] != null && nivelElemento==elementos[i][j].getNivel(true) &&
 							(jugador == -1 ? null : jugadores.get(jugador-1)) == elementos[i][j].getJugador())){
 				TurnoTemporal[i][j] = true;
 				Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(jugador == -1 ? null : jugadores.get(jugador-1), i, j, this, seExpande);
 				elementos[i][j] = elementos[i][j] == null || 
-						(elementos[i][j] != null && niveles.get(elemento)>=elementos[i][j].getNivel()) ? v : elementos[i][j];
+						(elementos[i][j] != null && nivelElemento>=elementos[i][j].getNivel(true)) ? v : elementos[i][j];
 			}else{
 				TurnoTemporal[i][j] = false;
 				throw new PoobthogenExcepcion(PoobthogenExcepcion.ACCION_NO_PERMITIDA);
@@ -102,6 +103,27 @@ public class Tablero  implements Serializable{
 			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO);
 		}
 		return verificar();
+	}
+	
+	/*
+	 * 
+	 */
+	private int getVirusNivel(String elemento) throws PoobthogenExcepcion{
+		int a = -1;
+		try{
+			Tablero t = new Tablero(1, 1);
+			Class ex = Class.forName("Aplicacion."+elemento);
+			Virus v = (Virus)ex.getConstructor(Jugador.class, Integer.TYPE, Integer.TYPE, Tablero.class, Boolean.TYPE).newInstance(null, 0, 0, t, false);
+			a = v.getNivel(false);
+		}catch (InstantiationException  | ClassNotFoundException e){
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.CLASE_NO_ENCONTRADA+" "+e.getMessage());
+		}catch (InvocationTargetException e){
+			a = Integer.MAX_VALUE;
+		}catch (IllegalAccessException | IllegalArgumentException| NoSuchMethodException| SecurityException e){
+			Log.registreError(e);
+			throw new PoobthogenExcepcion(PoobthogenExcepcion.ERROR_INESPERADO);
+		}
+		return a;
 	}
 	
 	/**Termina el juego. 
@@ -136,7 +158,7 @@ public class Tablero  implements Serializable{
 		boolean estaLleno = true;
 		for (int i = 0; i < filas && estaLleno; i++) {
 			for (int j = 0; j < columnas && estaLleno; j++) {
-				estaLleno = elementos[i][j] != null && elementos[i][j].getNivel()>0;
+				estaLleno = elementos[i][j] != null && elementos[i][j].getNivel(true)>0;
 			}
 		}
 		finalizado = estaLleno;
@@ -308,7 +330,7 @@ public class Tablero  implements Serializable{
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				if(elementos[i][j] != null){
-					if(elementos[i][j].getNivel() > 0){
+					if(elementos[i][j].getNivel(true) > 0){
 						if(elementos[i][j].getJugador() != null && elementos[i][j].getJugador().toString().equals(jugadores.get(0).toString())){
 							jugador1++;
 						}else if (elementos[i][j].getJugador() != null &&elementos[i][j].getJugador().toString().equals(jugadores.get(1).toString())){
@@ -331,7 +353,7 @@ public class Tablero  implements Serializable{
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				if(elementos[i][j] != null){
-					if(elementos[i][j].getNivel() > 0){
+					if(elementos[i][j].getNivel(true) > 0){
 						if(elementos[i][j].getJugador() != null && elementos[i][j].getJugador().toString().equals(jugadores.get(0).toString())){
 							jugador1++;
 						}else if (elementos[i][j].getJugador() != null && elementos[i][j].getJugador().toString().equals(jugadores.get(1).toString())){

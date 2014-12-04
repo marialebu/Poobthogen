@@ -1541,7 +1541,7 @@ public class PoobthogenGUI extends JFrame{
 	 */
 	private void muestreCreditos(){
 		String mensaje = "Juego creado por:\nMaria Alejandra Blanco Uribe y Nicolas Gomez Solano\n"+new Date().getDate()+":"+(new Date().getMonth()+1)+":"+(new Date().getYear()+1900)+"\n"
-				+"POOB 2014-2";
+				+"\nEscuela Colombiana de Ingeniería Julio Garavito\nPOOB 2014-2";
 		JOptionPane.showMessageDialog(this,(Object)mensaje, "Creditos", JOptionPane.INFORMATION_MESSAGE);
 	}
 	

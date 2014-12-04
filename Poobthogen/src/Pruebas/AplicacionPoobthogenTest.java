@@ -2,9 +2,11 @@ package Pruebas;
 
 import Aplicacion.*; 
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.io.*;
  
 public class AplicacionPoobthogenTest{
@@ -275,8 +277,8 @@ public class AplicacionPoobthogenTest{
     }
     
     @Test
-    public void deberiaDestruirFichasDeNivelDos(){
-    	try{
+    public void deberiaDestruirFichasDeNivelDos() throws PoobthogenExcepcion{
+    	//try{
     		String[][] prueba = 
     			{{"-", "-", "-", "-", "-"},
     			{"-", "U2", "U2", "U2", "-"},
@@ -295,9 +297,7 @@ public class AplicacionPoobthogenTest{
 			t.agregarElemento(1, 2, 2, "Destructor", true);
 			t.cambiarTurno();
 			assertEquals("Deberian ser iguales", prueba, t.obtener());	
-    	}catch (PoobthogenExcepcion e){
-    		fail(NOEXCEPCION);
-    	}
+    	//}
     }
     @Test
     public void deberiaLanzarExcepcionAlTratarDConquistarDosConDos(){

@@ -40,9 +40,9 @@ public abstract class Virus implements Serializable{
 	public static int compareTo(int nivel, Virus v2){
 		int res = 1;
 		if(v2 != null){
-			if(nivel < v2.getNivel()){
+			if(nivel < v2.getNivel(true)){
 				res = -1;
-			}else if(nivel == v2.getNivel()){
+			}else if(nivel == v2.getNivel(true)){
 				res = -0;
 			}
 		}
@@ -69,9 +69,10 @@ public abstract class Virus implements Serializable{
 	
 	/**
 	 * Consulta el nivel de un elemento. 
+	 * @param b 
 	 * @return Retorna el nivel de un elemento
 	 */
-	public int getNivel(){
+	public int getNivel(boolean b){
 		return nivel;
 	}
 	
