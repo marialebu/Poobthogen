@@ -32,7 +32,7 @@ public class Irreflexiva extends Maquina{
 		for (int i = 0; i < tablero.filas(); i++) {
 			for (int j = 0; j < tablero.columnas(); j++) {
 					try{
-						tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], tipoVirus[r.nextInt(tipoVirus.length)], true);
+						return tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], tipoVirus[r.nextInt(tipoVirus.length)], true);
 					}catch(PoobthogenExcepcion e){
 						posicion = posiciones[r.nextInt(posiciones.length-1)];
 					}
