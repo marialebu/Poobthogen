@@ -146,7 +146,6 @@ public class PoobthogenGUI extends JFrame{
 			preparePantallaInicio();
 			prepareAccionesInicio();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -160,7 +159,6 @@ public class PoobthogenGUI extends JFrame{
 			preparePantallaNuevoJuego();
 			prepareAccionesNuevo();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -174,7 +172,6 @@ public class PoobthogenGUI extends JFrame{
 			prepareVentanaConfiguracionInicial();
 			prepareAccionesVentanaConfInicial();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -188,7 +185,6 @@ public class PoobthogenGUI extends JFrame{
 			prepareVentanaConfiguracionInicialUno();
 			prepareAccionesVentanaConfInicialUno();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -202,7 +198,6 @@ public class PoobthogenGUI extends JFrame{
 			prepareVentanaConfiguracionTablero();
 			prepareAccionesVentanaConfTablero();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -218,7 +213,6 @@ public class PoobthogenGUI extends JFrame{
 			preparePantallaJuego();
 			prepareAccionesJuego();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -232,7 +226,6 @@ public class PoobthogenGUI extends JFrame{
 			prepareVentanaGanadorJuego();
 			prepareAccionesVentanaGanador();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
@@ -1012,7 +1005,13 @@ public class PoobthogenGUI extends JFrame{
 		if(juegoPvP){
 			jugadorDos = new Jugador('2', juego);
 		}else{
-			jugadorDos = new Irreflexiva('2', juego);
+			try{
+				Class ex = Class.forName("Aplicacion."+tipoMaquina);
+				jugadorDos = (Maquina)ex.getConstructor(char.class, Tablero.class).newInstance('2', juego);
+			}catch(Exception e){
+				Log.registreError(e);
+				salgaError();
+			}
 		}
 		juego.agregaJugador(jugadorUno);
 		juego.agregaJugador(jugadorDos);
@@ -1162,7 +1161,6 @@ public class PoobthogenGUI extends JFrame{
 			prepareAccionesBotones();
 			principal.add(tableroJuego, BorderLayout.CENTER);
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
 			Log.registreError(e);
 			salgaError();
 		}
