@@ -1,5 +1,6 @@
 package Aplicacion;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Irreflexiva extends Maquina{
@@ -12,8 +13,9 @@ public class Irreflexiva extends Maquina{
 	 */
 	public Irreflexiva(char id, Tablero t) throws PoobthogenExcepcion {
 		super(id, t);
+		inicializaPosiciones();
 	}
-	
+
 	/**
 	 * Realiza una jugada. 
 	 * @param x Posicion en x del tablero
@@ -22,14 +24,18 @@ public class Irreflexiva extends Maquina{
 	 * @return Si se ha ganado el juego o no
 	 * @throws PoobthogenExcepcion
 	 */
+	//No creo que la irreflexiva tenga que ver si es null en una posicion. 
 	public boolean juega(int x, int y, String virus) throws PoobthogenExcepcion{
 		String tipoVirus[] = {"NivelUno","NivelDos","NivelTres","Destructor"};
 		Random r = new Random();
+		int[] posicion = posiciones[r.nextInt(posiciones.length-1)];
 		for (int i = 0; i < tablero.filas(); i++) {
 			for (int j = 0; j < tablero.columnas(); j++) {
-				if(tablero.getElemento(i, j)==null){
-					return tablero.agregarElemento(Integer.parseInt(identificador+""), i, j, tipoVirus[r.nextInt(tipoVirus.length)], true);
-				}
+					try{
+						tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], tipoVirus[r.nextInt(tipoVirus.length)], true);
+					}catch(PoobthogenExcepcion e){
+						posicion = posiciones[r.nextInt(posiciones.length-1)];
+					}
 			}
 		}
 		return tablero.verificar();

@@ -100,9 +100,6 @@ public class PoobthogenArchivos {
 	    try{
 		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
 		    out.println("VIRUS");
-		    if(tiposVirus == null){
-		    	throw new PoobthogenExcepcion(PoobthogenExcepcion.NO_TIPOS_VIRUS);
-		    }
 		    for(String r : tiposVirus.keySet()){
 		    	out.println(r+" "+tiposVirus.get(r));
 		    }

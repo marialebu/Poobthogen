@@ -1139,27 +1139,34 @@ public class PoobthogenGUI extends JFrame{
 	 * Refresca el tablero con la ultima jugada. 
 	 */
 	private void refresque(){
-		refresqueBorde();
-		tableroJuego.removeAll();
-		tableroJuego.updateUI();
-		int filas = juego.filas();
-		int columnas = juego.columnas();
-		tableroJuego.setLayout(new GridLayout(filas, columnas));
-		fichasJuego = new JButton[filas][columnas];
-		Border bordeFicha = new LineBorder(new Color(0f,0f,0f,0f), 30);
-		JButton t; 
-		for (int i = 0; i < filas; i++){
-			for (int j = 0; j < columnas; j++) {
-				t = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(rutaVirus(juego.getElemento(i, j)))).getImage()));
-				fichasJuego[i][j] = t;
-				t.setOpaque(true);
-				t.setBackground(Color.BLACK);
-				t.setBorder(bordeFicha);
-				tableroJuego.add(t);
+		try{
+			refresqueBorde();
+			tableroJuego.removeAll();
+			tableroJuego.updateUI();
+			int filas = juego.filas();
+			int columnas = juego.columnas();
+			tableroJuego.setLayout(new GridLayout(filas, columnas));
+			fichasJuego = new JButton[filas][columnas];
+			Border bordeFicha = new LineBorder(new Color(0f,0f,0f,0f), 30);
+			JButton t; 
+			for (int i = 0; i < filas; i++){
+				for (int j = 0; j < columnas; j++) {
+					t = new JButton(new ImageIcon(new ImageIcon(getClass().getResource(rutaVirus(juego.getElemento(i, j)))).getImage()));
+					fichasJuego[i][j] = t;
+					t.setOpaque(true);
+					t.setBackground(Color.BLACK);
+					t.setBorder(bordeFicha);
+					tableroJuego.add(t);
+				}
 			}
+			prepareAccionesBotones();
+			principal.add(tableroJuego, BorderLayout.CENTER);
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(PoobthogenGUI.this, PoobthogenExcepcion.ERROR_INESPERADO, "ERROR", JOptionPane.ERROR_MESSAGE);
+			Log.registreError(e);
+			salgaError();
 		}
-		prepareAccionesBotones();
-		principal.add(tableroJuego, BorderLayout.CENTER);
+		
 	}
 	
 	/**
