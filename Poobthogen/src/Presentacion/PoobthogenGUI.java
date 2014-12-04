@@ -19,7 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class PoobthogenGUI extends JFrame{
 	
 	private final int ONE_SECOND;
-	private final String[] CANT_TURNOS = {"Ilimitado","10", "15", "20", "30"};
+	private final String[] CANT_TURNOS = {"Ilimitado","10", "20", "30", "40"};
 	private final String[] CANT_TIEMPO = {"Ilimitado","5 minutos", "10 minutos", "20 minutos"};
 	private final int[] PEQUENO = {6, 6};
 	private final int[] MEDIANO = {8, 8};
@@ -87,7 +87,6 @@ public class PoobthogenGUI extends JFrame{
 	
 	private JMenuItem guardar;
 	private JMenuItem exportar;
-	private JMenuItem reiniciar;
 	private JMenuItem salir;
 	private JLabel muestraTurnos;
 	private JLabel muestraTiempo;
@@ -334,7 +333,12 @@ public class PoobthogenGUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				juego = null;
 				configureTamañoPantalla();
-				prepareElementosPreJuego();
+				if(juegoPvP){
+					prepareElementosPreJuego();
+				}else{
+					prepareElementosPreJuegoUno();
+				}
+				
 			}
 		});
 		
@@ -362,6 +366,9 @@ public class PoobthogenGUI extends JFrame{
 		add(principal);
 		if(ganador != null){
 			principal.setBorder(new LineBorder(ganador.toString().equals("1") ? colores.get(colorJugUno) : colores.get(colorJugDos), 20));
+			
+		}else{
+			principal.setBorder(new LineBorder(Color.WHITE, 20));
 		}
 		principal.setLayout(new BorderLayout());
 		principal.add(prepareTextosBorder("Estadisticas"), BorderLayout.NORTH);
@@ -504,14 +511,11 @@ public class PoobthogenGUI extends JFrame{
 		guardar.setFont(f);
 		exportar = new JMenuItem("Exportar");
 		exportar.setFont(f);
-		reiniciar = new JMenuItem("Reiniciar");
-		reiniciar.setFont(f);
 		salir = new JMenuItem("Salir");
 		salir.setFont(f);
 		opciones.add(guardar);
 		opciones.add(exportar);
 		opciones.add(new JSeparator());
-		opciones.add(reiniciar);
 		opciones.add(salir);
 		barra.add(opciones);
 	}
@@ -868,16 +872,6 @@ public class PoobthogenGUI extends JFrame{
 				prepareElementosGanadorJuego();
 			}
 		});
-		
-		reiniciar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					reinicia();
-				} catch (PoobthogenExcepcion ev) {
-					JOptionPane.showMessageDialog(PoobthogenGUI.this, ev.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
 	}
 	
 	/**
@@ -888,21 +882,6 @@ public class PoobthogenGUI extends JFrame{
 		timer.start();
 	}
 	
-	/**
-	 * Reinicia los estados del juego.
-	 * @throws PoobthogenExcepcion
-	 */
-	private void reinicia() throws PoobthogenExcepcion{
-		int filas = juego.filas();
-		int columnas = juego.columnas();
-		juego = new Tablero(filas, columnas, neutrales);
-		tiempoJuego = tiempoIncial;
-		inicia();
-		turnosJuego = iniciales;
-		refresque();
-		refresqueProporciones();
-		refrescaTurnos();
-	}
 	/**
 	 * Prepara las acciones de los botones al jugar. 
 	 */
@@ -919,10 +898,6 @@ public class PoobthogenGUI extends JFrame{
 								refresque();
 								turnosJuego--;
 								refresqueTurnos(contenedor);
-							}else{
-								int ganadorJuego = juego.determinaGanador(); 
-								ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-								prepareElementosGanadorJuego();
 							}
 						}catch (PoobthogenExcepcion e){
 							refresque();
@@ -1001,7 +976,6 @@ public class PoobthogenGUI extends JFrame{
 	private void creaTablero(int[] dimension, boolean neutrales) throws PoobthogenExcepcion{
 		juego = new Tablero(dimension[0], dimension[1], neutrales);
 		jugadorUno = new Jugador('1', juego);
-		System.out.println(juegoPvP);
 		if(juegoPvP){
 			jugadorDos = new Jugador('2', juego);
 		}else{
@@ -1037,10 +1011,6 @@ public class PoobthogenGUI extends JFrame{
 			juego.cambiarTurno();
 			refresqueTurnos(contenedor);
 			refresque();
-		}else{
-			int ganadorJuego = juego.determinaGanador(); 
-			ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-			prepareElementosGanadorJuego();
 		}
 	}
 	
@@ -1056,9 +1026,14 @@ public class PoobthogenGUI extends JFrame{
 		Jugador actual = turno == true ? jugadorUno : jugadorDos;
 		boolean gana = false;
 		try{
-			gana = actual.juega(i, j, opcionVirus); 
+			gana = actual.juega(i, j, opcionVirus);
+			if(turnosJuego == 1){
+				gana = true;
+				turnosJuego--;
+			}
  			if(!gana && turnosJuego != 0){
-				juego.cambiarTurno();
+ 				juego.cambiarTurno();
+				juego.imprimir();
 				refresqueProporciones();
 				if(!juego.getTurno() && !juegoPvP){
 					jugar(0,0);
@@ -1086,13 +1061,15 @@ public class PoobthogenGUI extends JFrame{
 					tiempoJuego--;
 					refresqueTiempo(contenedor);
 				}else{
-					timer.stop();
-					int ganadorJuego = juego.determinaGanador(); 
-					ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
-					prepareElementosGanadorJuego();
+					ganaTiempo();
 				}
 			}
 		});
+	}
+	private void ganaTiempo(){
+		int ganadorJuego = juego.determinaGanador(); 
+		ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+		prepareElementosGanadorJuego();
 	}
 	
 	/**

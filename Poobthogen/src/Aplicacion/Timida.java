@@ -22,14 +22,20 @@ public class Timida extends Maquina{
 	 * @throws PoobthogenExcepcion
 	 */
 	public boolean juega(int x, int y, String virus) throws PoobthogenExcepcion{
-		for (int i = 0; i < tablero.filas(); i++) {
-			for (int j = 0; j < tablero.columnas(); j++) {
-				if(tablero.getElemento(i, j)==null){
-					return tablero.agregarElemento(Integer.parseInt(identificador+""), i, j, "NivelUno", true);
-				}
-			}
+		boolean termina = false;
+		String tipoVirus[] = {"NivelUno","NivelDos","NivelTres","Destructor"};
+		Random r = new Random();
+		int pos = r.nextInt(posiciones.length-1);
+		while(intentados[pos]){
+			pos = r.nextInt(posiciones.length-1);
 		}
-		return tablero.verificar();
+		intentados[pos] = true;
+		int[] posicion = posicion = posiciones[pos];
+		if(tablero.getElemento(posicion[0], posicion[1])== null){
+			termina = tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], "NivelUno", true);
+		}else{
+			juega(x, y, virus);
+		}
+		return termina;
 	}
-
 }

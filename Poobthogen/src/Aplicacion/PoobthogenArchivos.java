@@ -100,6 +100,17 @@ public class PoobthogenArchivos {
 	    try{
 		    PrintWriter out = new PrintWriter(new FileOutputStream(f));
 		    out.println("VIRUS");
+		    tiposVirus = new HashMap<String,String>();
+		    for (int i = 0; i < t.filas(); i++) {
+				for (int j = 0; j < t.columnas(); j++) {
+					if(t.getElemento(i, j)!=null){
+						String a = t.getElemento(i, j).toString().split("")[0];
+						if(!tiposVirus.containsKey(a)){
+							tiposVirus.put(a, t.getElemento(i, j).esDeTipo().split(" ")[0]);
+						}
+					}
+				}
+			}
 		    for(String r : tiposVirus.keySet()){
 		    	out.println(r+" "+tiposVirus.get(r));
 		    }

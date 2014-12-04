@@ -13,7 +13,6 @@ public class Irreflexiva extends Maquina{
 	 */
 	public Irreflexiva(char id, Tablero t) throws PoobthogenExcepcion {
 		super(id, t);
-		inicializaPosiciones();
 	}
 
 	/**
@@ -26,19 +25,22 @@ public class Irreflexiva extends Maquina{
 	 */
 	//No creo que la irreflexiva tenga que ver si es null en una posicion. 
 	public boolean juega(int x, int y, String virus) throws PoobthogenExcepcion{
+		boolean termina = false;
 		String tipoVirus[] = {"NivelUno","NivelDos","NivelTres","Destructor"};
 		Random r = new Random();
-		int[] posicion = posiciones[r.nextInt(posiciones.length-1)];
-		for (int i = 0; i < tablero.filas(); i++) {
-			for (int j = 0; j < tablero.columnas(); j++) {
-					try{
-						return tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], tipoVirus[r.nextInt(tipoVirus.length)], true);
-					}catch(PoobthogenExcepcion e){
-						posicion = posiciones[r.nextInt(posiciones.length-1)];
-					}
-			}
+		int pos = r.nextInt(posiciones.length-1);
+		int[] posicion = posiciones[pos];
+		while(posicion == null){
+			pos = r.nextInt(posiciones.length-1);
+			posicion = posiciones[pos];
 		}
-		return tablero.verificar();
+		posiciones[pos] = null;
+		try{
+			termina = tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], tipoVirus[r.nextInt(tipoVirus.length)], true);
+		}catch(PoobthogenExcepcion e){
+						juega(x,y,virus);
+		}
+		return termina;
 	}
 
 }
