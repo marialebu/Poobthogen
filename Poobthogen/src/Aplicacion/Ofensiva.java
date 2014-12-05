@@ -66,8 +66,8 @@ public class Ofensiva extends Maquina{
 	 * Busca si puede realizar una jugada que haga mas danio con una ficha de la maquina, poniendo un bloque
 	 * @param i Posicion en x
 	 * @param j Posicion en y 
-	 * @param l 
-	 * @return
+	 * @param l nivel  
+	 * @return si se encontro una jugada con ficha propia.
 	 * @throws PoobthogenExcepcion
 	 */
 	private boolean buscarFichasPropias(int i, int j, int l) throws PoobthogenExcepcion {
@@ -88,7 +88,15 @@ public class Ofensiva extends Maquina{
 		}
 		return found;
 	}
-
+	
+	/**
+	 * Busca una jugada que se pueda realizar
+	 * @param i Posicion en x
+	 * @param j Posicion en y
+	 * @param l Nivel del virus
+	 * @param maximo maximo puntaje
+	 * @return el puntaje que se obtuvo
+	 */
 	private int busquedaVirus(int i, int j, int l, int maximo) {
 		for (int k = 0; k < dx.length; k++) {
 			int temp_dx = i+dx[k];

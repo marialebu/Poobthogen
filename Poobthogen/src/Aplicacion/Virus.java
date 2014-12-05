@@ -135,6 +135,10 @@ public abstract class Virus implements Serializable{
 
 	public abstract String esDeTipo();
 	
+	/**
+	 * Retorna su nivel siguiente
+	 * @return Un string con el nombre de la clase con su siguiente nivel. 
+	 */
 	public String GetNextLevel(){
 		return nextLevel;
 	}
