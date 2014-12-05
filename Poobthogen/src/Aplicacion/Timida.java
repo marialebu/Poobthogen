@@ -34,7 +34,7 @@ public class Timida extends Maquina{
 		if(tablero.getElemento(posicion[0], posicion[1])== null){
 			termina = tablero.agregarElemento(Integer.parseInt(identificador+""), posicion[0], posicion[1], "NivelUno", true);
 		}else{
-			juega(x, y, virus);
+			termina = juega(x, y, virus);
 		}
 		return termina;
 	}

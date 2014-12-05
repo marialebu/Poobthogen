@@ -38,12 +38,6 @@ public class Tablero  implements Serializable{
 			}
 		}
 		jugadores = new ArrayList<Jugador>(2); 
-		/*niveles = new HashMap<String, Integer>(); 
-		niveles.put("NivelUno", 1);
-		niveles.put("NivelDos", 2);
-		niveles.put("NivelTres", 3);
-		niveles.put("Bloque", Integer.MAX_VALUE);
-		niveles.put("Destructor", Integer.MAX_VALUE);*/
 		if(neutral){
 			GenerarFichasNeutrales();
 		}
@@ -62,12 +56,6 @@ public class Tablero  implements Serializable{
 		jugadores = new ArrayList<Jugador>(2); 
 		TurnoTemporal = new boolean[filas][columnas];
 		TurnoEvolucionados = new boolean[filas][columnas];
-		/*niveles = new HashMap<String, Integer>();
-		niveles.put("NivelUno", 1);
-		niveles.put("NivelDos", 2);
-		niveles.put("NivelTres", 3);
-		niveles.put("Bloque", Integer.MAX_VALUE);
-		niveles.put("Destructor", Integer.MAX_VALUE);*/
 	}
 	
 	/**Agrega un elemento al tablero
@@ -105,8 +93,8 @@ public class Tablero  implements Serializable{
 		return verificar();
 	}
 	
-	/*
-	 * 
+	/**Obtiene el nivel del virus que se quiere colocar
+	 * @param elemento Elemento del cual se quiere obtener el nivel. 
 	 */
 	private int getVirusNivel(String elemento) throws PoobthogenExcepcion{
 		int a = -1;
@@ -187,14 +175,15 @@ public class Tablero  implements Serializable{
 	
 	/**Muestra el tablero por consola. 
 	 */
-	public void imprimir() {
+	public String toString() {
+		String rta = "";
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-				System.out.print((elementos[i][j] != null ? elementos[i][j].toString() : "-")+" ");
+				rta+=(elementos[i][j] != null ? elementos[i][j].toString() : "-")+" ";
 			}
-			System.out.println();
+			rta+="\n";
 		}
-		System.out.println();
+		return rta;
 	}
 	
 	/**Muestra el tablero por consola. 
@@ -209,17 +198,7 @@ public class Tablero  implements Serializable{
 		return res;
 	}
 	
-	/**Muestra el tablero por consola. 
-	 */
-	public void imprimirTemporal() {
-		for (int i = 0; i < filas; i++) {
-			for (int j = 0; j < columnas; j++) {
-				System.out.print((TurnoTemporal[i][j] ? elementos[i][j].toString() : "-")+" ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
+	
 	/**Agrega un jugador si es posible
 	 * @param j Jugador que se quiere agregar. 
 	 * @throws PoobthogenExcepcion

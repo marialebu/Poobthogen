@@ -1,6 +1,7 @@
 package Aplicacion; 
 
 import java.io.Serializable;
+import java.util.Random;
 
 
 public class Jugador implements Serializable{
@@ -24,6 +25,8 @@ public class Jugador implements Serializable{
 	public String toString(){
 		return identificador+""; 
 	}
+	
+	
 	
 	/**
 	 * Realiza una jugada. 

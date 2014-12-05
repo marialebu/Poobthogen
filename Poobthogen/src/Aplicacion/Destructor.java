@@ -58,6 +58,10 @@ public class Destructor extends Virus implements Serializable{
 		return null;
 	}
 	
+	/**
+	 * Obtiene el nivel de un virus
+	 * @return el nivel correspondiente
+	 */
 	public int getNivel(boolean b){
 		int nivelReal = Integer.MAX_VALUE;
 		if(b){

@@ -332,6 +332,9 @@ public class PoobthogenGUI extends JFrame{
 		revancha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				juego = null;
+				turnosJuego = -1;
+				tiempoJuego = -1;
+				comienza = true;
 				configureTamañoPantalla();
 				if(juegoPvP){
 					prepareElementosPreJuego();
@@ -567,6 +570,7 @@ public class PoobthogenGUI extends JFrame{
 			juego.cambiarTurno();
 		}
 		refresque();
+		
 		JPanel contenedorBotones = prepareContenedor(new JPanel(),"", false);
 		contenedorBotones.setLayout(new GridLayout(1, 2));
 		pasaTurno = creaBoton(0, 0,"Pasar turno",tam.height-50, tam.width-50, f);
@@ -574,6 +578,18 @@ public class PoobthogenGUI extends JFrame{
 		rendirse = creaBoton(0, 0,"Rendirse",tam.height-50, tam.width-50, f);
 		contenedorBotones.add(rendirse);
 		principal.add(contenedorBotones, BorderLayout.PAGE_END);
+		if(!juegoPvP && !comienza){
+			try{
+				boolean gana = jugar(0, 0);
+				if(!gana && turnosJuego != 0){
+					refresque();
+					turnosJuego--;
+					refresqueTurnos(contenedor);
+				}
+			}catch(PoobthogenExcepcion e){
+				JOptionPane.showMessageDialog(PoobthogenGUI.this,(Object)e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 	
 	/**
@@ -898,6 +914,12 @@ public class PoobthogenGUI extends JFrame{
 								refresque();
 								turnosJuego--;
 								refresqueTurnos(contenedor);
+								if(turnosJuego == 0){
+									int ganadorJuego = juego.determinaGanador();
+									timer.stop();
+									ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+									prepareElementosGanadorJuego();
+								}
 							}
 						}catch (PoobthogenExcepcion e){
 							refresque();
@@ -1004,14 +1026,40 @@ public class PoobthogenGUI extends JFrame{
 	
 	/**
 	 * Cambia los turnos del juego cada vez que un jugador realiza un movimiento cuando los turnos acaban, se pasa a la tabla de estadisticas.
+	 * @throws PoobthogenExcepcion 
 	 */
 	private void refrescaTurnos(){
 		turnosJuego--;
+		if(turnosJuego == 0){
+			int ganadorJuego = juego.determinaGanador();
+			timer.stop();
+			ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+			prepareElementosGanadorJuego();
+		}
 		if(turnosJuego !=0){
 			juego.cambiarTurno();
+			if(!juego.getTurno() && !juegoPvP && turnosJuego != 0){
+				try{
+					boolean gana = jugar(0, 0);
+					if(!gana && turnosJuego != 0){
+						refresque();
+						turnosJuego--;
+						refresqueTurnos(contenedor);
+					}
+					if(turnosJuego == 0){
+						int ganadorJuego = juego.determinaGanador();
+						timer.stop();
+						ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+						prepareElementosGanadorJuego();
+					}
+				}catch(PoobthogenExcepcion e){
+					JOptionPane.showMessageDialog(this,(Object)e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			refresqueBorde();
 			refresqueTurnos(contenedor);
-			refresque();
 		}
+		System.out.println(turnosJuego);
 	}
 	
 	/**
@@ -1033,10 +1081,19 @@ public class PoobthogenGUI extends JFrame{
 			}
  			if(!gana && turnosJuego != 0){
  				juego.cambiarTurno();
-				juego.imprimir();
 				refresqueProporciones();
 				if(!juego.getTurno() && !juegoPvP){
-					jugar(0,0);
+					gana = jugar(0,0);
+					if(!gana && turnosJuego != 0){
+						refresque();
+						turnosJuego--;
+						refresqueTurnos(contenedor);
+					}else{
+						int ganadorJuego = juego.determinaGanador();
+						timer.stop();
+						ganador = ganadorJuego == 1 ? jugadorUno : ganadorJuego == -1 ?jugadorDos : null;
+						prepareElementosGanadorJuego();
+					}
 				}
 			}else{
 				int ganadorJuego = juego.determinaGanador();
@@ -1048,6 +1105,10 @@ public class PoobthogenGUI extends JFrame{
 			throw e;
 		}
 		return gana;
+	}
+	
+	private void cambiaTurnos(){
+		
 	}
 	
 	/**
@@ -1186,7 +1247,10 @@ public class PoobthogenGUI extends JFrame{
 		}
 		return arreglo;
 	}
-	
+	/**
+	 * Prepara el panel de turnos y juego
+	 * @return El panel con el diseno propuesto. 
+	 */
 	private JPanel preparePanelTurnosTiempo(){
 		JPanel endOfWin = prepareContenedor(new JPanel(),"", false);
 		endOfWin.setLayout(new GridLayout(1, 2));
@@ -1639,7 +1703,7 @@ public class PoobthogenGUI extends JFrame{
     }
 	
 	/**
-	 * Termina con la aplicacion. 
+	 * Termina con la aplicacion cuando se genera un error. 
 	 */
 	private void salgaError(){
 		JOptionPane.showMessageDialog(PoobthogenGUI.this, "Se ha generado un error inesperado, la aplicacion se cerrará");
