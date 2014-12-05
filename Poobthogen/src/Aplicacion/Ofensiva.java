@@ -26,6 +26,31 @@ public class Ofensiva extends Maquina{
 	 * @throws PoobthogenExcepcion
 	 */
 	public boolean juega(int x, int y, String virus) throws PoobthogenExcepcion{
+		int res[] = escogerMejorAtaque();
+		int I_MAX = res[0], J_MAX = res[1];
+		boolean termina = false;
+		if(I_MAX != -1 && J_MAX != -1){
+			if(tablero.getElemento(I_MAX, J_MAX).getNivel(true)<=2){
+				termina = tablero.agregarElemento((int)identificador-48, I_MAX, J_MAX, tablero.getElemento(I_MAX, J_MAX).GetNextLevel(), true);
+			}else{
+				visited = new boolean[tablero.filas()][tablero.columnas()];
+				boolean hiceAlgoConTres = buscarFichasPropias(I_MAX, J_MAX, tablero.getElemento(I_MAX, J_MAX).getNivel(true));
+				if(!hiceAlgoConTres){
+					termina = tablero.agregarElemento((int)identificador-48, I_MAX, J_MAX, "Destructor", true);
+				}
+				termina = tablero.verificar();
+			}
+		}else{
+			termina = jugarMaquinaRandom(x, y, virus);
+		}
+		return termina;
+	}
+	/**
+	 * Busca las posiciones del mejor ataque.
+	 * @return Las posiciones del mejor ataque, y de no ser posible, retorna las posiciones en -1
+	 */
+	private int[] escogerMejorAtaque(){
+		int[] res = new int[2];
 		visited = new boolean[tablero.filas()][tablero.columnas()];
 		int I_MAX = -1;
 		int J_MAX = -1;
@@ -43,22 +68,9 @@ public class Ofensiva extends Maquina{
 				}
 			}
 		}
-		boolean termina = false;
-		if(I_MAX != -1 && J_MAX != -1){
-			if(tablero.getElemento(I_MAX, J_MAX).getNivel(true)<=2){
-				termina = tablero.agregarElemento((int)identificador-48, I_MAX, J_MAX, tablero.getElemento(I_MAX, J_MAX).GetNextLevel(), true);
-			}else{
-				visited = new boolean[tablero.filas()][tablero.columnas()];
-				boolean hiceAlgoConTres = buscarFichasPropias(I_MAX, J_MAX, tablero.getElemento(I_MAX, J_MAX).getNivel(true));
-				if(!hiceAlgoConTres){
-					termina = tablero.agregarElemento((int)identificador-48, I_MAX, J_MAX, "Destructor", true);
-				}
-				termina = tablero.verificar();
-			}
-		}else{
-			termina = jugarMaquinaRandom(x, y, virus);
-		}
-		return termina;
+		res[0] = I_MAX;
+		res[1] = J_MAX;
+		return res;
 	}
 	
 	
